@@ -60,7 +60,7 @@ namespace ScreenSaver
 
         private void ScreenSaverForm_Load(object sender, EventArgs e)
         {   
-            Cursor.Hide();            
+            if (!previewMode) Cursor.Hide();            
             TopMost = true;
             
             // ex: http://a1.phobos.apple.com/us/r1000/000/Features/atv/AutumnResources/videos/b2-1.mov

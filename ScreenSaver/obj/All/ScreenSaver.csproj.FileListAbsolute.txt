@@ -1,0 +1,15 @@
+C:\Projects\Aerial\ScreenSaver\bin\All\AerialScreenSaver.exe.config
+C:\Projects\Aerial\ScreenSaver\bin\All\AerialScreenSaver.exe
+C:\Projects\Aerial\ScreenSaver\bin\All\Interop.MediaPlayer.dll
+C:\Projects\Aerial\ScreenSaver\bin\All\Interop.WMPLib.dll
+C:\Projects\Aerial\ScreenSaver\bin\All\AxInterop.WMPLib.dll
+C:\Projects\Aerial\ScreenSaver\obj\All\ScreenSaver.csprojResolveAssemblyReference.cache
+C:\Projects\Aerial\ScreenSaver\obj\All\Interop.MediaPlayer.dll
+C:\Projects\Aerial\ScreenSaver\obj\All\Interop.WMPLib.dll
+C:\Projects\Aerial\ScreenSaver\obj\All\AxInterop.WMPLib.dll
+C:\Projects\Aerial\ScreenSaver\obj\All\ScreenSaver.csproj.ResolveComReference.cache
+C:\Projects\Aerial\ScreenSaver\obj\All\ScreenSaver.SettingsForm.resources
+C:\Projects\Aerial\ScreenSaver\obj\All\AerialScreenSaver.Properties.Resources.resources
+C:\Projects\Aerial\ScreenSaver\obj\All\ScreenSaver.ScreenSaverForm.resources
+C:\Projects\Aerial\ScreenSaver\obj\All\ScreenSaver.csproj.GenerateResource.Cache
+C:\Projects\Aerial\ScreenSaver\obj\All\AerialScreenSaver.exe

@@ -1,1 +1,2 @@
 ILMerge.exe /target:winexe /targetplatform:"v4,C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6" /out:aerial.exe AerialScreenSaver.exe AxInterop.WMPLib.dll Interop.MediaPlayer.dll Interop.WMPLib.dll
+pause

@@ -1,1 +1,0 @@
-ILMerge.exe /target:winexe /targetplatform:"v4.6,C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6" /out:aerial.scr AerialScreenSaver.exe AxInterop.WMPLib.dll Interop.MediaPlayer.dll Interop.WMPLib.dll
