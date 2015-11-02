@@ -24,6 +24,20 @@ To uninstall, delete the downloaded .scr file.
 ## Compatibility
 Aerial is written in C# for [.Net Framework v4.6](https://www.microsoft.com/en-us/download/details.aspx?id=48130).
 
+## FAQ
+
+> After insalling on Windows XP, 7, 8.1, I get an error message "This application could not be started"
+
+Please [install Microsoft's .Net Framework 4.6](https://support.microsoft.com/en-us/kb/2715633).
+
+> The app freezes or returns to desktop?
+
+Try to install `Windows Media Player` via `Turn Windows features on or off` in the control panel.
+
+> Blank black screen on screen saver preview?
+
+The application needs an internet connection to work.
+
 ## Community
 - **Find a bug?** [Open an issue](https://github.com/cdima/Aerial/issues/new). Try to be as specific as possible.
 - **Have a feature request** [Open an issue](https://github.com/cdima/Aerial/issues/new). Tell me why this feature would be useful, and why you and others would want it.
