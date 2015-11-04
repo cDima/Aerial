@@ -59,10 +59,10 @@ namespace ScreenSaver
         }
 
         private void ScreenSaverForm_Load(object sender, EventArgs e)
-        {   
-            if (!previewMode) Cursor.Hide();            
+        {
+            if (!previewMode) Cursor.Hide();
             TopMost = true;
-            
+
             // ex: http://a1.phobos.apple.com/us/r1000/000/Features/atv/AutumnResources/videos/b2-1.mov
             this.axWindowsMediaPlayer1.settings.autoStart = true;
             this.axWindowsMediaPlayer1.settings.enableErrorDialogs = true;
@@ -70,7 +70,8 @@ namespace ScreenSaver
             this.axWindowsMediaPlayer1.enableContextMenu = false;
             Application.AddMessageFilter(new IgnoreMouseClickMessageFilter(this, axWindowsMediaPlayer1));
 
-            this.axWindowsMediaPlayer1.Size = this.Size;
+            this.axWindowsMediaPlayer1.Size = CalculateVideoFillSize(this.Size);
+            this.axWindowsMediaPlayer1.stretchToFit = true;
             this.axWindowsMediaPlayer1.Top = 0;
             this.axWindowsMediaPlayer1.Left = 0;
             this.axWindowsMediaPlayer1.settings.setMode("loop", true);
@@ -91,7 +92,27 @@ namespace ScreenSaver
 
             //this.axWindowsMediaPlayer1.URL = @"http://a1.phobos.apple.com/us/r1000/000/Features/atv/AutumnResources/videos/b2-1.mov";
             this.axWindowsMediaPlayer1.Ctlcontrols.play();
-            
+        }
+
+        /// <summary>
+        /// Algoirthm for calculating video fill size
+        /// </summary>
+        /// <param name="displaySize"></param>
+        /// <param name="scaleMode"></param>
+        /// <returns>The size of the canvas needed to fill the screen with the source width and height element</returns>
+        private Size CalculateVideoFillSize(Size displaySize, double sourceHeight = 1080.0, double sourceWidth = 1920.0)
+        {
+            var screenHeight = (double)displaySize.Height;
+            var screenWidth = (double)displaySize.Width;
+            var screenRatio = screenWidth / screenHeight;
+
+            var scale = Math.Max(screenWidth / sourceWidth, screenHeight / sourceHeight);
+
+            return new Size()
+            {
+                Height = Convert.ToInt32(scale * sourceHeight),
+                Width = Convert.ToInt32(scale * sourceWidth)
+            };
         }
 
         private void AxWindowsMediaPlayer1_KeyPressEvent(object sender, AxWMPLib._WMPOCXEvents_KeyPressEvent e)
@@ -103,7 +124,7 @@ namespace ScreenSaver
         {
             ScreenSaverForm_MouseMove(sender, new MouseEventArgs(MouseButtons.None, 0, e.fX, e.fY, 0));
         }
-                
+
         private void ScreenSaverForm_MouseMove(object sender, MouseEventArgs e)
         {
             if (!previewMode)
@@ -133,5 +154,4 @@ namespace ScreenSaver
                 Application.Exit();
         }
     }
-    
 }
