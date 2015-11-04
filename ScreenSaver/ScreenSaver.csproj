@@ -8,8 +8,8 @@
     <ProjectGuid>{C79DC106-23F3-4FA7-BA69-6B8684C4AD9F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AerialScreenSaver</RootNamespace>
-    <AssemblyName>AerialScreenSaver</AssemblyName>
+    <RootNamespace>Aerial</RootNamespace>
+    <AssemblyName>Aerial</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
