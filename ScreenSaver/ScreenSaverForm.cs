@@ -90,7 +90,8 @@ namespace ScreenSaver
 
             axWindowsMediaPlayer1.currentPlaylist = list;
 
-            //this.axWindowsMediaPlayer1.URL = @"http://a1.phobos.apple.com/us/r1000/000/Features/atv/AutumnResources/videos/b2-1.mov";
+            //this.axWindowsMediaPlayer1.URL = @"https://vimeo.com/91711013/download?t=1446647256&v=243511274&s=30ad93a6909c33cb955241b7159418522a8ba05b887b1e0600c81fa32ea495af";
+            //this.axWindowsMediaPlayer1.URL = @"https://elevatorweb.s3.amazonaws.com/assets/home_loop-1ed6858e8a360798e313ad1e14605a7b94e838c1492e42a56af25d5fcce63648.mp4";
             this.axWindowsMediaPlayer1.Ctlcontrols.play();
         }
 
