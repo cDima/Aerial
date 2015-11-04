@@ -70,9 +70,17 @@ namespace ScreenSaver
             this.axWindowsMediaPlayer1.enableContextMenu = false;
             Application.AddMessageFilter(new IgnoreMouseClickMessageFilter(this, axWindowsMediaPlayer1));
 
-            this.axWindowsMediaPlayer1.Size = this.Size;
+            // Hack to eliminate black bars around videos
+            // * Get the aspect ratio of the videos
+            // * Use that to calculate the target width of the form necessary for the video to fill the height
+            // * Finally adjust the position of the form to the left the required amount to centre the video (half the difference between the target width and the actual screen width)
+            float videoAspectRatio = (float)1920/(float)1080;
+            float targetWidth = (float)this.Size.Height * videoAspectRatio;
+            Size tempSize = this.Size;
+            tempSize.Width = Convert.ToInt32(Math.Ceiling(targetWidth));
+            this.axWindowsMediaPlayer1.Size = tempSize;
             this.axWindowsMediaPlayer1.Top = 0;
-            this.axWindowsMediaPlayer1.Left = 0;
+            this.axWindowsMediaPlayer1.Left = -(tempSize.Width - this.Size.Width) / 2;
             this.axWindowsMediaPlayer1.settings.setMode("loop", true);
             this.axWindowsMediaPlayer1.MouseMoveEvent += AxWindowsMediaPlayer1_MouseMoveEvent;
             this.axWindowsMediaPlayer1.KeyPressEvent += AxWindowsMediaPlayer1_KeyPressEvent;
