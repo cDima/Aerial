@@ -33,6 +33,7 @@
             this.cancelButton = new System.Windows.Forms.Button();
             this.chkDifferentMonitorMovies = new System.Windows.Forms.CheckBox();
             this.chkUseTimeOfDay = new System.Windows.Forms.CheckBox();
+            this.chkMultiscreenDisabled = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -49,7 +50,7 @@
             // okButton
             // 
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.okButton.Location = new System.Drawing.Point(24, 156);
+            this.okButton.Location = new System.Drawing.Point(20, 136);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 23);
             this.okButton.TabIndex = 4;
@@ -61,7 +62,7 @@
             // 
             this.cancelButton.CausesValidation = false;
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(135, 156);
+            this.cancelButton.Location = new System.Drawing.Point(101, 136);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 5;
@@ -74,11 +75,11 @@
             this.chkDifferentMonitorMovies.AutoSize = true;
             this.chkDifferentMonitorMovies.Checked = true;
             this.chkDifferentMonitorMovies.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkDifferentMonitorMovies.Location = new System.Drawing.Point(24, 73);
+            this.chkDifferentMonitorMovies.Location = new System.Drawing.Point(20, 56);
             this.chkDifferentMonitorMovies.Name = "chkDifferentMonitorMovies";
-            this.chkDifferentMonitorMovies.Size = new System.Drawing.Size(197, 17);
+            this.chkDifferentMonitorMovies.Size = new System.Drawing.Size(195, 17);
             this.chkDifferentMonitorMovies.TabIndex = 6;
-            this.chkDifferentMonitorMovies.Text = "Play Different Aerial on each monitor";
+            this.chkDifferentMonitorMovies.Text = "Play different Aerial on each monitor";
             this.chkDifferentMonitorMovies.UseVisualStyleBackColor = true;
             // 
             // chkUseTimeOfDay
@@ -86,18 +87,31 @@
             this.chkUseTimeOfDay.AutoSize = true;
             this.chkUseTimeOfDay.Checked = true;
             this.chkUseTimeOfDay.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkUseTimeOfDay.Location = new System.Drawing.Point(24, 97);
+            this.chkUseTimeOfDay.Location = new System.Drawing.Point(20, 80);
             this.chkUseTimeOfDay.Name = "chkUseTimeOfDay";
-            this.chkUseTimeOfDay.Size = new System.Drawing.Size(107, 17);
+            this.chkUseTimeOfDay.Size = new System.Drawing.Size(245, 17);
             this.chkUseTimeOfDay.TabIndex = 7;
-            this.chkUseTimeOfDay.Text = "Use Time Of Day";
+            this.chkUseTimeOfDay.Text = "Use time of day to show dayy/night videos first";
             this.chkUseTimeOfDay.UseVisualStyleBackColor = true;
+            // 
+            // chkMultiscreenDisabled
+            // 
+            this.chkMultiscreenDisabled.AutoSize = true;
+            this.chkMultiscreenDisabled.Checked = true;
+            this.chkMultiscreenDisabled.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkMultiscreenDisabled.Location = new System.Drawing.Point(20, 103);
+            this.chkMultiscreenDisabled.Name = "chkMultiscreenDisabled";
+            this.chkMultiscreenDisabled.Size = new System.Drawing.Size(251, 17);
+            this.chkMultiscreenDisabled.TabIndex = 8;
+            this.chkMultiscreenDisabled.Text = "Disable all but main screen on 3+ screen setups";
+            this.chkMultiscreenDisabled.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(235, 194);
+            this.ClientSize = new System.Drawing.Size(284, 175);
+            this.Controls.Add(this.chkMultiscreenDisabled);
             this.Controls.Add(this.chkUseTimeOfDay);
             this.Controls.Add(this.chkDifferentMonitorMovies);
             this.Controls.Add(this.cancelButton);
@@ -118,5 +132,6 @@
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.CheckBox chkDifferentMonitorMovies;
         private System.Windows.Forms.CheckBox chkUseTimeOfDay;
+        private System.Windows.Forms.CheckBox chkMultiscreenDisabled;
     }
 }
