@@ -5,11 +5,15 @@ Aerial is a Windows screen saver based on the new Apple TV screen saver that dis
 
 Aerial for Windows is based on the [Mac Screen Saver](https://github.com/JohnCoates/Aerial) by [John Coates](https://github.com/JohntCoates).
 
-#### Coded with Love by Dmitry Sadakov
+#### Coded with :heart: in New York by [Dmitry Sadakov](http://sadakov.com/)
 
-## [Download](https://github.com/cDima/Aerial/releases/download/0.2/aerial.scr.zip)
+![Dmtiry Sadakov](author/dmitrysadakov.jpg)
 
-**Option A:** Right click Aerial.scr and choose Install, windows will install it for you.
+## Installation 
+
+1. [Download the arial.scr.zip](https://github.com/cDima/Aerial/releases/download/0.2/aerial.scr.zip)
+2. Unzip the downloaded file.
+3. Right click **Aerial.scr** and choose Install, windows will install it for you.
 
 **Option B:** Unzip the Aerial.scr and double-click to launch. 
 
