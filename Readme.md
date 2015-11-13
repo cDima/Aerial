@@ -3,7 +3,7 @@
 ## Aerial - Apple TV Aerial Views Screen Saver for Windows 7, 8, 10+
 Aerial is a Windows screen saver based on the new Apple TV screen saver that displays the aerial movies Apple shot over New York, San Francisco, Hawaii, China, etc.
 
-Aerial for Windows is based on the [Mac Aerial Screen Saver](https://github.com/JohnCoates/Aerial) by [John Coates](https://github.com/JohntCoates).
+Aerial for Windows is based on the [Mac Aerial Screen Saver](https://github.com/JohnCoates/Aerial) by [John Coates](https://github.com/JohnCoates).
 
 ## Installation 
 
