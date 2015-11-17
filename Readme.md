@@ -10,6 +10,7 @@ Aerial for Windows is based on the [Mac Aerial Screen Saver](https://github.com/
 1. **[Download the Aerial.scr.zip](https://github.com/cDima/Aerial/releases/download/0.2/aerial.scr.zip)**
 2. Unzip the downloaded file.
 3. Right click **Aerial.scr** and choose Install, windows will install it for you.
+4. If any issues occur, please read the FAQ below or enter an issue to the tracker.
 
 **Option B:** Double-click Aerial.scr to launch. 
 
