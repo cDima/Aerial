@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using Aerial;
 
 namespace ScreenSaver
 {
@@ -81,6 +82,8 @@ namespace ScreenSaver
 
                 //this.axWindowsMediaPlayer1.URL = @"https://vimeo.com/91711013/download?t=1446647256&v=243511274&s=30ad93a6909c33cb955241b7159418522a8ba05b887b1e0600c81fa32ea495af";
                 this.axWindowsMediaPlayer1.Ctlcontrols.play();
+
+                NativeMethods.EnableMonitorSleep();
             }
         }
 
