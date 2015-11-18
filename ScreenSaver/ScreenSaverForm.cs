@@ -2,6 +2,9 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
+using System.Collections.Generic;
+using System.Timers;
 
 namespace ScreenSaver
 {
@@ -27,7 +30,8 @@ namespace ScreenSaver
 
         private Point mouseLocation;
         private bool previewMode = false;
-        private Random rand = new Random();
+        int currentVideoIndex = 0;
+        List<Asset> Movies;
 
         public ScreenSaverForm()
         {
@@ -62,25 +66,51 @@ namespace ScreenSaver
         private void ScreenSaverForm_Load(object sender, EventArgs e)
         {
             if (!previewMode) Cursor.Hide();
-            TopMost = true;
+
+            //TopMost = true;
 
             LayoutPlayer();
 
+
+            System.Timers.Timer nextVideoTimer = new System.Timers.Timer();
+            nextVideoTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+            nextVideoTimer.Interval = 5000;
+            nextVideoTimer.Enabled = true;
+
             if (ShowVideo)
             {
-                var list = axWindowsMediaPlayer1.playlistCollection.newPlaylist("Aerial");
+                //var list = axWindowsMediaPlayer1.playlistCollection.newPlaylist("Aerial");
 
-                var movies = new AerialContext().GetMovies();
-                foreach (var item in movies)
+                Movies = new AerialContext().GetMovies();
+                
+                /*
+                Movies = new List<Asset>
                 {
-                    var m = axWindowsMediaPlayer1.newMedia(item.url);
-                    list.appendItem(m);
-                }
+                    new Asset {url = @"http://blog.luxisinteractive.com/wp-content/uploads/2015/08/depth.mp4" },
+                    new Asset {url = @"http://blog.luxisinteractive.com/wp-content/uploads/2015/08/depth.mp4" },
+                };
+                */
 
-                axWindowsMediaPlayer1.currentPlaylist = list;
+                //this.axWindowsMediaPlayer1.URL = @"http://blog.luxisinteractive.com/wp-content/uploads/2015/08/depth.mp4";
+                SetNextVideo();
+                
+            }
+        }
 
-                //this.axWindowsMediaPlayer1.URL = @"https://vimeo.com/91711013/download?t=1446647256&v=243511274&s=30ad93a6909c33cb955241b7159418522a8ba05b887b1e0600c81fa32ea495af";
-                this.axWindowsMediaPlayer1.Ctlcontrols.play();
+        private void SetNextVideo()
+        {
+            axWindowsMediaPlayer1.URL = Movies[currentVideoIndex].url;
+            currentVideoIndex++;
+            if (currentVideoIndex >= Movies.Count)
+                currentVideoIndex = 0;
+        }
+
+        private void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+            Console.WriteLine("Timer: " + this.axWindowsMediaPlayer1.playState);
+            if (this.axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsReady)
+            {
+                SetNextVideo();
             }
         }
 
@@ -99,6 +129,16 @@ namespace ScreenSaver
             this.axWindowsMediaPlayer1.settings.setMode("loop", true);
             this.axWindowsMediaPlayer1.MouseMoveEvent += AxWindowsMediaPlayer1_MouseMoveEvent;
             this.axWindowsMediaPlayer1.KeyPressEvent += AxWindowsMediaPlayer1_KeyPressEvent;
+            this.axWindowsMediaPlayer1.PlayStateChange += AxWindowsMediaPlayer1_PlayStateChange;
+        }
+
+        [DllImport("kernel32.dll")]
+        public static extern uint SetThreadExecutionState(uint esFlags);
+        public const uint ES_CONTINUOUS = 0x80000000;
+
+        private void AxWindowsMediaPlayer1_PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
+        {
+            SetThreadExecutionState(ES_CONTINUOUS);
         }
 
         /// <summary>
@@ -159,12 +199,6 @@ namespace ScreenSaver
         {
             if (!previewMode)
                 Application.Exit();
-        }
-
-        private void ScreenSaverForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            // remove playlist 
-            axWindowsMediaPlayer1.playlistCollection.remove(axWindowsMediaPlayer1.currentPlaylist);
         }
     }
 }
