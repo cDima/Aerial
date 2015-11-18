@@ -5,27 +5,12 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Timers;
+using Aerial;
 
 namespace ScreenSaver
 {
     public partial class ScreenSaverForm : Form
     {
-        #region Win32 API functions
-
-        [DllImport("user32.dll")]
-        static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
-
-        [DllImport("user32.dll")]
-        static extern int SetWindowLong(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
-
-        [DllImport("user32.dll", SetLastError = true)]
-        static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-
-        [DllImport("user32.dll")]
-        static extern bool GetClientRect(IntPtr hWnd, out Rectangle lpRect);
-
-        #endregion
-
         public bool ShowVideo = true;
 
         private Point mouseLocation;
@@ -49,14 +34,14 @@ namespace ScreenSaver
             InitializeComponent();
 
             // Set the preview window as the parent of this window
-            SetParent(this.Handle, PreviewWndHandle);
+            NativeMethods.SetParent(this.Handle, PreviewWndHandle);
 
             // Make this a child window so it will close when the parent dialog closes
-            SetWindowLong(this.Handle, -16, new IntPtr(GetWindowLong(this.Handle, -16) | 0x40000000));
+            NativeMethods.SetWindowLong(this.Handle, -16, new IntPtr(NativeMethods.GetWindowLong(this.Handle, -16) | 0x40000000));
 
             // Place our window inside the parent
             Rectangle ParentRect;
-            GetClientRect(PreviewWndHandle, out ParentRect);
+            NativeMethods.GetClientRect(PreviewWndHandle, out ParentRect);
             Size = ParentRect.Size;
             Location = new Point(0, 0);
 
@@ -131,14 +116,10 @@ namespace ScreenSaver
             this.axWindowsMediaPlayer1.KeyPressEvent += AxWindowsMediaPlayer1_KeyPressEvent;
             this.axWindowsMediaPlayer1.PlayStateChange += AxWindowsMediaPlayer1_PlayStateChange;
         }
-
-        [DllImport("kernel32.dll")]
-        public static extern uint SetThreadExecutionState(uint esFlags);
-        public const uint ES_CONTINUOUS = 0x80000000;
-
+        
         private void AxWindowsMediaPlayer1_PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
         {
-            SetThreadExecutionState(ES_CONTINUOUS);
+            NativeMethods.EnableMonitorSleep(); // todo: doesn't do the trick.
         }
 
         /// <summary>
