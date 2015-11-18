@@ -81,6 +81,7 @@
   <ItemGroup>
     <Compile Include="AerialEntities.cs" />
     <Compile Include="IgnoreMouseClickMessageFilter.cs" />
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="RegSettings.cs" />
     <Compile Include="SettingsForm.cs">
       <SubType>Form</SubType>
