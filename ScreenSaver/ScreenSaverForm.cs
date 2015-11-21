@@ -55,45 +55,46 @@ namespace ScreenSaver
             //TopMost = true;
 
             LayoutPlayer();
-
-
-            System.Timers.Timer nextVideoTimer = new System.Timers.Timer();
-            nextVideoTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-            nextVideoTimer.Interval = 5000;
+            
+            var nextVideoTimer = new System.Windows.Forms.Timer();
+            nextVideoTimer.Tick += NextVideoTimer_Tick;
+            nextVideoTimer.Interval = 1000;
             nextVideoTimer.Enabled = true;
 
             if (ShowVideo)
             {
-                //var list = axWindowsMediaPlayer1.playlistCollection.newPlaylist("Aerial");
-
                 Movies = new AerialContext().GetMovies();
-                
-                /*
+
+#if DEBUG
                 Movies = new List<Asset>
                 {
                     new Asset {url = @"http://blog.luxisinteractive.com/wp-content/uploads/2015/08/depth.mp4" },
-                    new Asset {url = @"http://blog.luxisinteractive.com/wp-content/uploads/2015/08/depth.mp4" },
+                    new Asset {url = @"http://blog.luxisinteractive.com/wp-content/uploads/2015/08/animation.mp4" },
                 };
-                */
+#endif
 
                 //this.axWindowsMediaPlayer1.URL = @"http://blog.luxisinteractive.com/wp-content/uploads/2015/08/depth.mp4";
                 SetNextVideo();
                 
             }
         }
-
+        
         private void SetNextVideo()
         {
+            Trace.WriteLine("SetNextVideo()");
             axWindowsMediaPlayer1.URL = Movies[currentVideoIndex].url;
             currentVideoIndex++;
             if (currentVideoIndex >= Movies.Count)
                 currentVideoIndex = 0;
         }
 
-        private void OnTimedEvent(object source, ElapsedEventArgs e)
+        private void NextVideoTimer_Tick(object sender, EventArgs e)
         {
-            Console.WriteLine("Timer: " + this.axWindowsMediaPlayer1.playState);
-            if (this.axWindowsMediaPlayer1.playState == WMPLib.WMPPlayState.wmppsReady)
+            var state = this.axWindowsMediaPlayer1.playState;
+            Trace.WriteLine("Timer: " + state);
+            if (state == WMPLib.WMPPlayState.wmppsReady ||
+                state == WMPLib.WMPPlayState.wmppsUndefined ||
+                state == WMPLib.WMPPlayState.wmppsStopped)
             {
                 SetNextVideo();
             }
@@ -111,7 +112,7 @@ namespace ScreenSaver
             this.axWindowsMediaPlayer1.stretchToFit = true;
             this.axWindowsMediaPlayer1.Top = 0;
             this.axWindowsMediaPlayer1.Left = 0;
-            this.axWindowsMediaPlayer1.settings.setMode("loop", true);
+            //this.axWindowsMediaPlayer1.settings.setMode("loop", true);
             this.axWindowsMediaPlayer1.MouseMoveEvent += AxWindowsMediaPlayer1_MouseMoveEvent;
             this.axWindowsMediaPlayer1.KeyPressEvent += AxWindowsMediaPlayer1_KeyPressEvent;
             this.axWindowsMediaPlayer1.PlayStateChange += AxWindowsMediaPlayer1_PlayStateChange;
@@ -119,7 +120,16 @@ namespace ScreenSaver
         
         private void AxWindowsMediaPlayer1_PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
         {
-            NativeMethods.EnableMonitorSleep(); // todo: doesn't do the trick.
+            NativeMethods.EnableMonitorSleep();
+            
+            var state = this.axWindowsMediaPlayer1.playState;
+            Trace.WriteLine("OnPlayerChanged: " + state + ", new state: " + (WMPLib.WMPPlayState)e.newState);
+            if (//state == WMPLib.WMPPlayState.wmppsReady ||
+                state == WMPLib.WMPPlayState.wmppsUndefined ||
+                state == WMPLib.WMPPlayState.wmppsStopped)
+            {
+                SetNextVideo();
+            }
         }
 
         /// <summary>
