@@ -18,6 +18,7 @@ namespace ScreenSaver
         private bool windowMode = false;
         int currentVideoIndex = 0;
         List<Asset> Movies;
+        DateTime lastInteraction = DateTime.Now;
 
         public ScreenSaverForm()
         {
@@ -27,6 +28,10 @@ namespace ScreenSaver
         public ScreenSaverForm(bool WindowMode = false)
         {
             InitializeComponent();
+
+            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+            SetStyle(ControlStyles.Opaque, true);
+            this.BackColor = Color.Transparent;
 
             windowMode = true;
             this.MouseDown += ScreenSaverForm_MouseDown;
@@ -41,8 +46,9 @@ namespace ScreenSaver
         private void ScreenSaverForm_MouseDown(object sender, MouseEventArgs e)
         {
             Point m = PointToClient(Cursor.Position);
-            bool? toTop = m.Y < 20 ? true : (m.Y > (Size.Height - 20) ? false : (bool?)null);
-            bool? toLeft = m.X < 20 ? true : (m.X > (Size.Width - 20) ? false : (bool?)null);
+            var drag = 12;
+            bool? toTop = m.Y < drag ? true : (m.Y > (Size.Height - drag) ? false : (bool?)null);
+            bool? toLeft = m.X < drag ? true : (m.X > (Size.Width - drag) ? false : (bool?)null);
             
             if (e.Button == MouseButtons.Left)
             {
@@ -129,6 +135,11 @@ namespace ScreenSaver
             {
                 SetNextVideo();
             }
+
+            if (lastInteraction.AddSeconds(-1) < DateTime.Now)
+            {
+                this.btnClose.Visible = false;
+            }
         }
 
         private void LayoutPlayer()
@@ -141,12 +152,12 @@ namespace ScreenSaver
 
             ResizePlayer();
 
-            this.player.MouseMoveEvent += AxWindowsMediaPlayer1_MouseMoveEvent;
-            this.player.KeyPressEvent += AxWindowsMediaPlayer1_KeyPressEvent;
-            this.player.PlayStateChange += AxWindowsMediaPlayer1_PlayStateChange;
+            this.player.MouseMoveEvent += player_MouseMoveEvent;
+            this.player.KeyPressEvent += player_KeyPressEvent;
+            this.player.PlayStateChange += player_PlayStateChange;
         }
         
-        private void AxWindowsMediaPlayer1_PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
+        private void player_PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
         {
             NativeMethods.EnableMonitorSleep();
             
@@ -192,12 +203,12 @@ namespace ScreenSaver
             };
         }
 
-        private void AxWindowsMediaPlayer1_KeyPressEvent(object sender, AxWMPLib._WMPOCXEvents_KeyPressEvent e)
+        private void player_KeyPressEvent(object sender, AxWMPLib._WMPOCXEvents_KeyPressEvent e)
         {
             ScreenSaverForm_KeyPress(sender, new KeyPressEventArgs((char)e.nKeyAscii));
         }
 
-        private void AxWindowsMediaPlayer1_MouseMoveEvent(object sender, AxWMPLib._WMPOCXEvents_MouseMoveEvent e)
+        private void player_MouseMoveEvent(object sender, AxWMPLib._WMPOCXEvents_MouseMoveEvent e)
         {
             ScreenSaverForm_MouseMove(sender, new MouseEventArgs(MouseButtons.None, 0, e.fX, e.fY, 0));
         }
@@ -230,6 +241,8 @@ namespace ScreenSaver
 
             // Update current mouse location
             mouseLocation = e.Location;
+            this.btnClose.Visible = true;
+            
         }
 
         private void ScreenSaverForm_KeyPress(object sender, KeyPressEventArgs e)
@@ -259,6 +272,16 @@ namespace ScreenSaver
         private void ScreenSaverForm_Shown(object sender, EventArgs e)
         {
             this.Resize += ScreenSaverForm_Resize;
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void btnClose_MouseMove(object sender, MouseEventArgs e)
+        {
+            this.Cursor = Cursors.Default;
         }
     }
 }

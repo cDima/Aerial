@@ -71,4 +71,5 @@ namespace Aerial
             SC_SIZE_HTBOTTOMRIGHT = 8
         }
     }
+
 }
