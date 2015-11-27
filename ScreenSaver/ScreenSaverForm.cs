@@ -160,5 +160,11 @@ namespace ScreenSaver
             if (!previewMode)
                 Application.Exit();
         }
+
+        private void ScreenSaverForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // remove playlist 
+            axWindowsMediaPlayer1.playlistCollection.remove(axWindowsMediaPlayer1.currentPlaylist);
+        }
     }
 }
