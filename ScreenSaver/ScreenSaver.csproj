@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Aerial</RootNamespace>
-    <AssemblyName>Aerial</AssemblyName>
+    <AssemblyName>Aerial %28v3%29</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -52,6 +52,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <OutputPath>bin\Debug\</OutputPath>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -79,6 +81,7 @@
   <ItemGroup>
     <Compile Include="AerialEntities.cs" />
     <Compile Include="IgnoreMouseClickMessageFilter.cs" />
+    <Compile Include="NativeMethods.cs" />
     <Compile Include="RegSettings.cs" />
     <Compile Include="SettingsForm.cs">
       <SubType>Form</SubType>

@@ -5,6 +5,19 @@ namespace ScreenSaver
 {
     static class Program
     {
+        /// <summary>
+        /// Arguments for any Windows 98+ screensaver:
+        /// 
+        ///   ScreenSaver           - Show the Settings dialog box.
+        ///   ScreenSaver /c        - Show the Settings dialog box, modal to the foreground window.
+        ///   ScreenSaver /p <HWND> - Preview Screen Saver as child of window <HWND>.
+        ///   ScreenSaver /s        - Run the Screen Saver.
+        /// 
+        /// Custom arguments:
+        /// 
+        ///   ScreenSaver /w        - Run in normal resizable window mode.
+        /// </summary>
+        /// <param name="args"></param>
         [STAThread]
         static void Main(string[] args)
         {
@@ -46,7 +59,10 @@ namespace ScreenSaver
                 {
                     ShowScreenSaver();
                     Application.Run();
-                }  
+                }  else if (firstArgument == "/w")
+                {
+                    Application.Run(new ScreenSaverForm(WindowMode: true));
+                }
                 else    // Undefined argument
                 {
                     MessageBox.Show("Sorry, but the command line argument \"" + firstArgument +
