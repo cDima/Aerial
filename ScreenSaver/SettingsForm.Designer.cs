@@ -91,7 +91,7 @@
             this.chkUseTimeOfDay.Name = "chkUseTimeOfDay";
             this.chkUseTimeOfDay.Size = new System.Drawing.Size(245, 17);
             this.chkUseTimeOfDay.TabIndex = 7;
-            this.chkUseTimeOfDay.Text = "Use time of day to show dayy/night videos first";
+            this.chkUseTimeOfDay.Text = "Use time of day to show day/night videos first";
             this.chkUseTimeOfDay.UseVisualStyleBackColor = true;
             // 
             // chkMultiscreenDisabled
