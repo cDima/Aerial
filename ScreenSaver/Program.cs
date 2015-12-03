@@ -121,7 +121,7 @@ namespace ScreenSaver
                 ScreenSaverForm screensaver = new ScreenSaverForm(screen.Bounds);
 
                 // disable video on multi-displays (3+) except the first
-                if (Screen.AllScreens.Length > 1 && screen != Screen.PrimaryScreen && multiscreenDisabled)
+                if (Screen.AllScreens.Length > 2 && screen != Screen.PrimaryScreen && multiscreenDisabled)
                     screensaver.ShowVideo = false;
 
                 i++;
