@@ -38,6 +38,7 @@ namespace ScreenSaver
             
             this.MouseDown += ScreenSaverForm_MouseDown;
             this.player.MouseDownEvent += Player_MouseDownEvent;
+            btnClose.Visible = true;
         }
         
         public ScreenSaverForm(Rectangle Bounds) : this()
@@ -258,7 +259,7 @@ namespace ScreenSaver
 
             // Update current mouse location
             mouseLocation = e.Location;
-            this.btnClose.Visible = true;
+            if (windowMode) this.btnClose.Visible = true;
             
         }
 

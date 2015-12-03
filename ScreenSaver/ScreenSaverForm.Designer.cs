@@ -58,6 +58,7 @@
             this.btnClose.Size = new System.Drawing.Size(22, 24);
             this.btnClose.TabIndex = 2;
             this.btnClose.Text = "✖";
+            this.btnClose.Visible = false;
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             this.btnClose.MouseMove += new System.Windows.Forms.MouseEventHandler(this.btnClose_MouseMove);
