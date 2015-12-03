@@ -23,52 +23,31 @@ namespace ScreenSaver
         public ScreenSaverForm()
         {
             InitializeComponent();
+
+            TopMost = true;
         }
 
-        public ScreenSaverForm(bool WindowMode = false)
+        public ScreenSaverForm(bool WindowMode = false) : this()
         {
-            InitializeComponent();
-
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
             SetStyle(ControlStyles.Opaque, true);
             this.BackColor = Color.Transparent;
-
+            
             windowMode = true;
+            MaximizeVideo();
+            
             this.MouseDown += ScreenSaverForm_MouseDown;
             this.player.MouseDownEvent += Player_MouseDownEvent;
         }
-
-        private void Player_MouseDownEvent(object sender, AxWMPLib._WMPOCXEvents_MouseDownEvent e)
+        
+        public ScreenSaverForm(Rectangle Bounds) : this()
         {
-            ScreenSaverForm_MouseDown(null, new MouseEventArgs(e.nButton == 1 ? MouseButtons.Left : MouseButtons.Right, 0,e.fX, e.fY, 0));
-        }
-
-        private void ScreenSaverForm_MouseDown(object sender, MouseEventArgs e)
-        {
-            Point m = PointToClient(Cursor.Position);
-            var drag = 12;
-            bool? toTop = m.Y < drag ? true : (m.Y > (Size.Height - drag) ? false : (bool?)null);
-            bool? toLeft = m.X < drag ? true : (m.X > (Size.Width - drag) ? false : (bool?)null);
-            
-            if (e.Button == MouseButtons.Left)
-            {
-                if (toTop == null && toLeft == null)
-                    NativeMethods.DragWindow(Handle);
-                else
-                    NativeMethods.ResizeWindow(Handle, toTop, toLeft);
-            }
-        }
-
-        public ScreenSaverForm(Rectangle Bounds)
-        {
-            InitializeComponent();
             this.Bounds = Bounds;
         }
 
-        public ScreenSaverForm(IntPtr PreviewWndHandle)
+        public ScreenSaverForm(IntPtr PreviewWndHandle) : this()
         {
-            InitializeComponent();
-
+         
             // Set the preview window as the parent of this window
             NativeMethods.SetParent(this.Handle, PreviewWndHandle);
 
@@ -113,6 +92,44 @@ namespace ScreenSaver
 
             }
         }
+
+        private void MaximizeVideo()
+        {
+            var screenArea = Screen.FromControl(this).WorkingArea;
+            var videoSize = this.Size;
+            if (screenArea.Size.Width > videoSize.Width && screenArea.Height > videoSize.Height)
+            {
+                videoSize = new Size(1920, 1080);
+            }
+
+            this.SetBounds(
+                (screenArea.Width - videoSize.Width) / 2,
+                (screenArea.Height - videoSize.Height) / 2,
+                videoSize.Width,
+                videoSize.Height);
+        }
+
+        private void Player_MouseDownEvent(object sender, AxWMPLib._WMPOCXEvents_MouseDownEvent e)
+        {
+            ScreenSaverForm_MouseDown(null, new MouseEventArgs(e.nButton == 1 ? MouseButtons.Left : MouseButtons.Right, 0, e.fX, e.fY, 0));
+        }
+
+        private void ScreenSaverForm_MouseDown(object sender, MouseEventArgs e)
+        {
+            Point m = PointToClient(Cursor.Position);
+            var drag = 12;
+            bool? toTop = m.Y < drag ? true : (m.Y > (Size.Height - drag) ? false : (bool?)null);
+            bool? toLeft = m.X < drag ? true : (m.X > (Size.Width - drag) ? false : (bool?)null);
+
+            if (e.Button == MouseButtons.Left)
+            {
+                if (toTop == null && toLeft == null)
+                    NativeMethods.DragWindow(Handle);
+                else
+                    NativeMethods.ResizeWindow(Handle, toTop, toLeft);
+            }
+        }
+
         private void SetNextVideo()
         {
             Trace.WriteLine("SetNextVideo()");
