@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace ScreenSaver
@@ -21,6 +23,18 @@ namespace ScreenSaver
         [STAThread]
         static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, dll) =>
+            {
+                var resName = "Aerial.libs." + dll.Name.Split(',')[0] + ".dll";
+                var thisAssembly = Assembly.GetExecutingAssembly();
+                using (var input = thisAssembly.GetManifestResourceStream(resName))
+                {
+                    return input != null
+                         ? Assembly.Load(StreamToBytes(input))
+                         : null;
+                }
+            };
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
@@ -76,6 +90,25 @@ namespace ScreenSaver
             }            
         }
 
+        static byte[] StreamToBytes(Stream input)
+        {
+            var capacity = input.CanSeek ? (int)input.Length : 0;
+            using (var output = new MemoryStream(capacity))
+            {
+                int readLength;
+                var buffer = new byte[4096];
+
+                do
+                {
+                    readLength = input.Read(buffer, 0, buffer.Length);
+                    output.Write(buffer, 0, readLength);
+                }
+                while (readLength != 0);
+
+                return output.ToArray();
+            }
+        }
+
         /// <summary>
         /// Display the form on each of the computer's monitors.
         /// </summary>
@@ -88,7 +121,7 @@ namespace ScreenSaver
                 ScreenSaverForm screensaver = new ScreenSaverForm(screen.Bounds);
 
                 // disable video on multi-displays (3+) except the first
-                if (Screen.AllScreens.Length > 2 && i != 0 && multiscreenDisabled)
+                if (Screen.AllScreens.Length > 1 && screen != Screen.PrimaryScreen && multiscreenDisabled)
                     screensaver.ShowVideo = false;
 
                 i++;

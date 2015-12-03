@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Aerial</RootNamespace>
-    <AssemblyName>Aerial %28v3%29</AssemblyName>
+    <AssemblyName>AerialScreenSaverV3</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -132,7 +132,7 @@
       <Lcid>0</Lcid>
       <WrapperTool>aximp</WrapperTool>
       <Isolated>False</Isolated>
-      <Private>True</Private>
+      <Private>False</Private>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </COMReference>
     <COMReference Include="MediaPlayer">
@@ -143,7 +143,7 @@
       <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
       <EmbedInteropTypes>False</EmbedInteropTypes>
-      <Private>True</Private>
+      <Private>False</Private>
     </COMReference>
     <COMReference Include="stdole">
       <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
@@ -162,11 +162,17 @@
       <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
-      <Private>True</Private>
+      <Private>False</Private>
     </COMReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="bridge.ico" />
+    <EmbeddedResource Include="libs\AxInterop.WMPLib.dll" />
+    <EmbeddedResource Include="libs\Interop.MediaPlayer.dll" />
+    <EmbeddedResource Include="libs\Interop.WMPLib.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Movies\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
