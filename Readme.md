@@ -12,9 +12,9 @@ Aerial for Windows is based on the [Mac Aerial Screen Saver](https://github.com/
 3. Right click **Aerial.scr** and choose Install, windows will install it for you.
 4. If any issues occur, please read the FAQ below or enter an issue to the tracker.
 
-**Option B:** Double-click Aerial.scr to launch. 
+To use the standalone windowed mode, rename the `.scr` file to a `.exe` and launch.
 
-To uninstall, delete the downloaded .scr file.
+To uninstall, delete the downloaded `.scr` file.
 
 ## Features
 * **Auto Load Latest Aerials:** Aerials are loaded directly from Apple, so you're never out of date.

@@ -10,14 +10,15 @@ namespace ScreenSaver
         /// <summary>
         /// Arguments for any Windows 98+ screensaver:
         /// 
-        ///   ScreenSaver           - Show the Settings dialog box.
-        ///   ScreenSaver /c        - Show the Settings dialog box, modal to the foreground window.
-        ///   ScreenSaver /p <HWND> - Preview Screen Saver as child of window <HWND>.
-        ///   ScreenSaver /s        - Run the Screen Saver.
+        ///   ScreenSaver.scr           - Show the Settings dialog box.
+        ///   ScreenSaver.scr /c        - Show the Settings dialog box, modal to the foreground window.
+        ///   ScreenSaver.scr /p <HWND> - Preview Screen Saver as child of window <HWND>.
+        ///   ScreenSaver.scr /s        - Run the Screen Saver.
         /// 
         /// Custom arguments:
         /// 
-        ///   ScreenSaver /w        - Run in normal resizable window mode.
+        ///   ScreenSaver.scr /w        - Run in normal resizable window mode.
+        ///   ScreenSaver.exe           - Run in normal resizable window mode.
         /// </summary>
         /// <param name="args"></param>
         [STAThread]
@@ -73,7 +74,7 @@ namespace ScreenSaver
                 {
                     ShowScreenSaver();
                     Application.Run();
-                }  else if (firstArgument == "/w")
+                }  else if (firstArgument == "/w") // if executable, windowed mode.
                 {
                     Application.Run(new ScreenSaverForm(WindowMode: true));
                 }
@@ -84,9 +85,16 @@ namespace ScreenSaver
                         MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
-            else    // No arguments - treat like /c
+            else    
             {
-                Application.Run(new SettingsForm());
+                if (System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName.EndsWith("exe")) // treat like /w
+                {
+                    Application.Run(new ScreenSaverForm(WindowMode: true));
+                }
+                else // No arguments - treat like /c
+                {
+                    Application.Run(new SettingsForm());
+                }
             }            
         }
 
