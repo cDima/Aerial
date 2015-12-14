@@ -1,2 +1,0 @@
-ILMerge.exe /target:winexe /targetplatform:"v4,%PROGRAMFILES%\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6" /out:aerialv2.exe Aerial.exe AxInterop.WMPLib.dll Interop.MediaPlayer.dll Interop.WMPLib.dll
-pause

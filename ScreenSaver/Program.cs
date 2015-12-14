@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 
 namespace ScreenSaver
@@ -8,19 +10,32 @@ namespace ScreenSaver
         /// <summary>
         /// Arguments for any Windows 98+ screensaver:
         /// 
-        ///   ScreenSaver           - Show the Settings dialog box.
-        ///   ScreenSaver /c        - Show the Settings dialog box, modal to the foreground window.
-        ///   ScreenSaver /p <HWND> - Preview Screen Saver as child of window <HWND>.
-        ///   ScreenSaver /s        - Run the Screen Saver.
+        ///   ScreenSaver.scr           - Show the Settings dialog box.
+        ///   ScreenSaver.scr /c        - Show the Settings dialog box, modal to the foreground window.
+        ///   ScreenSaver.scr /p <HWND> - Preview Screen Saver as child of window <HWND>.
+        ///   ScreenSaver.scr /s        - Run the Screen Saver.
         /// 
         /// Custom arguments:
         /// 
-        ///   ScreenSaver /w        - Run in normal resizable window mode.
+        ///   ScreenSaver.scr /w        - Run in normal resizable window mode.
+        ///   ScreenSaver.exe           - Run in normal resizable window mode.
         /// </summary>
         /// <param name="args"></param>
         [STAThread]
         static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.AssemblyResolve += (sender, dll) =>
+            {
+                var resName = "Aerial.libs." + dll.Name.Split(',')[0] + ".dll";
+                var thisAssembly = Assembly.GetExecutingAssembly();
+                using (var input = thisAssembly.GetManifestResourceStream(resName))
+                {
+                    return input != null
+                         ? Assembly.Load(StreamToBytes(input))
+                         : null;
+                }
+            };
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
@@ -59,7 +74,7 @@ namespace ScreenSaver
                 {
                     ShowScreenSaver();
                     Application.Run();
-                }  else if (firstArgument == "/w")
+                }  else if (firstArgument == "/w") // if executable, windowed mode.
                 {
                     Application.Run(new ScreenSaverForm(WindowMode: true));
                 }
@@ -70,10 +85,36 @@ namespace ScreenSaver
                         MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
-            else    // No arguments - treat like /c
+            else    
             {
-                Application.Run(new SettingsForm());
+                if (System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName.EndsWith("exe")) // treat like /w
+                {
+                    Application.Run(new ScreenSaverForm(WindowMode: true));
+                }
+                else // No arguments - treat like /c
+                {
+                    Application.Run(new SettingsForm());
+                }
             }            
+        }
+
+        static byte[] StreamToBytes(Stream input)
+        {
+            var capacity = input.CanSeek ? (int)input.Length : 0;
+            using (var output = new MemoryStream(capacity))
+            {
+                int readLength;
+                var buffer = new byte[4096];
+
+                do
+                {
+                    readLength = input.Read(buffer, 0, buffer.Length);
+                    output.Write(buffer, 0, readLength);
+                }
+                while (readLength != 0);
+
+                return output.ToArray();
+            }
         }
 
         /// <summary>
@@ -88,7 +129,7 @@ namespace ScreenSaver
                 ScreenSaverForm screensaver = new ScreenSaverForm(screen.Bounds);
 
                 // disable video on multi-displays (3+) except the first
-                if (Screen.AllScreens.Length > 2 && i != 0 && multiscreenDisabled)
+                if (Screen.AllScreens.Length > 2 && screen != Screen.PrimaryScreen && multiscreenDisabled)
                     screensaver.ShowVideo = false;
 
                 i++;
