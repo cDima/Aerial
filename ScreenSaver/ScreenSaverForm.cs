@@ -79,6 +79,11 @@ namespace ScreenSaver
             nextVideoTimer.Interval = 1000;
             nextVideoTimer.Enabled = true;
 
+            var cacheVideos = new RegSettings().CacheVideos;
+            if (cacheVideos) {
+                DirectoryInfo directory = Directory.CreateDirectory(cacheFolder);
+            }
+
             if (ShowVideo)
             {
                 Movies = new AerialContext().GetMovies();
@@ -148,6 +153,7 @@ namespace ScreenSaver
             {
                 string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Temp");
                 string filename = Path.GetFileName(Movies[currentVideoIndex].url);
+
                 if (File.Exists(Path.Combine(cacheFolder, filename)))
                 {
                     player.URL = Path.Combine(cacheFolder, filename);
