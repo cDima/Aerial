@@ -1,11 +1,12 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Runtime.InteropServices;
-using System.Diagnostics;
+﻿using Aerial;
+using System;
 using System.Collections.Generic;
-using System.Timers;
-using Aerial;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Net;
+using System.Windows.Forms;
 
 namespace ScreenSaver
 {
@@ -19,6 +20,10 @@ namespace ScreenSaver
         int currentVideoIndex = 0;
         List<Asset> Movies;
         DateTime lastInteraction = DateTime.Now;
+
+        string desktopFolder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        string cacheFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Aerial");
+        string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Temp");
 
         public ScreenSaverForm()
         {
@@ -131,12 +136,50 @@ namespace ScreenSaver
             }
         }
 
+        private void OnDownloadFileComplete(object sender, AsyncCompletedEventArgs e)
+        {
+            using (StreamWriter outputFile = new StreamWriter(desktopFolder + @"\AerialScreensaverDebug.txt", true))
+            {
+                outputFile.WriteLine("Moving from " + Path.Combine(tempFolder, e.UserState.ToString()) + " to " + Path.Combine(cacheFolder, e.UserState.ToString()));
+            }
+            Directory.Move(Path.Combine(tempFolder, e.UserState.ToString()), Path.Combine(cacheFolder, e.UserState.ToString()));
+        }
+
         private void SetNextVideo()
         {
             Trace.WriteLine("SetNextVideo()");
+            var cacheVideos = new RegSettings().CacheVideos;
             if (ShowVideo)
             {
-                player.URL = Movies[currentVideoIndex].url;
+                string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Temp");
+                string filename = Path.GetFileName(Movies[currentVideoIndex].url);
+                if (File.Exists(Path.Combine(cacheFolder, filename)))
+                {
+                    using (StreamWriter outputFile = new StreamWriter(desktopFolder + @"\AerialScreensaverDebug.txt", true))
+                    {
+                        outputFile.WriteLine("Playing from " + Path.Combine(cacheFolder, filename));
+                    }                
+                    player.URL = Path.Combine(cacheFolder, filename);
+                }
+                else
+                {
+                	using (StreamWriter outputFile = new StreamWriter(desktopFolder + @"\AerialScreensaverDebug.txt", true))
+                    {
+                        outputFile.WriteLine("Playing from " + Movies[currentVideoIndex].url);
+                    }
+                    player.URL = Movies[currentVideoIndex].url;
+                    if (cacheVideos) {
+                        using (WebClient client = new WebClient())
+                        {
+							using (StreamWriter outputFile = new StreamWriter(desktopFolder + @"\AerialScreensaverDebug.txt", true))
+							{
+								outputFile.WriteLine("Downloading " + Movies[currentVideoIndex].url + " to " + Path.Combine(tempFolder, filename));
+							}
+                            client.DownloadFileCompleted += new AsyncCompletedEventHandler(OnDownloadFileComplete);
+                            client.DownloadFileAsync(new System.Uri(Movies[currentVideoIndex].url), Path.Combine(tempFolder, filename), filename);
+                        }
+                    }
+                }
                 currentVideoIndex++;
                 if (currentVideoIndex >= Movies.Count)
                     currentVideoIndex = 0;

@@ -20,6 +20,7 @@ namespace ScreenSaver
             chkDifferentMonitorMovies.Checked = settings.DifferentMoviesOnDual;
             chkUseTimeOfDay.Checked = settings.UseTimeOfDay;
             chkMultiscreenDisabled.Checked = settings.MultiscreenDisabled;
+            chkCacheVideos.Checked = settings.CacheVideos;
         }
 
         /// <summary>
@@ -31,6 +32,7 @@ namespace ScreenSaver
             settings.DifferentMoviesOnDual = chkDifferentMonitorMovies.Checked;
             settings.UseTimeOfDay = chkUseTimeOfDay.Checked;
             settings.MultiscreenDisabled = chkMultiscreenDisabled.Checked;
+            settings.CacheVideos = chkCacheVideos.Checked;
 
             settings.SaveSettings();
             
