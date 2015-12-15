@@ -1,11 +1,12 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Runtime.InteropServices;
-using System.Diagnostics;
+﻿using Aerial;
+using System;
 using System.Collections.Generic;
-using System.Timers;
-using Aerial;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Net;
+using System.Windows.Forms;
 
 namespace ScreenSaver
 {
@@ -19,6 +20,9 @@ namespace ScreenSaver
         int currentVideoIndex = 0;
         List<Asset> Movies;
         DateTime lastInteraction = DateTime.Now;
+
+        string cacheFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Aerial");
+        string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Temp");
 
         public ScreenSaverForm()
         {
@@ -74,6 +78,11 @@ namespace ScreenSaver
             nextVideoTimer.Tick += NextVideoTimer_Tick;
             nextVideoTimer.Interval = 1000;
             nextVideoTimer.Enabled = true;
+
+            var cacheVideos = new RegSettings().CacheVideos;
+            if (cacheVideos) {
+                DirectoryInfo directory = Directory.CreateDirectory(cacheFolder);
+            }
 
             if (ShowVideo)
             {
@@ -131,12 +140,35 @@ namespace ScreenSaver
             }
         }
 
+        private void OnDownloadFileComplete(object sender, AsyncCompletedEventArgs e)
+        {
+            Directory.Move(Path.Combine(tempFolder, e.UserState.ToString()), Path.Combine(cacheFolder, e.UserState.ToString()));
+        }
+
         private void SetNextVideo()
         {
             Trace.WriteLine("SetNextVideo()");
+            var cacheVideos = new RegSettings().CacheVideos;
             if (ShowVideo)
             {
-                player.URL = Movies[currentVideoIndex].url;
+                string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Temp");
+                string filename = Path.GetFileName(Movies[currentVideoIndex].url);
+
+                if (File.Exists(Path.Combine(cacheFolder, filename)))
+                {
+                    player.URL = Path.Combine(cacheFolder, filename);
+                }
+                else
+                {
+                    player.URL = Movies[currentVideoIndex].url;
+                    if (cacheVideos) {
+                        using (WebClient client = new WebClient())
+                        {
+							client.DownloadFileCompleted += new AsyncCompletedEventHandler(OnDownloadFileComplete);
+                            client.DownloadFileAsync(new System.Uri(Movies[currentVideoIndex].url), Path.Combine(tempFolder, filename), filename);
+                        }
+                    }
+                }
                 currentVideoIndex++;
                 if (currentVideoIndex >= Movies.Count)
                     currentVideoIndex = 0;

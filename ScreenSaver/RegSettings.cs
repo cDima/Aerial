@@ -8,7 +8,7 @@ namespace ScreenSaver
         public bool DifferentMoviesOnDual = false;
         public bool UseTimeOfDay = true;
         public bool MultiscreenDisabled = true;
-        
+        public bool CacheVideos = false;
 
         public RegSettings()
         {
@@ -18,6 +18,7 @@ namespace ScreenSaver
                 DifferentMoviesOnDual = bool.Parse(key.GetValue(nameof(DifferentMoviesOnDual)) as string ?? "True");
                 UseTimeOfDay = bool.Parse(key.GetValue(nameof(UseTimeOfDay)) as string ?? "True");
                 MultiscreenDisabled = bool.Parse(key.GetValue(nameof(MultiscreenDisabled)) as string ?? "True");
+                CacheVideos = bool.Parse(key.GetValue(nameof(CacheVideos)) as string ?? "True");
             }
         }
 
@@ -31,6 +32,7 @@ namespace ScreenSaver
             key.SetValue(nameof(DifferentMoviesOnDual), DifferentMoviesOnDual);
             key.SetValue(nameof(UseTimeOfDay), UseTimeOfDay);
             key.SetValue(nameof(MultiscreenDisabled), MultiscreenDisabled);
+            key.SetValue(nameof(CacheVideos), CacheVideos);
 
         }
 
