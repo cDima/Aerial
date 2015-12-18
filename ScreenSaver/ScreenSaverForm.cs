@@ -210,15 +210,6 @@ namespace ScreenSaver
         private void player_PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
         {
             NativeMethods.EnableMonitorSleep();
-            
-            var state = this.player.playState;
-            Trace.WriteLine("OnPlayerChanged: " + state + ", new state: " + (WMPLib.WMPPlayState)e.newState);
-            if (//state == WMPLib.WMPPlayState.wmppsReady ||
-                state == WMPLib.WMPPlayState.wmppsUndefined ||
-                state == WMPLib.WMPPlayState.wmppsStopped)
-            {
-                SetNextVideo();
-            }
         }
 
         /// <summary>
