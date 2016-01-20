@@ -142,9 +142,9 @@ namespace ScreenSaver
 
         private void OnDownloadFileComplete(object sender, AsyncCompletedEventArgs e)
         {
-			if (e.Cancelled == false && e.Error == null) {
+            if (e.Cancelled == false && e.Error == null) {
 	            Directory.Move(Path.Combine(tempFolder, e.UserState.ToString()), Path.Combine(cacheFolder, e.UserState.ToString()));
-	        }
+            }
         }
 
         private void SetNextVideo()
