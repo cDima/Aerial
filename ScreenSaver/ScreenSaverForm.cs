@@ -142,7 +142,9 @@ namespace ScreenSaver
 
         private void OnDownloadFileComplete(object sender, AsyncCompletedEventArgs e)
         {
-            Directory.Move(Path.Combine(tempFolder, e.UserState.ToString()), Path.Combine(cacheFolder, e.UserState.ToString()));
+			if (e.Cancelled == false && e.Error == null) {
+	            Directory.Move(Path.Combine(tempFolder, e.UserState.ToString()), Path.Combine(cacheFolder, e.UserState.ToString()));
+	        }
         }
 
         private void SetNextVideo()
@@ -164,7 +166,7 @@ namespace ScreenSaver
                     if (cacheVideos) {
                         using (WebClient client = new WebClient())
                         {
-							client.DownloadFileCompleted += new AsyncCompletedEventHandler(OnDownloadFileComplete);
+                            client.DownloadFileCompleted += new AsyncCompletedEventHandler(OnDownloadFileComplete);
                             client.DownloadFileAsync(new System.Uri(Movies[currentVideoIndex].url), Path.Combine(tempFolder, filename), filename);
                         }
                     }
