@@ -47,6 +47,13 @@ Historically `.scr` files have a bad history with anti-virus software — errone
 
 The movie files are [located at apple.com](https://github.com/cDima/Aerial/issues/55), they are cached to your local user directory, usually this: `C:\Users\YOURUSERNAME\AppData\Local\Aerial` 
 
+## Blogs
+> Keyboard shortcut to Windows Screensaver, Change lock screen timeout, Cache downloader
+
+ Need to go straight to the screensaver when you leave your machine?  This [post](http://www.programgood.net/2016/05/24/AerialScreensaverkeyboardShortcutAndNoPowerOff.aspx) describes how. Also cache downloader in C# example.
+ 
+ ![ProgramGood](imgs/ProgramGood.png)
+
 ## Community
 - **Find a bug?** [Open an issue](https://github.com/cdima/Aerial/issues/new). Try to be as specific as possible.
 - **Have a feature request** [Open an issue](https://github.com/cdima/Aerial/issues/new). Tell me why this feature would be useful, and why you and others would want it.
