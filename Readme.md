@@ -47,6 +47,10 @@ Historically `.scr` files have a bad history with anti-virus software — errone
 
 The movie files are [located at apple.com](https://github.com/cDima/Aerial/issues/55), they are cached to your local user directory, usually this: `C:\Users\YOURUSERNAME\AppData\Local\Aerial` 
 
+> There's a red line on the screen saver!
+
+This is an issue with video cards and  Windows Media Player, this can be solved by [disabling 'Demo Mode'](https://github.com/cDima/Aerial/issues/71#issuecomment-250318463).
+
 ## Community
 - **Find a bug?** [Open an issue](https://github.com/cdima/Aerial/issues/new). Try to be as specific as possible.
 - **Have a feature request** [Open an issue](https://github.com/cdima/Aerial/issues/new). Tell me why this feature would be useful, and why you and others would want it.
