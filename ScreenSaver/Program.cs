@@ -39,6 +39,8 @@ namespace ScreenSaver
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+			ClearPartialDownloads();
+
             if (args.Length > 0)
             {
                 string firstArgument = args[0].ToLower().Trim();
@@ -137,5 +139,23 @@ namespace ScreenSaver
             }
         }
 
+        /// <summary>
+        /// Clear partially downloaded movs from temp folder
+        /// </summary>
+        static void ClearPartialDownloads()
+        {
+            string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Temp\\Aerial");
+            string[] filenames = Directory.GetFiles(tempFolder, "*.mov", SearchOption.TopDirectoryOnly);
+            foreach (string filename in filenames)
+            {
+                try
+                {
+                    File.Delete(Path.Combine(tempFolder, filename));
+                }
+                catch (IOException ioe)
+                {
+                }
+            }
+        }
     }
 }
