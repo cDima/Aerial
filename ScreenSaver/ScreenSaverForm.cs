@@ -22,7 +22,7 @@ namespace ScreenSaver
         DateTime lastInteraction = DateTime.Now;
 
         string cacheFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Aerial");
-        string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Temp");
+        string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Temp\\Aerial");
 
         public ScreenSaverForm()
         {
@@ -81,7 +81,8 @@ namespace ScreenSaver
 
             var cacheVideos = new RegSettings().CacheVideos;
             if (cacheVideos) {
-                DirectoryInfo directory = Directory.CreateDirectory(cacheFolder);
+                DirectoryInfo cacheDirectory = Directory.CreateDirectory(cacheFolder);
+                DirectoryInfo tempDirectory = Directory.CreateDirectory(tempFolder);
             }
 
             if (ShowVideo)
@@ -153,7 +154,6 @@ namespace ScreenSaver
             var cacheVideos = new RegSettings().CacheVideos;
             if (ShowVideo)
             {
-                string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Temp");
                 string filename = Path.GetFileName(Movies[currentVideoIndex].url);
 
                 if (File.Exists(Path.Combine(cacheFolder, filename)))
