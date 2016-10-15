@@ -163,7 +163,7 @@ namespace ScreenSaver
                 else
                 {
                     player.URL = Movies[currentVideoIndex].url;
-                    if (cacheVideos) {
+                    if (cacheVideos && !File.Exists(Path.Combine(tempFolder, filename))) {
                         using (WebClient client = new WebClient())
                         {
                             client.DownloadFileCompleted += new AsyncCompletedEventHandler(OnDownloadFileComplete);
