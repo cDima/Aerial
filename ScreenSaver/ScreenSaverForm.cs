@@ -22,7 +22,7 @@ namespace ScreenSaver
         DateTime lastInteraction = DateTime.Now;
 
         string cacheFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Aerial");
-        string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Temp");
+        string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Temp\\Aerial");
 
         public ScreenSaverForm()
         {
@@ -81,7 +81,8 @@ namespace ScreenSaver
 
             var cacheVideos = new RegSettings().CacheVideos;
             if (cacheVideos) {
-                DirectoryInfo directory = Directory.CreateDirectory(cacheFolder);
+                DirectoryInfo cacheDirectory = Directory.CreateDirectory(cacheFolder);
+                DirectoryInfo tempDirectory = Directory.CreateDirectory(tempFolder);
             }
 
             if (ShowVideo)
@@ -143,7 +144,13 @@ namespace ScreenSaver
         private void OnDownloadFileComplete(object sender, AsyncCompletedEventArgs e)
         {
             if (e.Cancelled == false && e.Error == null) {
-	            Directory.Move(Path.Combine(tempFolder, e.UserState.ToString()), Path.Combine(cacheFolder, e.UserState.ToString()));
+                try
+                {
+                    Directory.Move(Path.Combine(tempFolder, e.UserState.ToString()), Path.Combine(cacheFolder, e.UserState.ToString()));
+                }
+                catch (IOException ioe)
+                {
+                }
             }
         }
 
@@ -153,7 +160,6 @@ namespace ScreenSaver
             var cacheVideos = new RegSettings().CacheVideos;
             if (ShowVideo)
             {
-                string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Temp");
                 string filename = Path.GetFileName(Movies[currentVideoIndex].url);
 
                 if (File.Exists(Path.Combine(cacheFolder, filename)))
@@ -163,7 +169,7 @@ namespace ScreenSaver
                 else
                 {
                     player.URL = Movies[currentVideoIndex].url;
-                    if (cacheVideos) {
+                    if (cacheVideos && !File.Exists(Path.Combine(tempFolder, filename))) {
                         using (WebClient client = new WebClient())
                         {
                             client.DownloadFileCompleted += new AsyncCompletedEventHandler(OnDownloadFileComplete);
