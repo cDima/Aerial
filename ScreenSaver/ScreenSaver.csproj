@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Aerial</RootNamespace>
     <AssemblyName>AerialScreenSaverV3</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AerialEntities.cs" />
+    <Compile Include="Caching.cs" />
     <Compile Include="IgnoreMouseClickMessageFilter.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="RegSettings.cs" />
@@ -130,7 +131,7 @@
       <VersionMinor>0</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>aximp</WrapperTool>
-      <Isolated>False</Isolated>
+      <Isolated>True</Isolated>
       <Private>False</Private>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </COMReference>
@@ -159,20 +160,19 @@
       <VersionMinor>0</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
+      <Isolated>True</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <Private>False</Private>
     </COMReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="bridge.ico" />
+    <None Include="bridge.png" />
     <EmbeddedResource Include="libs\AxInterop.WMPLib.dll" />
     <EmbeddedResource Include="libs\Interop.MediaPlayer.dll" />
     <EmbeddedResource Include="libs\Interop.WMPLib.dll" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Movies\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

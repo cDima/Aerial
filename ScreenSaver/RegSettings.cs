@@ -8,7 +8,7 @@ namespace ScreenSaver
         public bool DifferentMoviesOnDual = false;
         public bool UseTimeOfDay = true;
         public bool MultiscreenDisabled = true;
-        public bool CacheVideos = false;
+        public bool CacheVideos = true;
 
         public RegSettings()
         {

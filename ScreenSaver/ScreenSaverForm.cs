@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Net;
+using System.IO;
 using System.Windows.Forms;
+using System.Threading.Tasks;
 
 namespace ScreenSaver
 {
@@ -17,13 +18,11 @@ namespace ScreenSaver
         private Point mouseLocation;
         private bool previewMode = false;
         private bool windowMode = false;
+        private bool shouldCache = false;
         int currentVideoIndex = 0;
         List<Asset> Movies;
         DateTime lastInteraction = DateTime.Now;
-
-        string cacheFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Aerial");
-        string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Temp\\Aerial");
-
+        
         public ScreenSaverForm()
         {
             InitializeComponent();
@@ -45,14 +44,14 @@ namespace ScreenSaver
             btnClose.Visible = true;
         }
         
-        public ScreenSaverForm(Rectangle Bounds) : this()
+        public ScreenSaverForm(Rectangle Bounds, bool shouldCache) : this()
         {
             this.Bounds = Bounds;
+            this.shouldCache = shouldCache;
         }
 
         public ScreenSaverForm(IntPtr PreviewWndHandle) : this()
         {
-         
             // Set the preview window as the parent of this window
             NativeMethods.SetParent(this.Handle, PreviewWndHandle);
 
@@ -74,36 +73,26 @@ namespace ScreenSaver
 
             LayoutPlayer();
 
-            var nextVideoTimer = new System.Windows.Forms.Timer();
-            nextVideoTimer.Tick += NextVideoTimer_Tick;
-            nextVideoTimer.Interval = 1000;
-            nextVideoTimer.Enabled = true;
-
-            var cacheVideos = new RegSettings().CacheVideos;
-            if (cacheVideos) {
-                DirectoryInfo cacheDirectory = Directory.CreateDirectory(cacheFolder);
-                DirectoryInfo tempDirectory = Directory.CreateDirectory(tempFolder);
-            }
-
-            if (ShowVideo)
+            Task.Run(() =>
             {
-                Movies = new AerialContext().GetMovies();
-
-#if DEBUG
-                Movies = new List<Asset>
+                if (ShowVideo && !previewMode)
                 {
-                    new Asset {url = @"http://blog.luxisinteractive.com/wp-content/uploads/2015/08/depth.mp4" },
-                    new Asset {url = @"http://blog.luxisinteractive.com/wp-content/uploads/2015/08/animation.mp4" },
-                };
+                    Movies = new AerialContext().GetMovies();
 
-                //this.player.URL = @"http://blog.luxisinteractive.com/wp-content/uploads/2015/08/depth.mp4";
-#endif
+                    var nextVideoTimer = new System.Windows.Forms.Timer();
+                    nextVideoTimer.Tick += NextVideoTimer_Tick;
+                    nextVideoTimer.Interval = 1000;
+                    nextVideoTimer.Enabled = true;
 
-                SetNextVideo();
-
-            }
+                    SetNextVideo();
+                } else
+                {
+                    // on preview - hide player.
+                    this.player.Visible = false;
+                }
+            });
         }
-
+        
         private void MaximizeVideo()
         {
             var screenArea = Screen.FromControl(this).WorkingArea;
@@ -141,40 +130,24 @@ namespace ScreenSaver
             }
         }
 
-        private void OnDownloadFileComplete(object sender, AsyncCompletedEventArgs e)
-        {
-            if (e.Cancelled == false && e.Error == null) {
-                try
-                {
-                    Directory.Move(Path.Combine(tempFolder, e.UserState.ToString()), Path.Combine(cacheFolder, e.UserState.ToString()));
-                }
-                catch (IOException ioe)
-                {
-                }
-            }
-        }
-
         private void SetNextVideo()
         {
             Trace.WriteLine("SetNextVideo()");
-            var cacheVideos = new RegSettings().CacheVideos;
+            var cacheEnabled = new RegSettings().CacheVideos;
             if (ShowVideo)
             {
-                string filename = Path.GetFileName(Movies[currentVideoIndex].url);
+                string url = Movies[currentVideoIndex].url;
 
-                if (File.Exists(Path.Combine(cacheFolder, filename)))
+                if (Caching.IsHit(url))
                 {
-                    player.URL = Path.Combine(cacheFolder, filename);
+                    player.URL = Caching.Get(url);
                 }
                 else
                 {
-                    player.URL = Movies[currentVideoIndex].url;
-                    if (cacheVideos && !File.Exists(Path.Combine(tempFolder, filename))) {
-                        using (WebClient client = new WebClient())
-                        {
-                            client.DownloadFileCompleted += new AsyncCompletedEventHandler(OnDownloadFileComplete);
-                            client.DownloadFileAsync(new System.Uri(Movies[currentVideoIndex].url), Path.Combine(tempFolder, filename), filename);
-                        }
+                    player.URL = url;
+                    if (cacheEnabled && shouldCache && 
+                        !previewMode &&  !Caching.IsCaching(url)) {
+                        Caching.StartDelayedCache(url);
                     }
                 }
                 currentVideoIndex++;

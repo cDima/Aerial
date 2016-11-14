@@ -39,7 +39,7 @@ namespace ScreenSaver
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-			ClearPartialDownloads();
+            Caching.Setup();
 
             if (args.Length > 0)
             {
@@ -128,7 +128,7 @@ namespace ScreenSaver
             var multiscreenDisabled = new RegSettings().MultiscreenDisabled;
             foreach (Screen screen in Screen.AllScreens)
             {
-                ScreenSaverForm screensaver = new ScreenSaverForm(screen.Bounds);
+                ScreenSaverForm screensaver = new ScreenSaverForm(screen.Bounds, i == 0);
 
                 // disable video on multi-displays (3+) except the first
                 if (Screen.AllScreens.Length > 2 && screen != Screen.PrimaryScreen && multiscreenDisabled)
@@ -136,25 +136,6 @@ namespace ScreenSaver
 
                 i++;
                 screensaver.Show();
-            }
-        }
-
-        /// <summary>
-        /// Clear partially downloaded movs from temp folder
-        /// </summary>
-        static void ClearPartialDownloads()
-        {
-            string tempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Temp\\Aerial");
-            string[] filenames = Directory.GetFiles(tempFolder, "*.mov", SearchOption.TopDirectoryOnly);
-            foreach (string filename in filenames)
-            {
-                try
-                {
-                    File.Delete(Path.Combine(tempFolder, filename));
-                }
-                catch (IOException ioe)
-                {
-                }
             }
         }
     }
