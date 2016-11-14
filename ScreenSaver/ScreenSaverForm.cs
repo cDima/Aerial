@@ -72,6 +72,8 @@ namespace ScreenSaver
             if (!previewMode && !windowMode) Cursor.Hide();
 
             LayoutPlayer();
+            
+            this.BackgroundImageLayout = ImageLayout.None;
 
             Task.Run(() =>
             {

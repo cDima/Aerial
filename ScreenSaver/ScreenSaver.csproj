@@ -167,7 +167,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="bridge.ico" />
-    <None Include="bridge.png" />
     <EmbeddedResource Include="libs\AxInterop.WMPLib.dll" />
     <EmbeddedResource Include="libs\Interop.MediaPlayer.dll" />
     <EmbeddedResource Include="libs\Interop.WMPLib.dll" />
