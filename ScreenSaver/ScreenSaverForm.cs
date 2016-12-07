@@ -21,6 +21,7 @@ namespace ScreenSaver
         private bool shouldCache = false;
         int currentVideoIndex = 0;
         List<Asset> Movies;
+        Timer NextVideoTimer = new Timer();
         DateTime lastInteraction = DateTime.Now;
         
         public ScreenSaverForm()
@@ -36,7 +37,7 @@ namespace ScreenSaver
             SetStyle(ControlStyles.Opaque, true);
             this.BackColor = Color.Transparent;
             
-            windowMode = true;
+            windowMode = WindowMode;
             MaximizeVideo();
             
             this.MouseDown += ScreenSaverForm_MouseDown;
@@ -75,24 +76,28 @@ namespace ScreenSaver
             
             this.BackgroundImageLayout = ImageLayout.None;
 
-            Task.Run(() =>
+            if (ShowVideo && !previewMode)
             {
-                if (ShowVideo && !previewMode)
-                {
-                    Movies = new AerialContext().GetMovies();
+                Movies = new AerialContext().GetMovies();
 
-                    var nextVideoTimer = new System.Windows.Forms.Timer();
-                    nextVideoTimer.Tick += NextVideoTimer_Tick;
-                    nextVideoTimer.Interval = 1000;
-                    nextVideoTimer.Enabled = true;
-
-                    SetNextVideo();
-                } else
+#if DEBUG
+                Movies = new List<Asset>
                 {
-                    // on preview - hide player.
-                    this.player.Visible = false;
-                }
-            });
+                    new Asset { url = @"http://18292-presscdn-0-89.pagely.netdna-cdn.com/wp-content/uploads/2015/07/stripe-checkout.mp4?_=1" },
+                    new Asset {url = @"http://18292-presscdn-0-89.pagely.netdna-cdn.com/wp-content/uploads/2015/07/stripe-shake.mp4?_=3" },
+                };
+#endif
+
+                NextVideoTimer.Tick += NextVideoTimer_Tick;
+                NextVideoTimer.Interval = 1000;
+                NextVideoTimer.Enabled = true;
+                    
+                SetNextVideo();
+            } else
+            {
+                // on preview - hide player.
+                this.player.Visible = false;
+            }
         }
         
         private void MaximizeVideo()
