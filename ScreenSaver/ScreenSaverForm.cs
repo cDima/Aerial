@@ -173,7 +173,7 @@ namespace ScreenSaver
             {
                 SetNextVideo();
             }
-
+            this.btnClose.BringToFront();
             if (lastInteraction.AddSeconds(-1) < DateTime.Now)
             {
                 this.btnClose.Visible = false;
@@ -276,7 +276,10 @@ namespace ScreenSaver
 
         private void ScreenSaverForm_KeyPress(object sender, KeyPressEventArgs e)
         {
-            ShouldExit();
+            if (e.KeyChar == 'n')
+                SetNextVideo();
+            else 
+                ShouldExit();
         }
 
         private void ScreenSaverForm_MouseClick(object sender, MouseEventArgs e)
