@@ -7,14 +7,24 @@ Aerial is a Windows screen saver based on the new Apple TV screen saver that dis
 
 Aerial for Windows is based on the [Mac Aerial Screen Saver](https://github.com/JohnCoates/Aerial) by [John Coates](https://github.com/JohnCoates).
 
-## Installation 
+## Installation on Windows 7 and Windows 8
 
 1. **[Download the Aerial .zip release](https://github.com/cDima/Aerial/releases)**
-2. Unzip the downloaded file.
-3. Right click **Aerial.scr** and choose Install, windows will install it for you.
-4. If any issues occur, please read the FAQ below or enter an issue to the tracker.
+2. Right-click and select "Extract All..." to unzip the downloaded file. Just accept the default options from the Extraction wizard.
+3. You should be presented with a folder containing **AerialScreenSaverV3.scr**  and **AerialScreenSaverV3.exe**. Copy the **AerialScreenSaverV3.scr** file to your Windows installation folder (by default this should be c:\Windows on most PCs).
+4. Right click **AerialScreenSaverV3.scr** and choose Install, Windows will open Screen open Screen Saver Settings and set Aerial as the selected screensaver for you.
+5. If any issues occur, please read the FAQ below or enter an issue to the tracker.
 
-To use the standalone windowed mode, rename the `.scr` file to a `.exe` and launch.
+## Installation on Windows 10
+
+1. **[Download the Aerial .zip release](https://github.com/cDima/Aerial/releases)**
+2. Right-click and select "Extract All..." to unzip the downloaded file. Just accept the default options from the Extraction wizard.
+3. You should be presented with a folder containing **AerialScreenSaverV3.scr**  and **AerialScreenSaverV3.exe**. Copy the **AerialScreenSaverV3.scr** file to your Windows installation folder (by default this should be c:\Windows on most PCs).
+4. Type "screen saver" in the task bar search box. Select "Change screen saver" to open Screen open Screen Saver Settings.
+5. Select **AerialScreenSaverV3** from the list of screen savers.
+6. If any issues occur, please read the FAQ below or enter an issue to the tracker.
+
+## Uninstallation on Windows 7, 8 and 10
 
 To uninstall, delete the downloaded `.scr` file.
 
