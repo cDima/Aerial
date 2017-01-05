@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using System.IO;
 
 namespace ScreenSaver
 {
@@ -21,6 +22,24 @@ namespace ScreenSaver
             chkUseTimeOfDay.Checked = settings.UseTimeOfDay;
             chkMultiscreenDisabled.Checked = settings.MultiscreenDisabled;
             chkCacheVideos.Checked = settings.CacheVideos;
+
+            if(settings.CacheLocation == null)
+            {
+                txtCacheFolderPath.Text = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Aerial").ToString();
+            }
+            else
+            {
+                txtCacheFolderPath.Text = settings.CacheLocation;
+            }
+
+            if(settings.CacheVideos)
+            {
+                changeCacheLocationButton.Enabled = true;
+            }
+            else
+            {
+                changeCacheLocationButton.Enabled = false;
+            }
         }
 
         /// <summary>
@@ -33,6 +52,7 @@ namespace ScreenSaver
             settings.UseTimeOfDay = chkUseTimeOfDay.Checked;
             settings.MultiscreenDisabled = chkMultiscreenDisabled.Checked;
             settings.CacheVideos = chkCacheVideos.Checked;
+            settings.CacheLocation = txtCacheFolderPath.Text;
 
             settings.SaveSettings();
             
@@ -48,6 +68,28 @@ namespace ScreenSaver
         private void cancelButton_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void changeCacheLocationButton_Click(object sender, EventArgs e)
+        {
+            folderBrowserDialog.SelectedPath = txtCacheFolderPath.Text;
+            DialogResult result = folderBrowserDialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                txtCacheFolderPath.Text = folderBrowserDialog.SelectedPath;
+            }
+        }
+
+        private void chkCacheVideos_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkCacheVideos.Checked)
+            {
+                changeCacheLocationButton.Enabled = true;
+            }
+            else
+            {
+                changeCacheLocationButton.Enabled = false;
+            }
         }
     }
 }
