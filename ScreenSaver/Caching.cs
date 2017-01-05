@@ -6,8 +6,9 @@ using System.Net;
 
 public class Caching
 {
-    public static string TempFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Aerial\\temp");
-    public static string CacheFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Aerial");
+    public static string TempFolder = "";
+    public static string CacheFolder = new ScreenSaver.RegSettings().CacheLocation;
+
     public static int DelayAmount = 1000 * 10; // 10 seconds.
     
     /// <summary>
@@ -15,9 +16,16 @@ public class Caching
     /// </summary>
     internal static void Setup()
     {
+        // If there is no location stored in the Registry, use the default location
+        if (CacheFolder == null)
+        {
+            CacheFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Aerial");
+        }
+        TempFolder = Path.Combine(CacheFolder, "temp");
+
         // Ensure folders exist
-        DirectoryInfo cacheDirectory = Directory.CreateDirectory(CacheFolder);
-        DirectoryInfo tempDirectory = Directory.CreateDirectory(TempFolder);
+        Directory.CreateDirectory(CacheFolder);
+        Directory.CreateDirectory(TempFolder);
 
         foreach (var file in Directory.CreateDirectory(TempFolder).GetFiles())
         {

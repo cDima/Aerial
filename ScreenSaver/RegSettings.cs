@@ -4,11 +4,12 @@ namespace ScreenSaver
 {
     public class RegSettings
     {
-        string keyAddress = @"SOFTWARE\AerialScreenSaver";
+        readonly string keyAddress = @"SOFTWARE\AerialScreenSaver";
         public bool DifferentMoviesOnDual = false;
         public bool UseTimeOfDay = true;
         public bool MultiscreenDisabled = true;
         public bool CacheVideos = true;
+        public string CacheLocation = "";
 
         public RegSettings()
         {
@@ -19,6 +20,7 @@ namespace ScreenSaver
                 UseTimeOfDay = bool.Parse(key.GetValue(nameof(UseTimeOfDay)) as string ?? "True");
                 MultiscreenDisabled = bool.Parse(key.GetValue(nameof(MultiscreenDisabled)) as string ?? "True");
                 CacheVideos = bool.Parse(key.GetValue(nameof(CacheVideos)) as string ?? "True");
+                CacheLocation = key.GetValue(nameof(CacheLocation)) as string;
             }
         }
 
@@ -33,7 +35,7 @@ namespace ScreenSaver
             key.SetValue(nameof(UseTimeOfDay), UseTimeOfDay);
             key.SetValue(nameof(MultiscreenDisabled), MultiscreenDisabled);
             key.SetValue(nameof(CacheVideos), CacheVideos);
-
+            key.SetValue(nameof(CacheLocation), CacheLocation);
         }
 
     }

@@ -35,6 +35,9 @@
             this.chkUseTimeOfDay = new System.Windows.Forms.CheckBox();
             this.chkMultiscreenDisabled = new System.Windows.Forms.CheckBox();
             this.chkCacheVideos = new System.Windows.Forms.CheckBox();
+            this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.txtCacheFolderPath = new System.Windows.Forms.TextBox();
+            this.changeCacheLocationButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -50,8 +53,9 @@
             // 
             // okButton
             // 
+            this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.okButton.Location = new System.Drawing.Point(20, 161);
+            this.okButton.Location = new System.Drawing.Point(20, 191);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 23);
             this.okButton.TabIndex = 4;
@@ -61,9 +65,10 @@
             // 
             // cancelButton
             // 
+            this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cancelButton.CausesValidation = false;
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(101, 161);
+            this.cancelButton.Location = new System.Drawing.Point(101, 191);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 5;
@@ -116,12 +121,36 @@
             this.chkCacheVideos.TabIndex = 9;
             this.chkCacheVideos.Text = "Cache videos";
             this.chkCacheVideos.UseVisualStyleBackColor = true;
+            this.chkCacheVideos.CheckedChanged += new System.EventHandler(this.chkCacheVideos_CheckedChanged);
+            // 
+            // txtCacheFolderPath
+            // 
+            this.txtCacheFolderPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtCacheFolderPath.Enabled = false;
+            this.txtCacheFolderPath.Location = new System.Drawing.Point(182, 147);
+            this.txtCacheFolderPath.Name = "txtCacheFolderPath";
+            this.txtCacheFolderPath.Size = new System.Drawing.Size(240, 20);
+            this.txtCacheFolderPath.TabIndex = 11;
+            // 
+            // changeCacheLocationButton
+            // 
+            this.changeCacheLocationButton.Enabled = false;
+            this.changeCacheLocationButton.Location = new System.Drawing.Point(20, 145);
+            this.changeCacheLocationButton.Name = "changeCacheLocationButton";
+            this.changeCacheLocationButton.Size = new System.Drawing.Size(156, 23);
+            this.changeCacheLocationButton.TabIndex = 12;
+            this.changeCacheLocationButton.Text = "Change Cache Location...";
+            this.changeCacheLocationButton.UseVisualStyleBackColor = true;
+            this.changeCacheLocationButton.Click += new System.EventHandler(this.changeCacheLocationButton_Click);
             // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 196);
+            this.ClientSize = new System.Drawing.Size(434, 226);
+            this.Controls.Add(this.changeCacheLocationButton);
+            this.Controls.Add(this.txtCacheFolderPath);
             this.Controls.Add(this.chkCacheVideos);
             this.Controls.Add(this.chkMultiscreenDisabled);
             this.Controls.Add(this.chkUseTimeOfDay);
@@ -146,5 +175,8 @@
         private System.Windows.Forms.CheckBox chkUseTimeOfDay;
         private System.Windows.Forms.CheckBox chkMultiscreenDisabled;
         private System.Windows.Forms.CheckBox chkCacheVideos;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
+        private System.Windows.Forms.TextBox txtCacheFolderPath;
+        private System.Windows.Forms.Button changeCacheLocationButton;
     }
 }
