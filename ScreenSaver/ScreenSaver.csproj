@@ -131,7 +131,7 @@
       <VersionMinor>0</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>aximp</WrapperTool>
-      <Isolated>True</Isolated>
+      <Isolated>False</Isolated>
       <Private>False</Private>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </COMReference>
@@ -160,8 +160,8 @@
       <VersionMinor>0</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>True</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
       <Private>False</Private>
     </COMReference>
   </ItemGroup>
