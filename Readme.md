@@ -1,5 +1,8 @@
 ![apple tv windows aerial screen saver screencast](imgs/win.gif)
 
+[![GitHub stars](https://img.shields.io/github/stars/cDima/Aerial.svg)](https://github.com/cDima/Aerial/stargazers)
+[![Github All Releases](https://img.shields.io/github/downloads/cdima/aerial/total.svg?maxAge=2592000)]()
+[![GitHub contributors](https://img.shields.io/github/contributors/cdima/aerial.svg?maxAge=2592000)]()
 [![Build status](https://ci.appveyor.com/api/projects/status/stpj3okbjpftjsad?svg=true)](https://ci.appveyor.com/project/cDima/aerial)
 
 ## Aerial - Apple TV Aerial Views Screen Saver for Windows 7, 8, 10+
