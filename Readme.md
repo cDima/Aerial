@@ -6,7 +6,7 @@
 
 <p align="center">
 <a href="https://github.com/cDima/Aerial/stargazers" target="_blank">
-<img align="center" alt="GitHub stars" src="https://img.shields.io/github/stars/cDima/Aerial.svg" />
+<img alt="GitHub stars" src="https://img.shields.io/github/stars/cDima/Aerial.svg" />
 </a>
 <a href="https://github.com/cDima/Aerial/releases" target="_blank">
 <img alt="Github All Releases" src="https://img.shields.io/github/downloads/cdima/aerial/total.svg?maxAge=2592000" />
@@ -21,7 +21,7 @@ Aerial is a Windows screen saver based on the new Apple TV screen saver that dis
 
 Aerial for Windows is based on the [Mac Aerial Screen Saver](https://github.com/JohnCoates/Aerial) by [John Coates](https://github.com/JohnCoates).
 
-## As featured on  
+### As featured on  
 
 * <a href="http://lifehacker.com/get-the-apple-tvs-breathtaking-aerial-screensaver-on-ma-1790533201" target="_blank">lifehacker.com</a>
 * <a href="https://www.neowin.net/news/download-aerial---apple-tv-aerial-views-screen-saver-for-windows" target="_blank">neowin.com</a>
@@ -56,7 +56,7 @@ Aerial for Windows is based on the [Mac Aerial Screen Saver](https://github.com/
 5. Select **AerialScreenSaverV3** from the list of screen savers.
 6. If any issues occur, please read the FAQ below or enter an issue to the tracker.
 
-# Video instructions
+## Video instructions
 
 * [The Geek Circle](https://www.youtube.com/watch?v=8fTiSQgb8Io)
 * [Technical Ustad](https://www.youtube.com/watch?v=UZzyJhMoj_k)
