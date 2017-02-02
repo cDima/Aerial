@@ -1,16 +1,45 @@
-![apple tv windows aerial screen saver screencast](imgs/win.gif)
+<p align="center">
+<a href="https://github.com/cDima/Aerial" target="_blank">
+<img align="center" alt="apple tv windows aerial screen saver screencast" src="https://github.com/cDima/Aerial/raw/master/imgs/win.gif" />
+</a>
+</p>
 
-[![GitHub stars](https://img.shields.io/github/stars/cDima/Aerial.svg)](https://github.com/cDima/Aerial/stargazers)
-[![Github All Releases](https://img.shields.io/github/downloads/cdima/aerial/total.svg?maxAge=2592000)]()
-[![GitHub contributors](https://img.shields.io/github/contributors/cdima/aerial.svg?maxAge=2592000)]()
-[![Build status](https://ci.appveyor.com/api/projects/status/stpj3okbjpftjsad?svg=true)](https://ci.appveyor.com/project/cDima/aerial)
+<p align="center">
+<a href="https://github.com/cDima/Aerial/stargazers" target="_blank">
+<img align="center" alt="GitHub stars" src="https://img.shields.io/github/stars/cDima/Aerial.svg" />
+</a>
+<a href="https://github.com/cDima/Aerial/releases" target="_blank">
+<img alt="Github All Releases" src="https://img.shields.io/github/downloads/cdima/aerial/total.svg?maxAge=2592000" />
+</a>
+<a href="https://ci.appveyor.com/project/cDima/aerial" target="_blank">
+<img alt="Build status" src="https://ci.appveyor.com/api/projects/status/stpj3okbjpftjsad?svg=true" />
+</a>
+</p>
 
 ## Aerial - Apple TV Aerial Views Screen Saver for Windows 7, 8, 10+
 Aerial is a Windows screen saver based on the new Apple TV screen saver that displays the aerial movies Apple shot over New York, San Francisco, Hawaii, China, etc.
 
 Aerial for Windows is based on the [Mac Aerial Screen Saver](https://github.com/JohnCoates/Aerial) by [John Coates](https://github.com/JohnCoates).
 
-## Installation on Windows 7 and Windows 8
+## As featured on  
+
+* <a href="http://lifehacker.com/get-the-apple-tvs-breathtaking-aerial-screensaver-on-ma-1790533201" target="_blank">lifehacker.com</a>
+* <a href="https://www.neowin.net/news/download-aerial---apple-tv-aerial-views-screen-saver-for-windows" target="_blank">neowin.com</a>
+* <a href="http://fieldguide.gizmodo.com/get-apple-tvs-new-screensavers-on-any-windows-pc-or-mac-1741804379" target="_blank">gizmodo.com</a>
+* <a href="https://www.screensaversplanet.com/screensavers/apple-tv-aerial-views-827/" target="_blank">screensaversplanet.com</a>
+* <a href="http://www.intowindows.com/get-new-apple-tv-aerial-screen-saver-in-windows-10-8-7/" target="_blank">intowindows.com</a>
+
+<p align="center">
+<a href="http://lifehacker.com/get-the-apple-tvs-breathtaking-aerial-screensaver-on-ma-1790533201" target="_blank">
+<img align="center" alt="lifehacker aerial apple tv screensaver" src="http://advertising.gawker.com/assets/img/resources/lifehacker.png" />
+</a>
+<a href="http://fieldguide.gizmodo.com/get-apple-tvs-new-screensavers-on-any-windows-pc-or-mac-1741804379" target="_blank">
+<img align="center" alt="gizmodo aerial apple tv screensaver" src="http://advertising.gawker.com/assets/img/resources/gizmodo.png" /></a>
+<a href="https://www.neowin.net/news/download-aerial---apple-tv-aerial-views-screen-saver-for-windows" target="_blank">
+<img align="center" alt="neowin aerial apple tv screensaver" src="https://upload.wikimedia.org/wikipedia/en/1/11/Neowin_Logo_1.png" /></a>
+</p>
+
+## Installation on Windows 7, and Windows 8
 
 1. **[Download the Aerial .zip release](https://github.com/cDima/Aerial/releases)**
 2. Right-click and select "Extract All..." to unzip the downloaded file. Just accept the default options from the Extraction wizard.
@@ -26,6 +55,12 @@ Aerial for Windows is based on the [Mac Aerial Screen Saver](https://github.com/
 4. Type "screen saver" in the task bar search box. Select "Change screen saver" to open Screen open Screen Saver Settings.
 5. Select **AerialScreenSaverV3** from the list of screen savers.
 6. If any issues occur, please read the FAQ below or enter an issue to the tracker.
+
+# Video instructions
+
+* [The Geek Circle](https://www.youtube.com/watch?v=8fTiSQgb8Io)
+* [Technical Ustad](https://www.youtube.com/watch?v=UZzyJhMoj_k)
+* [Ryan Heuer](https://www.youtube.com/watch?v=cHy36rfocQo)
 
 ## Uninstallation on Windows 7, 8 and 10
 
