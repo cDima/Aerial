@@ -23,7 +23,7 @@ namespace ScreenSaver
             chkMultiscreenDisabled.Checked = settings.MultiscreenDisabled;
             chkCacheVideos.Checked = settings.CacheVideos;
 
-            if(settings.CacheLocation == null)
+            if(settings.CacheLocation == null || settings.CacheLocation == "")
             {
                 txtCacheFolderPath.Text = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Aerial").ToString();
             }
