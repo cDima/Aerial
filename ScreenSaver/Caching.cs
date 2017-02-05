@@ -17,7 +17,7 @@ public class Caching
     internal static void Setup()
     {
         // If there is no location stored in the Registry, use the default location
-        if (CacheFolder == null)
+        if (CacheFolder == null || CacheFolder == "")
         {
             CacheFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Aerial");
         }

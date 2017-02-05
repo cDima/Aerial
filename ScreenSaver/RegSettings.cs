@@ -1,4 +1,6 @@
 ﻿using Microsoft.Win32;
+using System;
+using System.IO;
 
 namespace ScreenSaver
 {
@@ -9,7 +11,7 @@ namespace ScreenSaver
         public bool UseTimeOfDay = true;
         public bool MultiscreenDisabled = true;
         public bool CacheVideos = true;
-        public string CacheLocation = "";
+        public string CacheLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Aerial");
 
         public RegSettings()
         {
