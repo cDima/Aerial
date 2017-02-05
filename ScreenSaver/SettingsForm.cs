@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.IO;
+using Aerial;
+using System.Diagnostics;
 
 namespace ScreenSaver
 {
@@ -40,6 +42,13 @@ namespace ScreenSaver
             {
                 changeCacheLocationButton.Enabled = false;
             }
+
+            // todo: on Main tab - get Aerial.AerialContext entities in the checkbox, and implement saving exact videos;
+            // preferably showing a preview of them to the side of the selection
+            // todo: on the Cache page show space contraints, and a Download All Now button, as in Aerial win.
+            // todo: download releases from github live, and show them on the About page.
+            tabs.TabPages.Remove(tabAbout);
+            grpChosenVideos.Hide();
         }
 
         /// <summary>
@@ -90,6 +99,18 @@ namespace ScreenSaver
             {
                 changeCacheLocationButton.Enabled = false;
             }
+        }
+
+        private void SettingsForm_Load(object sender, EventArgs e)
+        {
+            this.lblVersion.Text = "Version " + AssemblyVersion.ExecutingAssemblyVersion + " (" + AssemblyVersion.CompileDate + ")";
+        }
+
+        private void lblVersion_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            // todo get latest builds from json interface: https://api.github.com/repos/cdima/aerial/releases/latest
+            ProcessStartInfo sInfo = new ProcessStartInfo("https://github.com/cDima/Aerial/releases");
+            Process.Start(sInfo);
         }
     }
 }

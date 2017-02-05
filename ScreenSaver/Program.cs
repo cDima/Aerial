@@ -1,9 +1,10 @@
-﻿using System;
+﻿using ScreenSaver;
+using System;
 using System.IO;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace ScreenSaver
+namespace Aerial
 {
     static class Program
     {
@@ -41,6 +42,7 @@ namespace ScreenSaver
 
             Caching.Setup();
 
+
             if (args.Length > 0)
             {
                 string firstArgument = args[0].ToLower().Trim();
@@ -58,7 +60,9 @@ namespace ScreenSaver
                 
                 if (firstArgument == "/c")           // Configuration mode
                 {
-                    Application.Run(new SettingsForm());
+                    var settings = new SettingsForm();
+                    settings.StartPosition = FormStartPosition.CenterScreen;
+                    Application.Run(settings);
                 }
                 else if (firstArgument == "/p")      // Preview mode
                 {

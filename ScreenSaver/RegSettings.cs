@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 
-namespace ScreenSaver
+namespace Aerial
 {
     public class RegSettings
     {

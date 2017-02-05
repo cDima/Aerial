@@ -60,8 +60,6 @@
             this.btnClose.Text = "✖";
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Visible = false;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            this.btnClose.MouseMove += new System.Windows.Forms.MouseEventHandler(this.btnClose_MouseMove);
             // 
             // ScreenSaverForm
             // 
@@ -79,9 +77,6 @@
             this.Text = "Aerial Screensaver";
             this.Load += new System.EventHandler(this.ScreenSaverForm_Load);
             this.Shown += new System.EventHandler(this.ScreenSaverForm_Shown);
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.ScreenSaverForm_KeyPress);
-            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ScreenSaverForm_MouseClick);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ScreenSaverForm_MouseMove);
             ((System.ComponentModel.ISupportInitialize)(this.player)).EndInit();
             this.ResumeLayout(false);
 

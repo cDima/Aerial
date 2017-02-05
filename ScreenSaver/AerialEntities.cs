@@ -5,7 +5,7 @@ using System.Net;
 using System.Text;
 using System.Web.Script.Serialization;
 
-namespace ScreenSaver
+namespace Aerial
 {
     // Parses http://a1.phobos.apple.com/us/r1000/000/Features/atv/AutumnResources/videos/entries.json
     public class AerialContext

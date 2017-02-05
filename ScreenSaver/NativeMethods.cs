@@ -27,22 +27,27 @@ namespace Aerial
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
+        [DllImportAttribute("user32.dll")]
+        public static extern bool SetCapture();
 
         const uint ES_CONTINUOUS = 0x80000000;
         const uint ES_SYSTEM_REQUIRED = 0x00000001;
 
         const int WM_NCLBUTTONDOWN = 0xA1;
         const int HT_CAPTION = 0x2;
-        
+        const int WM_LBUTTONUP = 0x202;
+
         internal static void EnableMonitorSleep()
         {
             SetThreadExecutionState(ES_CONTINUOUS);
         }
 
-        internal static void DragWindow(IntPtr hangle)
+        internal static void DragWindow(IntPtr handle)
         {
             ReleaseCapture();
-            SendMessage(hangle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            SendMessage(handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+
+            CaptureMouseUpAndClick(handle);
         }
 
         internal static void ResizeWindow(IntPtr handle, bool? toTop, bool? toLeft)
@@ -57,6 +62,15 @@ namespace Aerial
             SysCommandSize direction = (SysCommandSize) Enum.Parse(typeof(SysCommandSize), enumName);
             
             SendMessage(handle, WM_SYSCOMMAND, SC_SIZE + (int)direction, 0);
+
+            CaptureMouseUpAndClick(handle);
+        }
+
+        internal static void CaptureMouseUpAndClick(IntPtr handle) {
+            // Set capture back to the form
+            ReleaseCapture();
+            // Send the form a MouseUp message
+            SendMessage(handle, WM_LBUTTONUP, 0, 0);
         }
 
         enum SysCommandSize : int
