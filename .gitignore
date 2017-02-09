@@ -272,3 +272,5 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+.vs/ScreenSaver/v14/.suo
+*.suo
