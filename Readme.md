@@ -101,6 +101,10 @@ The movie files are [located at apple.com](https://github.com/cDima/Aerial/issue
 
 This is an issue with video cards and  Windows Media Player, this can be solved by [disabling 'Demo Mode'](https://github.com/cDima/Aerial/issues/71#issuecomment-250318463).
 
+> How do I setup a proxy?
+
+To setup proxy information, create a [.config file as shown](https://github.com/cDima/Aerial/issues/87) alongside the screensaver.
+
 ## Community
 - **Find a bug?** [Open an issue](https://github.com/cdima/Aerial/issues/new). Try to be as specific as possible.
 - **Have a feature request** [Open an issue](https://github.com/cdima/Aerial/issues/new). Tell me why this feature would be useful, and why you and others would want it.
