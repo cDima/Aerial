@@ -51,7 +51,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>bridge.ico</ApplicationIcon>
+    <ApplicationIcon>imgs\bridge.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'All|x86'">
     <OutputPath>bin\x86\All\</OutputPath>
@@ -97,6 +97,11 @@
     <Compile Include="Caching.cs" />
     <Compile Include="IgnoreMouseClickMessageFilter.cs" />
     <Compile Include="NativeMethods.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="RegSettings.cs" />
     <Compile Include="SettingsForm.cs">
       <SubType>Form</SubType>
@@ -118,14 +123,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="ScreenSaverForm.resx">
       <DependentUpon>ScreenSaverForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -140,8 +140,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="..\Readme.md" />
-    <None Include="..\Todo.md" />
+    <None Include="..\Readme.md">
+      <Link>docs\Readme.md</Link>
+    </None>
+    <None Include="..\Todo.md">
+      <Link>docs\Todo.md</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="AxWMPLib">
@@ -185,8 +189,8 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="bridge-sm3.png" />
-    <Content Include="bridge.ico" />
+    <None Include="imgs\bridge-sm3.png" />
+    <Content Include="imgs\bridge.ico" />
     <EmbeddedResource Include="libs\AxInterop.WMPLib.dll" />
     <EmbeddedResource Include="libs\Interop.MediaPlayer.dll" />
     <EmbeddedResource Include="libs\Interop.WMPLib.dll" />
