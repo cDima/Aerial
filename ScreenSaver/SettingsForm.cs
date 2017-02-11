@@ -33,20 +33,9 @@ namespace ScreenSaver
             {
                 txtCacheFolderPath.Text = settings.CacheLocation;
             }
-
-            if(settings.CacheVideos)
-            {
-                changeCacheLocationButton.Enabled = true;
-            }
-            else
-            {
-                changeCacheLocationButton.Enabled = false;
-            }
-
-            // todo: on Main tab - get Aerial.AerialContext entities in the checkbox, and implement saving exact videos;
-            // preferably showing a preview of them to the side of the selection
-            // todo: on the Cache page show space contraints, and a Download All Now button, as in Aerial win.
-            // todo: download releases from github live, and show them on the About page.
+            
+            changeCacheLocationButton.Enabled = settings.CacheVideos;
+            
             tabs.TabPages.Remove(tabAbout);
             grpChosenVideos.Hide();
         }

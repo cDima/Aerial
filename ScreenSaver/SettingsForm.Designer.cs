@@ -35,24 +35,24 @@
             this.lblVersion = new System.Windows.Forms.LinkLabel();
             this.tabs = new System.Windows.Forms.TabControl();
             this.tabPreferences = new System.Windows.Forms.TabPage();
-            this.tabCache = new System.Windows.Forms.TabPage();
-            this.tabAbout = new System.Windows.Forms.TabPage();
-            this.changeCacheLocationButton = new System.Windows.Forms.Button();
-            this.txtCacheFolderPath = new System.Windows.Forms.TextBox();
-            this.chkCacheVideos = new System.Windows.Forms.CheckBox();
+            this.grpChosenVideos = new System.Windows.Forms.GroupBox();
+            this.chkUseTimeOfDay = new System.Windows.Forms.CheckBox();
+            this.selectedVideos = new System.Windows.Forms.CheckedListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.chkMultiscreenDisabled = new System.Windows.Forms.CheckBox();
             this.chkDifferentMonitorMovies = new System.Windows.Forms.CheckBox();
+            this.tabCache = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.grpChosenVideos = new System.Windows.Forms.GroupBox();
-            this.selectedVideos = new System.Windows.Forms.CheckedListBox();
-            this.chkUseTimeOfDay = new System.Windows.Forms.CheckBox();
+            this.chkCacheVideos = new System.Windows.Forms.CheckBox();
+            this.changeCacheLocationButton = new System.Windows.Forms.Button();
+            this.txtCacheFolderPath = new System.Windows.Forms.TextBox();
+            this.tabAbout = new System.Windows.Forms.TabPage();
             this.tabs.SuspendLayout();
             this.tabPreferences.SuspendLayout();
-            this.tabCache.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.grpChosenVideos.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.tabCache.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // okButton
@@ -119,55 +119,39 @@
             this.tabPreferences.Text = "Preferences";
             this.tabPreferences.UseVisualStyleBackColor = true;
             // 
-            // tabCache
+            // grpChosenVideos
             // 
-            this.tabCache.Controls.Add(this.groupBox2);
-            this.tabCache.Location = new System.Drawing.Point(4, 22);
-            this.tabCache.Name = "tabCache";
-            this.tabCache.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCache.Size = new System.Drawing.Size(402, 335);
-            this.tabCache.TabIndex = 1;
-            this.tabCache.Text = "Cache";
-            this.tabCache.UseVisualStyleBackColor = true;
+            this.grpChosenVideos.Controls.Add(this.chkUseTimeOfDay);
+            this.grpChosenVideos.Controls.Add(this.selectedVideos);
+            this.grpChosenVideos.Location = new System.Drawing.Point(7, 75);
+            this.grpChosenVideos.Name = "grpChosenVideos";
+            this.grpChosenVideos.Size = new System.Drawing.Size(389, 254);
+            this.grpChosenVideos.TabIndex = 13;
+            this.grpChosenVideos.TabStop = false;
+            this.grpChosenVideos.Text = "Chosen Videos";
             // 
-            // tabAbout
+            // chkUseTimeOfDay
             // 
-            this.tabAbout.Location = new System.Drawing.Point(4, 22);
-            this.tabAbout.Name = "tabAbout";
-            this.tabAbout.Size = new System.Drawing.Size(402, 335);
-            this.tabAbout.TabIndex = 2;
-            this.tabAbout.Text = "About";
-            this.tabAbout.UseVisualStyleBackColor = true;
+            this.chkUseTimeOfDay.AutoSize = true;
+            this.chkUseTimeOfDay.Checked = true;
+            this.chkUseTimeOfDay.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkUseTimeOfDay.Location = new System.Drawing.Point(143, 19);
+            this.chkUseTimeOfDay.Name = "chkUseTimeOfDay";
+            this.chkUseTimeOfDay.Size = new System.Drawing.Size(210, 17);
+            this.chkUseTimeOfDay.TabIndex = 14;
+            this.chkUseTimeOfDay.Text = "Show appropriate day/night videos first";
+            this.chkUseTimeOfDay.UseVisualStyleBackColor = true;
             // 
-            // changeCacheLocationButton
+            // selectedVideos
             // 
-            this.changeCacheLocationButton.Enabled = false;
-            this.changeCacheLocationButton.Location = new System.Drawing.Point(231, 40);
-            this.changeCacheLocationButton.Name = "changeCacheLocationButton";
-            this.changeCacheLocationButton.Size = new System.Drawing.Size(152, 23);
-            this.changeCacheLocationButton.TabIndex = 15;
-            this.changeCacheLocationButton.Text = "Change Cache Location...";
-            this.changeCacheLocationButton.UseVisualStyleBackColor = true;
-            // 
-            // txtCacheFolderPath
-            // 
-            this.txtCacheFolderPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.selectedVideos.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtCacheFolderPath.Enabled = false;
-            this.txtCacheFolderPath.Location = new System.Drawing.Point(6, 42);
-            this.txtCacheFolderPath.Name = "txtCacheFolderPath";
-            this.txtCacheFolderPath.Size = new System.Drawing.Size(219, 20);
-            this.txtCacheFolderPath.TabIndex = 14;
-            // 
-            // chkCacheVideos
-            // 
-            this.chkCacheVideos.AutoSize = true;
-            this.chkCacheVideos.Location = new System.Drawing.Point(6, 19);
-            this.chkCacheVideos.Name = "chkCacheVideos";
-            this.chkCacheVideos.Size = new System.Drawing.Size(154, 17);
-            this.chkCacheVideos.TabIndex = 13;
-            this.chkCacheVideos.Text = "Cache videos while playing";
-            this.chkCacheVideos.UseVisualStyleBackColor = true;
+            this.selectedVideos.FormattingEnabled = true;
+            this.selectedVideos.Location = new System.Drawing.Point(7, 19);
+            this.selectedVideos.Name = "selectedVideos";
+            this.selectedVideos.Size = new System.Drawing.Size(130, 229);
+            this.selectedVideos.TabIndex = 1;
             // 
             // groupBox1
             // 
@@ -204,6 +188,17 @@
             this.chkDifferentMonitorMovies.Text = "Play different video on each screen";
             this.chkDifferentMonitorMovies.UseVisualStyleBackColor = true;
             // 
+            // tabCache
+            // 
+            this.tabCache.Controls.Add(this.groupBox2);
+            this.tabCache.Location = new System.Drawing.Point(4, 22);
+            this.tabCache.Name = "tabCache";
+            this.tabCache.Padding = new System.Windows.Forms.Padding(3);
+            this.tabCache.Size = new System.Drawing.Size(402, 335);
+            this.tabCache.TabIndex = 1;
+            this.tabCache.Text = "Cache";
+            this.tabCache.UseVisualStyleBackColor = true;
+            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.chkCacheVideos);
@@ -216,39 +211,45 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Cache";
             // 
-            // grpChosenVideos
+            // chkCacheVideos
             // 
-            this.grpChosenVideos.Controls.Add(this.chkUseTimeOfDay);
-            this.grpChosenVideos.Controls.Add(this.selectedVideos);
-            this.grpChosenVideos.Location = new System.Drawing.Point(7, 75);
-            this.grpChosenVideos.Name = "grpChosenVideos";
-            this.grpChosenVideos.Size = new System.Drawing.Size(389, 254);
-            this.grpChosenVideos.TabIndex = 13;
-            this.grpChosenVideos.TabStop = false;
-            this.grpChosenVideos.Text = "Chosen Videos";
+            this.chkCacheVideos.AutoSize = true;
+            this.chkCacheVideos.Location = new System.Drawing.Point(6, 19);
+            this.chkCacheVideos.Name = "chkCacheVideos";
+            this.chkCacheVideos.Size = new System.Drawing.Size(154, 17);
+            this.chkCacheVideos.TabIndex = 13;
+            this.chkCacheVideos.Text = "Cache videos while playing";
+            this.chkCacheVideos.UseVisualStyleBackColor = true;
             // 
-            // selectedVideos
+            // changeCacheLocationButton
             // 
-            this.selectedVideos.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.changeCacheLocationButton.Enabled = false;
+            this.changeCacheLocationButton.Location = new System.Drawing.Point(231, 40);
+            this.changeCacheLocationButton.Name = "changeCacheLocationButton";
+            this.changeCacheLocationButton.Size = new System.Drawing.Size(152, 23);
+            this.changeCacheLocationButton.TabIndex = 15;
+            this.changeCacheLocationButton.Text = "Change Cache Location...";
+            this.changeCacheLocationButton.UseVisualStyleBackColor = true;
+            this.changeCacheLocationButton.Click += new System.EventHandler(this.changeCacheLocationButton_Click);
+            // 
+            // txtCacheFolderPath
+            // 
+            this.txtCacheFolderPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.selectedVideos.FormattingEnabled = true;
-            this.selectedVideos.Location = new System.Drawing.Point(7, 19);
-            this.selectedVideos.Name = "selectedVideos";
-            this.selectedVideos.Size = new System.Drawing.Size(130, 229);
-            this.selectedVideos.TabIndex = 1;
+            this.txtCacheFolderPath.Location = new System.Drawing.Point(6, 42);
+            this.txtCacheFolderPath.Name = "txtCacheFolderPath";
+            this.txtCacheFolderPath.ReadOnly = true;
+            this.txtCacheFolderPath.Size = new System.Drawing.Size(219, 20);
+            this.txtCacheFolderPath.TabIndex = 14;
             // 
-            // chkUseTimeOfDay
+            // tabAbout
             // 
-            this.chkUseTimeOfDay.AutoSize = true;
-            this.chkUseTimeOfDay.Checked = true;
-            this.chkUseTimeOfDay.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkUseTimeOfDay.Location = new System.Drawing.Point(143, 19);
-            this.chkUseTimeOfDay.Name = "chkUseTimeOfDay";
-            this.chkUseTimeOfDay.Size = new System.Drawing.Size(210, 17);
-            this.chkUseTimeOfDay.TabIndex = 14;
-            this.chkUseTimeOfDay.Text = "Show appropriate day/night videos first";
-            this.chkUseTimeOfDay.UseVisualStyleBackColor = true;
+            this.tabAbout.Location = new System.Drawing.Point(4, 22);
+            this.tabAbout.Name = "tabAbout";
+            this.tabAbout.Size = new System.Drawing.Size(402, 335);
+            this.tabAbout.TabIndex = 2;
+            this.tabAbout.Text = "About";
+            this.tabAbout.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -262,19 +263,22 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "SettingsForm";
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Aerial Settings";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.SettingsForm_Load);
             this.tabs.ResumeLayout(false);
             this.tabPreferences.ResumeLayout(false);
-            this.tabCache.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.grpChosenVideos.ResumeLayout(false);
             this.grpChosenVideos.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.tabCache.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
