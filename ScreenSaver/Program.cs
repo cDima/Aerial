@@ -132,14 +132,14 @@ namespace Aerial
             var multiscreenDisabled = new RegSettings().MultiscreenDisabled;
             foreach (Screen screen in Screen.AllScreens)
             {
-                ScreenSaverForm screensaver = new ScreenSaverForm(screen.Bounds, i == 0);
-
+                bool showVideo = true;
                 // disable video on multi-displays (3+) except the first
                 if (Screen.AllScreens.Length > 2 && screen != Screen.PrimaryScreen && multiscreenDisabled)
-                    screensaver.ShowVideo = false;
+                    showVideo = false;
 
-                i++;
+                ScreenSaverForm screensaver = new ScreenSaverForm(screen.Bounds, i == 0, showVideo);
                 screensaver.Show();
+                i++;
             }
         }
     }

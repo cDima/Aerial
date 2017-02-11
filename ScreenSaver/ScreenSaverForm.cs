@@ -13,15 +13,16 @@ namespace ScreenSaver
 {
     public partial class ScreenSaverForm : Form
     {
-        public bool ShowVideo = true;
-        private Point mouseLocation;
+        private int currentVideoIndex = 0;
+        private DateTime lastInteraction = DateTime.Now;
+        private Point mouseLocation = Point.Empty;
+        private List<Asset> Movies;
+        private Timer NextVideoTimer = new Timer();
         private bool previewMode = false;
-        private bool windowMode = false;
+        private SettingsForm settingsFrm = null;
         private bool shouldCache = false;
-        int currentVideoIndex = 0;
-        List<Asset> Movies;
-        Timer NextVideoTimer = new Timer();
-        DateTime lastInteraction = DateTime.Now;
+        private bool showVideo = true;
+        private bool windowMode = false;
         
         public ScreenSaverForm()
         {
@@ -33,24 +34,11 @@ namespace ScreenSaver
 
             RegisterEvents();
         }
-        
-        public ScreenSaverForm(bool WindowMode = false) : this()
-        {
-            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
-            SetStyle(ControlStyles.Opaque, true);
-            this.BackColor = Color.Transparent;
-            windowMode = WindowMode;
-            MaximizeVideo();
 
-            btnClose.Visible = true;
-        }
-        
-        public ScreenSaverForm(Rectangle Bounds, bool shouldCache) : this()
-        {
-            this.Bounds = Bounds;
-            this.shouldCache = shouldCache;
-        }
-
+        /// <summary>
+        /// Initiate the form inside window's screen saver settings screen
+        /// </summary>
+        /// <param name="PreviewWndHandle"></param>
         public ScreenSaverForm(IntPtr PreviewWndHandle) : this()
         {
             previewMode = true;
@@ -68,14 +56,35 @@ namespace ScreenSaver
             Location = new Point(-1, -1);
         }
 
+        public ScreenSaverForm(bool WindowMode = false) : this()
+        {
+            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+            SetStyle(ControlStyles.Opaque, true);
+            this.BackColor = Color.Transparent;
+            windowMode = WindowMode;
+            MaximizeVideo();
+
+            ShowButtons();
+        }
+
+        public ScreenSaverForm(Rectangle Bounds, bool shouldCache, bool showVideo) : this()
+        {
+            this.Bounds = Bounds;
+            this.shouldCache = shouldCache;
+            this.showVideo = showVideo;
+        }
+        
         void RegisterEvents()
         {
             this.player.MouseDownEvent += Player_MouseDownEvent;
             this.player.KeyPressEvent += player_KeyPressEvent;
             this.player.PlayStateChange += player_PlayStateChange;
             this.player.MouseMoveEvent += player_MouseMoveEvent;
+
             this.btnClose.Click += new EventHandler(this.btnClose_Click);
             this.btnClose.MouseMove += new MouseEventHandler(this.btnClose_MouseMove);
+            this.btnSettings.Click += new EventHandler(this.btnSettings_Click);
+            this.btnSettings.MouseMove += new MouseEventHandler(this.btnClose_MouseMove);
 
             this.KeyPress += new KeyPressEventHandler(this.ScreenSaverForm_KeyPress);
             this.MouseDown += DoMouseDown;
@@ -103,7 +112,7 @@ namespace ScreenSaver
             
             this.BackgroundImageLayout = ImageLayout.None;
 
-            if (ShowVideo) // testing preview video speed didn't work well && !previewMode
+            if (showVideo) // testing preview video speed didn't work well && !previewMode
             {
                 Movies = new AerialContext().GetMovies();
 
@@ -123,10 +132,10 @@ namespace ScreenSaver
             } else if (previewMode)
             {
                 // on preview - hide player.
-                this.player.Visible = false;
+                ShowButtons(false);
 
                 // show picture preview in the windows screensaver dialog inside the 1980s CRT monitor with that CD rom drive at it's bottom
-            
+
                 var pictureBox1 = new PictureBox();
                 pictureBox1.Image = global::Aerial.Properties.Resources.bridgeSm3;
                 pictureBox1.Location = new System.Drawing.Point(0,0);
@@ -166,7 +175,8 @@ namespace ScreenSaver
         
         private void Player_MouseDownEvent(object sender, AxWMPLib._WMPOCXEvents_MouseDownEvent e)
         {
-            Trace.WriteLine("Player_MouseDownEvent()");
+            Trace.WriteLine("Player_MouseDownEvent() e.nButton=" + e.nButton);
+            
             DoMouseDown(null, new MouseEventArgs(e.nButton == 1 ? MouseButtons.Left : MouseButtons.Right, 0, e.fX, e.fY, 0));
         }
         private void DoMouseDown(object sender, MouseEventArgs e)
@@ -183,11 +193,6 @@ namespace ScreenSaver
                     NativeMethods.DragWindow(Handle);
                 else
                     NativeMethods.ResizeWindow(Handle, toTop, toLeft);
-            }
-            else if (e.Button == MouseButtons.Right && windowMode)
-            {
-                // show settings form
-                //new SettingsForm().ShowDialog(this);
             }
         }
 
@@ -211,7 +216,28 @@ namespace ScreenSaver
         {
             Trace.WriteLine("btnClose_MouseMove()");
             this.Cursor = Cursors.Default;
-            if (e.Button == MouseButtons.Left) Close();
+        }
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            Trace.WriteLine("btnClose_Click()");
+            Application.Exit();
+        }
+
+        private void btnSettings_MouseMove(object sender, MouseEventArgs e)
+        {
+            Trace.WriteLine("btnSettings_MouseMove()");
+            this.Cursor = Cursors.Default;
+        }
+        private void btnSettings_Click(object sender, EventArgs e)
+        {
+            Trace.WriteLine("btnSettings_Click()");
+            if (settingsFrm == null)
+            {
+                settingsFrm = new SettingsForm();
+                var result = settingsFrm.ShowDialog();
+                DialogResult = DialogResult.Ignore;
+                settingsFrm = null;
+            }
         }
 
         private void ScreenSaverForm_MouseMove(object sender, MouseEventArgs e)
@@ -250,14 +276,21 @@ namespace ScreenSaver
                 if (toTop == null && toLeft == null) Cursor = Cursors.Default;
                 if (toTop == null && toLeft == false) Cursor = Cursors.SizeWE;
 
-                this.btnClose.Visible = true;
+                ShowButtons();
             }
 
         }
 
-#endregion
+        void ShowButtons(bool visibility = true)
+        {
+            btnClose.Visible = visibility;
+            btnSettings.Visible = visibility;
+        }
 
-#region Video player
+
+        #endregion
+
+        #region Video player
         private void MaximizeVideo()
         {
             var screenArea = Screen.FromControl(this).WorkingArea;
@@ -279,7 +312,7 @@ namespace ScreenSaver
         {
             Trace.WriteLine("SetNextVideo()");
             var cacheEnabled = new RegSettings().CacheVideos;
-            if (ShowVideo)
+            if (showVideo)
             {
                 string url = Movies[currentVideoIndex].url;
 
@@ -313,7 +346,7 @@ namespace ScreenSaver
             }
             if (lastInteraction.AddSeconds(1) < DateTime.Now)
             {
-                this.btnClose.Visible = false;
+                ShowButtons(false);
             }
         }
 
@@ -377,10 +410,5 @@ namespace ScreenSaver
                 Application.Exit();
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-            Trace.WriteLine("btnClose_Click()");
-            Application.Exit();
-        }
     }
 }
