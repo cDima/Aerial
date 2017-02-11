@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Aerial;
+using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace ScreenSaver
@@ -17,8 +19,9 @@ namespace ScreenSaver
 
         public bool PreFilterMessage(ref Message messageBeforeFiltering)
         {
-            const Boolean FilterTheMessageOut = true;
-            const Boolean LetTheMessageThrough = false;
+            Trace.WriteLine("PreFilterMessage()");
+            const bool FilterTheMessageOut = true;
+            const bool LetTheMessageThrough = false;
 
             if (IsNull(parent)) return LetTheMessageThrough;
             if (IsNull(target)) return LetTheMessageThrough;
@@ -29,15 +32,21 @@ namespace ScreenSaver
 
         private bool MessageContainsAnyMousebutton(Message message)
         {
-            if (message.Msg == 0x202) return true; /* WM_LBUTTONUP*/
-            if (message.Msg == 0x203) return true; /* WM_LBUTTONDBLCLK*/
-            if (message.Msg == 0x204) return true; /* WM_RBUTTONDOWN */
-            if (message.Msg == 0x205) return true; /* WM_RBUTTONUP */
+            Trace.WriteLine("MessageContainsAnyMousebutton()");
+            if (message.HWnd == parent.Handle)
+            {
+                if (message.Msg == NativeMethods.WM_LBUTTONUP) return true;
+                if (message.Msg == NativeMethods.WM_LBUTTONDBLCLK) return true;
+                if (message.Msg == NativeMethods.WM_RBUTTONDOWN) return true;
+                if (message.Msg == NativeMethods.WM_RBUTTONUP) return true;
+                return false;
+            }
             return false;
         }
 
         private bool WasNotClickedOnTarget(Control parent, Control target)
         {
+            Trace.WriteLine("WasNotClickedOnTarget()");
             Control clickedOn = parent.GetChildAtPoint(Cursor.Position);
             if (IsNull(clickedOn)) return true;
             if (AreEqual(clickedOn, target)) return false;

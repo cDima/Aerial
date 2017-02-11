@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 
@@ -8,6 +9,13 @@ namespace Aerial
 {
     internal static class NativeMethods
     {
+        public const int HT_CAPTION = 0x2;
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int WM_LBUTTONUP = 0x202;
+        public const int WM_LBUTTONDBLCLK = 0x203;
+        public const int WM_RBUTTONDOWN = 0x204;
+        public const int WM_RBUTTONUP = 0x205;
+        
         [DllImport("kernel32.dll")]
         internal static extern uint SetThreadExecutionState(uint esFlags);
         
@@ -33,17 +41,16 @@ namespace Aerial
         const uint ES_CONTINUOUS = 0x80000000;
         const uint ES_SYSTEM_REQUIRED = 0x00000001;
 
-        const int WM_NCLBUTTONDOWN = 0xA1;
-        const int HT_CAPTION = 0x2;
-        const int WM_LBUTTONUP = 0x202;
-
+        
         internal static void EnableMonitorSleep()
         {
+            Trace.WriteLine("EnableMonitorSleep()");
             SetThreadExecutionState(ES_CONTINUOUS);
         }
 
         internal static void DragWindow(IntPtr handle)
         {
+            Trace.WriteLine("DragWindow()");
             ReleaseCapture();
             SendMessage(handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
 
@@ -52,6 +59,7 @@ namespace Aerial
 
         internal static void ResizeWindow(IntPtr handle, bool? toTop, bool? toLeft)
         {
+            Trace.WriteLine("ResizeWindow()");
             var SC_SIZE = 0xF000;
             var WM_SYSCOMMAND = 0x0112;
 
@@ -66,7 +74,9 @@ namespace Aerial
             CaptureMouseUpAndClick(handle);
         }
 
-        internal static void CaptureMouseUpAndClick(IntPtr handle) {
+        internal static void CaptureMouseUpAndClick(IntPtr handle)
+        {
+            Trace.WriteLine("CaptureMouseUpAndClick()");
             // Set capture back to the form
             ReleaseCapture();
             // Send the form a MouseUp message
