@@ -29,6 +29,7 @@ namespace Aerial
             Directory.CreateDirectory(CacheFolder);
             Directory.CreateDirectory(TempFolder);
 
+            // Delete partial temp files if any 
             foreach (var file in Directory.CreateDirectory(TempFolder).GetFiles())
             {
                 file.Delete();
@@ -38,15 +39,20 @@ namespace Aerial
         private static void OnDownloadFileComplete(object sender, AsyncCompletedEventArgs e)
         {
             var filename = e.UserState.ToString();
-            var tempPath = Path.Combine(TempFolder, filename);
+            var tempFullPath = Path.Combine(TempFolder, filename);
+            var cacheFullpath = Path.Combine(CacheFolder, filename);
             if (e.Cancelled == false && e.Error == null)
             {
-                Directory.Move(tempPath, Path.Combine(CacheFolder, filename));
+                // delete if old file exists
+                if (File.Exists(cacheFullpath))
+                    File.Delete(cacheFullpath); 
+
+                Directory.Move(tempFullPath, cacheFullpath);
             }
             else
             {
                 // attempt to remove partially downloaded file
-                File.Delete(filename);
+                File.Delete(tempFullPath);
             }
         }
 
@@ -103,7 +109,7 @@ namespace Aerial
         /// <returns></returns>
         private static bool EnsureEnoughSpace()
         {
-            return CacheSpace() < 1000000000;
+            return CacheSpace() > 1000000000;
         }
     }
 }
