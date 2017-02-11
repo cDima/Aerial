@@ -70,7 +70,7 @@ To uninstall, delete the downloaded `.scr` file.
 * **Auto Load Latest Aerials:** Aerials are loaded directly from Apple, so you're never out of date.
 * **Play Different Aerial On Each Display:** If you've got multiple monitors, this setting loads a different aerial for each of your displays.
 
-![windows aerial screen saver settings](imgs/settings.png)
+<p align="center"><img align="center" alt="windows aerial screen saver settings" src="imgs/settings.png" /></p>
 
 ## Compatibility
 Aerial is written in C# for [.Net Framework v4.6](https://www.microsoft.com/en-us/download/details.aspx?id=48130).
@@ -113,7 +113,7 @@ I appreciate all pull requests. Caching hasn't been added yet.
 - October 27th, 2015 - 0.1: First release.
 - November 5th, 2015 - 0.2: Multi-screenoptions and scaling:
 
-![multiscreen aerial screensaver](imgs/multiscreen.gif)
+<p align="center"><img align="center" alt="multiscreen aerial screensaver" src="imgs/multiscreen.gif" /></p>
 
 ## License
 [MIT License](https://raw.githubusercontent.com/JohnCoates/Aerial/master/LICENSE)
@@ -121,4 +121,4 @@ I appreciate all pull requests. Caching hasn't been added yet.
 
 #### Coded with :heart: in New York by [Dmitry Sadakov](http://sadakov.com/)
 
-![Dmtiry Sadakov](imgs/dmitrysadakov.jpg)
+<p align="center"><img align="center" alt="Dmtiry Sadakov" src="imgs/dmitrysadakov.jpg" /></p>
