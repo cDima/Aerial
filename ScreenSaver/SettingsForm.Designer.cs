@@ -47,6 +47,10 @@
             this.changeCacheLocationButton = new System.Windows.Forms.Button();
             this.txtCacheFolderPath = new System.Windows.Forms.TextBox();
             this.tabAbout = new System.Windows.Forms.TabPage();
+            this.btnOpenCache = new System.Windows.Forms.Button();
+            this.lblCacheSize = new System.Windows.Forms.Label();
+            this.lblFreeSpace = new System.Windows.Forms.Label();
+            this.btnPurgeCache = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.tabPreferences.SuspendLayout();
             this.grpChosenVideos.SuspendLayout();
@@ -201,6 +205,10 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.lblFreeSpace);
+            this.groupBox2.Controls.Add(this.btnPurgeCache);
+            this.groupBox2.Controls.Add(this.lblCacheSize);
+            this.groupBox2.Controls.Add(this.btnOpenCache);
             this.groupBox2.Controls.Add(this.chkCacheVideos);
             this.groupBox2.Controls.Add(this.changeCacheLocationButton);
             this.groupBox2.Controls.Add(this.txtCacheFolderPath);
@@ -224,7 +232,7 @@
             // changeCacheLocationButton
             // 
             this.changeCacheLocationButton.Enabled = false;
-            this.changeCacheLocationButton.Location = new System.Drawing.Point(231, 40);
+            this.changeCacheLocationButton.Location = new System.Drawing.Point(231, 105);
             this.changeCacheLocationButton.Name = "changeCacheLocationButton";
             this.changeCacheLocationButton.Size = new System.Drawing.Size(152, 23);
             this.changeCacheLocationButton.TabIndex = 15;
@@ -236,7 +244,7 @@
             // 
             this.txtCacheFolderPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtCacheFolderPath.Location = new System.Drawing.Point(6, 42);
+            this.txtCacheFolderPath.Location = new System.Drawing.Point(6, 107);
             this.txtCacheFolderPath.Name = "txtCacheFolderPath";
             this.txtCacheFolderPath.ReadOnly = true;
             this.txtCacheFolderPath.Size = new System.Drawing.Size(219, 20);
@@ -250,6 +258,44 @@
             this.tabAbout.TabIndex = 2;
             this.tabAbout.Text = "About";
             this.tabAbout.UseVisualStyleBackColor = true;
+            // 
+            // btnOpenCache
+            // 
+            this.btnOpenCache.Location = new System.Drawing.Point(231, 47);
+            this.btnOpenCache.Name = "btnOpenCache";
+            this.btnOpenCache.Size = new System.Drawing.Size(152, 23);
+            this.btnOpenCache.TabIndex = 16;
+            this.btnOpenCache.Text = "Open Cache Location";
+            this.btnOpenCache.UseVisualStyleBackColor = true;
+            this.btnOpenCache.Click += new System.EventHandler(this.btnOpenCache_Click);
+            // 
+            // lblCacheSize
+            // 
+            this.lblCacheSize.AutoSize = true;
+            this.lblCacheSize.Location = new System.Drawing.Point(16, 52);
+            this.lblCacheSize.Name = "lblCacheSize";
+            this.lblCacheSize.Size = new System.Drawing.Size(101, 13);
+            this.lblCacheSize.TabIndex = 17;
+            this.lblCacheSize.Text = "Current Cache Size:";
+            // 
+            // lblFreeSpace
+            // 
+            this.lblFreeSpace.AutoSize = true;
+            this.lblFreeSpace.Location = new System.Drawing.Point(16, 76);
+            this.lblFreeSpace.Name = "lblFreeSpace";
+            this.lblFreeSpace.Size = new System.Drawing.Size(111, 13);
+            this.lblFreeSpace.TabIndex = 19;
+            this.lblFreeSpace.Text = "Free Space Available:";
+            // 
+            // btnPurgeCache
+            // 
+            this.btnPurgeCache.Location = new System.Drawing.Point(231, 71);
+            this.btnPurgeCache.Name = "btnPurgeCache";
+            this.btnPurgeCache.Size = new System.Drawing.Size(152, 23);
+            this.btnPurgeCache.TabIndex = 18;
+            this.btnPurgeCache.Text = "Delete Cache";
+            this.btnPurgeCache.UseVisualStyleBackColor = true;
+            this.btnPurgeCache.Click += new System.EventHandler(this.btnPurgeCache_Click);
             // 
             // SettingsForm
             // 
@@ -302,5 +348,9 @@
         private System.Windows.Forms.GroupBox grpChosenVideos;
         private System.Windows.Forms.CheckBox chkUseTimeOfDay;
         private System.Windows.Forms.CheckedListBox selectedVideos;
+        private System.Windows.Forms.Button btnOpenCache;
+        private System.Windows.Forms.Label lblFreeSpace;
+        private System.Windows.Forms.Button btnPurgeCache;
+        private System.Windows.Forms.Label lblCacheSize;
     }
 }

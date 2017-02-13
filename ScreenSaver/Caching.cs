@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Net;
+using System.Diagnostics;
 
 namespace Aerial
 {
@@ -19,7 +20,7 @@ namespace Aerial
         internal static void Setup()
         {
             // If there is no location stored in the Registry, use the default location
-            if (CacheFolder == null || CacheFolder == "")
+            if (string.IsNullOrWhiteSpace(CacheFolder))
             {
                 CacheFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Aerial");
             }
@@ -35,27 +36,7 @@ namespace Aerial
                 file.Delete();
             }
         }
-
-        private static void OnDownloadFileComplete(object sender, AsyncCompletedEventArgs e)
-        {
-            var filename = e.UserState.ToString();
-            var tempFullPath = Path.Combine(TempFolder, filename);
-            var cacheFullpath = Path.Combine(CacheFolder, filename);
-            if (e.Cancelled == false && e.Error == null)
-            {
-                // delete if old file exists
-                if (File.Exists(cacheFullpath))
-                    File.Delete(cacheFullpath); 
-
-                Directory.Move(tempFullPath, cacheFullpath);
-            }
-            else
-            {
-                // attempt to remove partially downloaded file
-                File.Delete(tempFullPath);
-            }
-        }
-
+        
         internal static bool IsHit(string url)
         {
             string filename = Path.GetFileName(url);
@@ -92,6 +73,75 @@ namespace Aerial
                 });
             }
         }
+        private static void OnDownloadFileComplete(object sender, AsyncCompletedEventArgs e)
+        {
+            var filename = e.UserState.ToString();
+            var tempFullPath = Path.Combine(TempFolder, filename);
+            var cacheFullpath = Path.Combine(CacheFolder, filename);
+            if (e.Cancelled == false && e.Error == null)
+            {
+                // delete if old file exists
+                if (File.Exists(cacheFullpath))
+                    File.Delete(cacheFullpath);
+
+                Directory.Move(tempFullPath, cacheFullpath);
+            }
+            else
+            {
+                // attempt to remove partially downloaded file
+                File.Delete(tempFullPath);
+            }
+        }
+
+        internal static async void UpdateCachePath(string oldCacheDirectory, string cacheLocation)
+        {
+            CacheFolder = cacheLocation;
+
+            // Move old cache to new location if space allows
+            var currentCacheSpace = GetDirectorySize(oldCacheDirectory);
+            if (currentCacheSpace < CacheSpace() - (1000 * 1000 * 1000))
+            {
+                // Note might take a while, hanging the save dialog
+                // video blocks this command: Directory.Move(oldCacheDirectory, cacheLocation);
+                foreach(var f in Directory.GetFiles(oldCacheDirectory))
+                {
+                    var newfile = Path.Combine(cacheLocation, Path.GetFileName(f));
+                    if (!File.Exists(newfile))
+                        await Task.Factory.StartNew(() => File.Move(f, newfile));
+                    
+                }
+            }
+
+            DeleteCache(oldCacheDirectory);
+
+            // Delete old cache
+            try
+            {
+                await Task.Factory.StartNew(() => Directory.Delete(oldCacheDirectory, true));
+            } catch(UnauthorizedAccessException)
+            {
+                // Leave dir for now.
+                // todo - windows removes all files after the video player stops using them,
+                // yet leaves the folder, we need to redo this operation in 3 mins, for example.
+            }
+        }
+
+        public static async void DeleteCache(string folder = null)
+        {
+            if (folder == null) folder = CacheFolder;
+            foreach (var f in Directory.GetFiles(folder))
+            {
+                try
+                {
+                    await Task.Factory.StartNew(() => File.Delete(f));
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    // video may be used while deleting
+                    Trace.WriteLine("Access denied while moving cached files " + ex);
+                }
+            }
+        }
 
         public static long CacheSpace()
         {
@@ -101,6 +151,16 @@ namespace Aerial
                     return drive.TotalFreeSpace;
             }
             return 0;
+        }
+        
+        public static long GetDirectorySize(string path = null)
+        {
+            if (path == null) path = CacheFolder;
+            long size = 0;
+            foreach (string name in Directory.GetFiles(path, "*.*"))
+                size += new FileInfo(name).Length;
+
+            return size;
         }
 
         /// <summary>

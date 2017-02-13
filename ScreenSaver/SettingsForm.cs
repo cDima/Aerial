@@ -35,9 +35,22 @@ namespace ScreenSaver
             }
             
             changeCacheLocationButton.Enabled = settings.CacheVideos;
-            
+
+            ShowSpace();
+
+            // while developing
             tabs.TabPages.Remove(tabAbout);
             grpChosenVideos.Hide();
+        }
+
+        private void ShowSpace()
+        {
+            var cacheSize = NativeMethods.GetExplorerFileSize(Caching.GetDirectorySize());
+            lblCacheSize.Text = "Current Cache Size: " + cacheSize;
+
+            var cacheFree = NativeMethods.GetExplorerFileSize(Caching.CacheSpace());
+            lblFreeSpace.Text = "Free Space Available on drive: " + cacheFree;
+
         }
 
         /// <summary>
@@ -50,12 +63,15 @@ namespace ScreenSaver
             settings.UseTimeOfDay = chkUseTimeOfDay.Checked;
             settings.MultiscreenDisabled = chkMultiscreenDisabled.Checked;
             settings.CacheVideos = chkCacheVideos.Checked;
+
+            string oldCacheDirectory = settings.CacheLocation;
             settings.CacheLocation = txtCacheFolderPath.Text;
 
             settings.SaveSettings();
-            
+
+            Caching.UpdateCachePath(oldCacheDirectory, settings.CacheLocation);
         }
-        
+
 
         private void okButton_Click(object sender, EventArgs e)
         {
@@ -76,23 +92,17 @@ namespace ScreenSaver
             {
                 txtCacheFolderPath.Text = folderBrowserDialog.SelectedPath;
             }
+            ShowSpace();
         }
 
         private void chkCacheVideos_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkCacheVideos.Checked)
-            {
-                changeCacheLocationButton.Enabled = true;
-            }
-            else
-            {
-                changeCacheLocationButton.Enabled = false;
-            }
+            changeCacheLocationButton.Enabled = chkCacheVideos.Checked;
         }
 
         private void SettingsForm_Load(object sender, EventArgs e)
         {
-            this.lblVersion.Text = "Version " + AssemblyVersion.ExecutingAssemblyVersion + " (" + AssemblyVersion.CompileDate + ")";
+            this.lblVersion.Text = "Current Version " + AssemblyVersion.ExecutingAssemblyVersion + " (" + AssemblyVersion.CompileDate + ")";
         }
 
         private void lblVersion_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -100,6 +110,20 @@ namespace ScreenSaver
             // todo get latest builds from json interface: https://api.github.com/repos/cdima/aerial/releases/latest
             ProcessStartInfo sInfo = new ProcessStartInfo("https://github.com/cDima/Aerial/releases");
             Process.Start(sInfo);
+        }
+
+        private void btnOpenCache_Click(object sender, EventArgs e)
+        {
+            Process.Start(Caching.CacheFolder);
+        }
+
+        private void btnPurgeCache_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to delete all cached files?", "Delete Cache?") == DialogResult.OK)
+            {
+                Caching.DeleteCache();
+            }
+            ShowSpace();
         }
     }
 }
