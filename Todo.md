@@ -1,6 +1,11 @@
 ﻿# todo
-* include better logging, crash reporting, analytics
-* click once install
+* include better 
+  * logging, 
+  * crash reporting, 
+  * timing, 
+  * analytics
+  * Window mode - save last window position
+* click once install from github
 * fully offline - need to cache aerial entities.json
 * features of aerial for mac
   * Settings 
