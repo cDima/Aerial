@@ -36,7 +36,7 @@ namespace Aerial
                 file.Delete();
             }
         }
-        
+
         internal static bool IsHit(string url)
         {
             string filename = Path.GetFileName(url);
@@ -103,12 +103,12 @@ namespace Aerial
             {
                 // Note might take a while, hanging the save dialog
                 // video blocks this command: Directory.Move(oldCacheDirectory, cacheLocation);
-                foreach(var f in Directory.GetFiles(oldCacheDirectory))
+                foreach (var f in Directory.GetFiles(oldCacheDirectory))
                 {
                     var newfile = Path.Combine(cacheLocation, Path.GetFileName(f));
                     if (!File.Exists(newfile))
                         await Task.Factory.StartNew(() => File.Move(f, newfile));
-                    
+
                 }
             }
 
@@ -118,7 +118,8 @@ namespace Aerial
             try
             {
                 await Task.Factory.StartNew(() => Directory.Delete(oldCacheDirectory, true));
-            } catch(UnauthorizedAccessException)
+            }
+            catch (UnauthorizedAccessException)
             {
                 // Leave dir for now.
                 // todo - windows removes all files after the video player stops using them,
@@ -152,7 +153,7 @@ namespace Aerial
             }
             return 0;
         }
-        
+
         public static long GetDirectorySize(string path = null)
         {
             if (path == null) path = CacheFolder;
@@ -170,6 +171,13 @@ namespace Aerial
         private static bool EnsureEnoughSpace()
         {
             return CacheSpace() > 1000000000;
+        }
+
+        public static string TryHit(string url)
+        {
+            if (IsHit(url))
+                return Get(url);
+            return url;
         }
     }
 }

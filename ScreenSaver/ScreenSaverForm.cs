@@ -114,7 +114,7 @@ namespace ScreenSaver
 
             if (showVideo) // testing preview video speed didn't work well && !previewMode
             {
-                Movies = new AerialContext().GetMovies();
+                Movies = AerialContext.GetMovies();
 
 #if DEBUG && false
                 Movies = new List<Asset>
@@ -357,10 +357,11 @@ namespace ScreenSaver
 
         private void LayoutPlayer()
         {
+            this.player.enableContextMenu = false;
             this.player.settings.autoStart = true;
             this.player.settings.enableErrorDialogs = true;
+            this.player.stretchToFit = true;
             this.player.uiMode = "none";
-            this.player.enableContextMenu = false;
             Application.AddMessageFilter(new IgnoreMouseClickMessageFilter(this, player));
 
             ResizePlayer();
@@ -372,7 +373,6 @@ namespace ScreenSaver
         private void ResizePlayer()
         {
             this.player.Size = CalculateVideoFillSize(this.Size);
-            this.player.stretchToFit = true;
             this.player.Top = (this.Size.Height / 2) - (this.player.Size.Height / 2);
             this.player.Left =  (this.Size.Width / 2) - (this.player.Size.Width / 2);
         }

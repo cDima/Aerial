@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Windows.Forms;
 using System.IO;
+using System.Linq;
 using Aerial;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace ScreenSaver
 {
     public partial class SettingsForm : Form
     {
+        private Dictionary<string, Asset> Movies;
         public SettingsForm()
         {
             InitializeComponent();
@@ -38,6 +41,83 @@ namespace ScreenSaver
 
             ShowSpace();
 
+            PopulateChosenVideoGroup();
+            //HideChosenVideoGroup();
+
+            InitPlayer();
+
+            StartPlayer();
+        }
+
+        private void InitPlayer()
+        {
+            this.player.enableContextMenu = false;
+            this.player.settings.autoStart = true;
+            this.player.settings.enableErrorDialogs = true;
+            this.player.stretchToFit = true;
+            this.player.uiMode = "none";
+        }
+
+        private void StartPlayer()
+        {
+            tvMovies.SelectedNode = tvMovies.Nodes[0].Nodes[0];
+            tvMovies.Select();
+            tvMovies.TopNode.EnsureVisible();
+            tvMovies.Nodes[0].EnsureVisible();
+        }
+
+        private void PopulateChosenVideoGroup()
+        {
+            var movies = AerialContext.GetAllMovies();
+            movies.Sort();
+            if (movies.Count == 0) return; // error
+
+            int n = 1;
+            for(int i = 1; i < movies.Count; i++)
+            {
+                if (movies[i-1].ShortName() == movies[i].ShortName()) {
+                    movies[i-1].numeric = n;
+                    n++;
+                    movies[i].numeric = n;
+                }
+                else
+                {
+                    if (n != 1)
+                    {
+                        movies[i - 1].numeric = n;
+                        n = 1;
+                        movies[i].numeric = n;
+                    } else
+                    {
+                        movies[i - 1].numeric = 0;
+                        movies[i].numeric = n;
+                    }
+                }
+            }
+            if (movies.Count > 0 && movies.Last().numeric == 1) movies.Last().numeric = 0;
+
+            TreeNode root = new TreeNode(movies[0].accessibilityLabel);
+            tvMovies.Nodes.Add(root);
+            Movies = new Dictionary<string, Asset>();
+            foreach (var m in movies)
+            {
+                if (m.accessibilityLabel == root.Text)
+                {
+                    root.Nodes.Add(m.TimeNumbered());
+                } else {
+                    root = new TreeNode(m.accessibilityLabel);
+                    tvMovies.Nodes.Add(root);
+                    root.Nodes.Add(m.TimeNumbered());
+                }
+                Movies.Add(root.Nodes[root.Nodes.Count - 1].FullPath, m);
+            }
+            
+            tvMovies.ExpandAll();
+            tvMovies.CheckBoxes = true;
+        }
+
+        void HideChosenVideoGroup()
+        {
             // while developing
             tabs.TabPages.Remove(tabAbout);
             grpChosenVideos.Hide();
@@ -124,6 +204,16 @@ namespace ScreenSaver
                 Caching.DeleteCache();
             }
             ShowSpace();
+        }
+
+        private void tvMovies_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            Trace.WriteLine("Selected tree element " + e.Node.FullPath);
+            if (cbLivePreview.Checked)
+            {
+                string url = Movies[e.Node.FullPath].url;
+                player.URL = Caching.TryHit(url);
+            }
         }
     }
 }

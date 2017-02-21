@@ -45,6 +45,8 @@ namespace Aerial
         , [MarshalAs(UnmanagedType.LPTStr)] StringBuilder buffer
         , int bufferSize);
 
+        [DllImport("shlwapi.dll", CharSet = CharSet.Unicode)]
+        public static extern int StrCmpLogicalW(string psz1, string psz2);
 
         /// <summary>
         /// Converts a numeric value into a string that represents the number expressed as a size value in bytes, kilobytes, megabytes, or gigabytes, depending on the size.

@@ -189,6 +189,8 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="imgs\surfacebook.png" />
+    <None Include="Resources\surfacebook.png" />
     <None Include="imgs\bridge-sm3.png" />
     <Content Include="imgs\bridge.ico" />
     <EmbeddedResource Include="libs\AxInterop.WMPLib.dll" />

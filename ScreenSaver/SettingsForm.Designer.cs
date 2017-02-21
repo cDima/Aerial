@@ -36,24 +36,29 @@
             this.tabs = new System.Windows.Forms.TabControl();
             this.tabPreferences = new System.Windows.Forms.TabPage();
             this.grpChosenVideos = new System.Windows.Forms.GroupBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.player = new AxWMPLib.AxWindowsMediaPlayer();
+            this.tvMovies = new System.Windows.Forms.TreeView();
             this.chkUseTimeOfDay = new System.Windows.Forms.CheckBox();
-            this.selectedVideos = new System.Windows.Forms.CheckedListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.chkMultiscreenDisabled = new System.Windows.Forms.CheckBox();
             this.chkDifferentMonitorMovies = new System.Windows.Forms.CheckBox();
             this.tabCache = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lblFreeSpace = new System.Windows.Forms.Label();
+            this.btnPurgeCache = new System.Windows.Forms.Button();
+            this.lblCacheSize = new System.Windows.Forms.Label();
+            this.btnOpenCache = new System.Windows.Forms.Button();
             this.chkCacheVideos = new System.Windows.Forms.CheckBox();
             this.changeCacheLocationButton = new System.Windows.Forms.Button();
             this.txtCacheFolderPath = new System.Windows.Forms.TextBox();
             this.tabAbout = new System.Windows.Forms.TabPage();
-            this.btnOpenCache = new System.Windows.Forms.Button();
-            this.lblCacheSize = new System.Windows.Forms.Label();
-            this.lblFreeSpace = new System.Windows.Forms.Label();
-            this.btnPurgeCache = new System.Windows.Forms.Button();
+            this.cbLivePreview = new System.Windows.Forms.CheckBox();
             this.tabs.SuspendLayout();
             this.tabPreferences.SuspendLayout();
             this.grpChosenVideos.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.player)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabCache.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -87,7 +92,7 @@
             // lblVersion
             // 
             this.lblVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblVersion.Location = new System.Drawing.Point(205, 384);
+            this.lblVersion.Location = new System.Drawing.Point(205, 387);
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.lblVersion.Size = new System.Drawing.Size(213, 23);
@@ -125,8 +130,11 @@
             // 
             // grpChosenVideos
             // 
+            this.grpChosenVideos.Controls.Add(this.cbLivePreview);
+            this.grpChosenVideos.Controls.Add(this.player);
+            this.grpChosenVideos.Controls.Add(this.pictureBox1);
+            this.grpChosenVideos.Controls.Add(this.tvMovies);
             this.grpChosenVideos.Controls.Add(this.chkUseTimeOfDay);
-            this.grpChosenVideos.Controls.Add(this.selectedVideos);
             this.grpChosenVideos.Location = new System.Drawing.Point(7, 75);
             this.grpChosenVideos.Name = "grpChosenVideos";
             this.grpChosenVideos.Size = new System.Drawing.Size(389, 254);
@@ -134,28 +142,50 @@
             this.grpChosenVideos.TabStop = false;
             this.grpChosenVideos.Text = "Chosen Videos";
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.ErrorImage = null;
+            this.pictureBox1.Image = global::Aerial.Properties.Resources.surfacebook;
+            this.pictureBox1.InitialImage = global::Aerial.Properties.Resources.surfacebook;
+            this.pictureBox1.Location = new System.Drawing.Point(151, 31);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(232, 180);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 17;
+            this.pictureBox1.TabStop = false;
+            // 
+            // player
+            // 
+            this.player.Enabled = true;
+            this.player.Location = new System.Drawing.Point(151, 19);
+            this.player.Name = "player";
+            this.player.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("player.OcxState")));
+            this.player.Size = new System.Drawing.Size(232, 132);
+            this.player.TabIndex = 16;
+            // 
+            // tvMovies
+            // 
+            this.tvMovies.CheckBoxes = true;
+            this.tvMovies.FullRowSelect = true;
+            this.tvMovies.Location = new System.Drawing.Point(7, 19);
+            this.tvMovies.Name = "tvMovies";
+            this.tvMovies.ShowLines = false;
+            this.tvMovies.ShowPlusMinus = false;
+            this.tvMovies.Size = new System.Drawing.Size(138, 229);
+            this.tvMovies.TabIndex = 15;
+            this.tvMovies.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvMovies_AfterSelect);
+            // 
             // chkUseTimeOfDay
             // 
             this.chkUseTimeOfDay.AutoSize = true;
             this.chkUseTimeOfDay.Checked = true;
             this.chkUseTimeOfDay.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkUseTimeOfDay.Location = new System.Drawing.Point(143, 19);
+            this.chkUseTimeOfDay.Location = new System.Drawing.Point(151, 231);
             this.chkUseTimeOfDay.Name = "chkUseTimeOfDay";
-            this.chkUseTimeOfDay.Size = new System.Drawing.Size(210, 17);
+            this.chkUseTimeOfDay.Size = new System.Drawing.Size(155, 17);
             this.chkUseTimeOfDay.TabIndex = 14;
-            this.chkUseTimeOfDay.Text = "Show appropriate day/night videos first";
+            this.chkUseTimeOfDay.Text = "Prioritize current time of day";
             this.chkUseTimeOfDay.UseVisualStyleBackColor = true;
-            // 
-            // selectedVideos
-            // 
-            this.selectedVideos.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.selectedVideos.FormattingEnabled = true;
-            this.selectedVideos.Location = new System.Drawing.Point(7, 19);
-            this.selectedVideos.Name = "selectedVideos";
-            this.selectedVideos.Size = new System.Drawing.Size(130, 229);
-            this.selectedVideos.TabIndex = 1;
             // 
             // groupBox1
             // 
@@ -219,6 +249,44 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Cache";
             // 
+            // lblFreeSpace
+            // 
+            this.lblFreeSpace.AutoSize = true;
+            this.lblFreeSpace.Location = new System.Drawing.Point(16, 76);
+            this.lblFreeSpace.Name = "lblFreeSpace";
+            this.lblFreeSpace.Size = new System.Drawing.Size(111, 13);
+            this.lblFreeSpace.TabIndex = 19;
+            this.lblFreeSpace.Text = "Free Space Available:";
+            // 
+            // btnPurgeCache
+            // 
+            this.btnPurgeCache.Location = new System.Drawing.Point(231, 71);
+            this.btnPurgeCache.Name = "btnPurgeCache";
+            this.btnPurgeCache.Size = new System.Drawing.Size(152, 23);
+            this.btnPurgeCache.TabIndex = 18;
+            this.btnPurgeCache.Text = "Delete Cache";
+            this.btnPurgeCache.UseVisualStyleBackColor = true;
+            this.btnPurgeCache.Click += new System.EventHandler(this.btnPurgeCache_Click);
+            // 
+            // lblCacheSize
+            // 
+            this.lblCacheSize.AutoSize = true;
+            this.lblCacheSize.Location = new System.Drawing.Point(16, 52);
+            this.lblCacheSize.Name = "lblCacheSize";
+            this.lblCacheSize.Size = new System.Drawing.Size(101, 13);
+            this.lblCacheSize.TabIndex = 17;
+            this.lblCacheSize.Text = "Current Cache Size:";
+            // 
+            // btnOpenCache
+            // 
+            this.btnOpenCache.Location = new System.Drawing.Point(231, 47);
+            this.btnOpenCache.Name = "btnOpenCache";
+            this.btnOpenCache.Size = new System.Drawing.Size(152, 23);
+            this.btnOpenCache.TabIndex = 16;
+            this.btnOpenCache.Text = "Open Cache Location";
+            this.btnOpenCache.UseVisualStyleBackColor = true;
+            this.btnOpenCache.Click += new System.EventHandler(this.btnOpenCache_Click);
+            // 
             // chkCacheVideos
             // 
             this.chkCacheVideos.AutoSize = true;
@@ -259,43 +327,17 @@
             this.tabAbout.Text = "About";
             this.tabAbout.UseVisualStyleBackColor = true;
             // 
-            // btnOpenCache
+            // cbLivePreview
             // 
-            this.btnOpenCache.Location = new System.Drawing.Point(231, 47);
-            this.btnOpenCache.Name = "btnOpenCache";
-            this.btnOpenCache.Size = new System.Drawing.Size(152, 23);
-            this.btnOpenCache.TabIndex = 16;
-            this.btnOpenCache.Text = "Open Cache Location";
-            this.btnOpenCache.UseVisualStyleBackColor = true;
-            this.btnOpenCache.Click += new System.EventHandler(this.btnOpenCache_Click);
-            // 
-            // lblCacheSize
-            // 
-            this.lblCacheSize.AutoSize = true;
-            this.lblCacheSize.Location = new System.Drawing.Point(16, 52);
-            this.lblCacheSize.Name = "lblCacheSize";
-            this.lblCacheSize.Size = new System.Drawing.Size(101, 13);
-            this.lblCacheSize.TabIndex = 17;
-            this.lblCacheSize.Text = "Current Cache Size:";
-            // 
-            // lblFreeSpace
-            // 
-            this.lblFreeSpace.AutoSize = true;
-            this.lblFreeSpace.Location = new System.Drawing.Point(16, 76);
-            this.lblFreeSpace.Name = "lblFreeSpace";
-            this.lblFreeSpace.Size = new System.Drawing.Size(111, 13);
-            this.lblFreeSpace.TabIndex = 19;
-            this.lblFreeSpace.Text = "Free Space Available:";
-            // 
-            // btnPurgeCache
-            // 
-            this.btnPurgeCache.Location = new System.Drawing.Point(231, 71);
-            this.btnPurgeCache.Name = "btnPurgeCache";
-            this.btnPurgeCache.Size = new System.Drawing.Size(152, 23);
-            this.btnPurgeCache.TabIndex = 18;
-            this.btnPurgeCache.Text = "Delete Cache";
-            this.btnPurgeCache.UseVisualStyleBackColor = true;
-            this.btnPurgeCache.Click += new System.EventHandler(this.btnPurgeCache_Click);
+            this.cbLivePreview.AutoSize = true;
+            this.cbLivePreview.Checked = true;
+            this.cbLivePreview.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbLivePreview.Location = new System.Drawing.Point(151, 208);
+            this.cbLivePreview.Name = "cbLivePreview";
+            this.cbLivePreview.Size = new System.Drawing.Size(87, 17);
+            this.cbLivePreview.TabIndex = 18;
+            this.cbLivePreview.Text = "Live Preview";
+            this.cbLivePreview.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
@@ -320,6 +362,8 @@
             this.tabPreferences.ResumeLayout(false);
             this.grpChosenVideos.ResumeLayout(false);
             this.grpChosenVideos.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.player)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabCache.ResumeLayout(false);
@@ -347,10 +391,13 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox grpChosenVideos;
         private System.Windows.Forms.CheckBox chkUseTimeOfDay;
-        private System.Windows.Forms.CheckedListBox selectedVideos;
         private System.Windows.Forms.Button btnOpenCache;
         private System.Windows.Forms.Label lblFreeSpace;
         private System.Windows.Forms.Button btnPurgeCache;
         private System.Windows.Forms.Label lblCacheSize;
+        private System.Windows.Forms.TreeView tvMovies;
+        private AxWMPLib.AxWindowsMediaPlayer player;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.CheckBox cbLivePreview;
     }
 }
