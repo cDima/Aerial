@@ -60,10 +60,10 @@ namespace ScreenSaver
 
         private void StartPlayer()
         {
-            tvMovies.SelectedNode = tvMovies.Nodes[0].Nodes[0];
-            tvMovies.Select();
-            tvMovies.TopNode.EnsureVisible();
-            tvMovies.Nodes[0].EnsureVisible();
+            tvChosen.SelectedNode = tvChosen.Nodes[0].Nodes[0];
+            tvChosen.Select();
+            tvChosen.TopNode.EnsureVisible();
+            tvChosen.Nodes[0].EnsureVisible();
         }
 
         private void PopulateChosenVideoGroup()
@@ -72,11 +72,60 @@ namespace ScreenSaver
             movies.Sort();
             if (movies.Count == 0) return; // error
 
-            int n = 1;
-            for(int i = 1; i < movies.Count; i++)
+            AddHumanNumbers(movies);
+            BuildTree(movies);
+            tvChosen.BuildTree(movies);
+            tvMovies.AfterCheck += new TreeViewEventHandler(tvMovies_AfterCheck);
+
+            tvMovies.ExpandAll();
+            tvMovies.CheckBoxes = true;
+        }
+
+        private void BuildTree(List<Asset> movies)
+        {
+            var selected = new RegSettings().ChosenMovies.Split(';').ToList();
+            TreeNode root = new TreeNode(movies[0].accessibilityLabel);
+            tvMovies.Nodes.Add(root);
+            Movies = new Dictionary<string, Asset>();
+            bool allChecked = true;
+            foreach (var m in movies)
             {
-                if (movies[i-1].ShortName() == movies[i].ShortName()) {
-                    movies[i-1].numeric = n;
+                if (m.accessibilityLabel != root.Text)
+                {
+                    // checked root
+                    if (allChecked) root.Checked = true;
+                    // new root
+                    root = new TreeNode(m.accessibilityLabel);
+                    tvMovies.Nodes.Add(root);
+                }
+                // add node
+                var newNode = new TreeNode(m.TimeNumbered());
+                root.Nodes.Add(newNode);
+                newNode.Checked = selected.Contains(newNode.FullPath);
+                allChecked = allChecked && newNode.Checked;
+                Movies.Add(root.Nodes[root.Nodes.Count - 1].FullPath, m);
+            }
+        }
+
+        private string ConcatChosenEntities()
+        {
+            var selected = "";
+            foreach (TreeNode root in tvMovies.Nodes)
+                foreach(TreeNode n in root.Nodes)
+                    if (n.Checked)
+                        selected += ";" + n.FullPath;
+            
+            return selected + ";";
+        }
+
+        private static void AddHumanNumbers(List<Asset> movies)
+        {
+            int n = 1;
+            for (int i = 1; i < movies.Count; i++)
+            {
+                if (movies[i - 1].ShortName() == movies[i].ShortName())
+                {
+                    movies[i - 1].numeric = n;
                     n++;
                     movies[i].numeric = n;
                 }
@@ -87,7 +136,8 @@ namespace ScreenSaver
                         movies[i - 1].numeric = n;
                         n = 1;
                         movies[i].numeric = n;
-                    } else
+                    }
+                    else
                     {
                         movies[i - 1].numeric = 0;
                         movies[i].numeric = n;
@@ -95,25 +145,6 @@ namespace ScreenSaver
                 }
             }
             if (movies.Count > 0 && movies.Last().numeric == 1) movies.Last().numeric = 0;
-
-            TreeNode root = new TreeNode(movies[0].accessibilityLabel);
-            tvMovies.Nodes.Add(root);
-            Movies = new Dictionary<string, Asset>();
-            foreach (var m in movies)
-            {
-                if (m.accessibilityLabel == root.Text)
-                {
-                    root.Nodes.Add(m.TimeNumbered());
-                } else {
-                    root = new TreeNode(m.accessibilityLabel);
-                    tvMovies.Nodes.Add(root);
-                    root.Nodes.Add(m.TimeNumbered());
-                }
-                Movies.Add(root.Nodes[root.Nodes.Count - 1].FullPath, m);
-            }
-            
-            tvMovies.ExpandAll();
-            tvMovies.CheckBoxes = true;
         }
 
         void HideChosenVideoGroup()
@@ -146,6 +177,8 @@ namespace ScreenSaver
 
             string oldCacheDirectory = settings.CacheLocation;
             settings.CacheLocation = txtCacheFolderPath.Text;
+
+            settings.ChosenMovies = ConcatChosenEntities();
 
             settings.SaveSettings();
 
@@ -209,11 +242,44 @@ namespace ScreenSaver
         private void tvMovies_AfterSelect(object sender, TreeViewEventArgs e)
         {
             Trace.WriteLine("Selected tree element " + e.Node.FullPath);
-            if (cbLivePreview.Checked)
+            if (cbLivePreview.Checked && e.Node.FullPath.Contains("\\"))
             {
                 string url = Movies[e.Node.FullPath].url;
                 player.URL = Caching.TryHit(url);
             }
+        }
+
+        private void timerDiskUpdate_Tick(object sender, EventArgs e)
+        {
+            ShowSpace();
+        }
+
+        bool updatingChecked = false;
+        private void tvMovies_AfterCheck(object sender, TreeViewEventArgs e)
+        {
+            if (updatingChecked) return;
+
+            updatingChecked = true;
+
+            if (!e.Node.FullPath.Contains("\\"))
+            {
+                foreach (TreeNode node in e.Node.Nodes)
+                    node.Checked = e.Node.Checked;
+            }
+            else
+            {
+                foreach(TreeNode n in e.Node.Parent.Nodes)
+                {
+                    if (!n.Checked)
+                    {
+                        e.Node.Parent.Checked = false;
+                        return;
+                    }
+                }
+                e.Node.Parent.Checked = true;
+            }
+
+            updatingChecked = false;
         }
     }
 }

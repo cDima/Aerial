@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.okButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
@@ -36,8 +37,9 @@
             this.tabs = new System.Windows.Forms.TabControl();
             this.tabPreferences = new System.Windows.Forms.TabPage();
             this.grpChosenVideos = new System.Windows.Forms.GroupBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.cbLivePreview = new System.Windows.Forms.CheckBox();
             this.player = new AxWMPLib.AxWindowsMediaPlayer();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tvMovies = new System.Windows.Forms.TreeView();
             this.chkUseTimeOfDay = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -53,12 +55,13 @@
             this.changeCacheLocationButton = new System.Windows.Forms.Button();
             this.txtCacheFolderPath = new System.Windows.Forms.TextBox();
             this.tabAbout = new System.Windows.Forms.TabPage();
-            this.cbLivePreview = new System.Windows.Forms.CheckBox();
+            this.timerDiskUpdate = new System.Windows.Forms.Timer(this.components);
+            this.tvChosen = new Aerial.Controls.EntitiesTreeView();
             this.tabs.SuspendLayout();
             this.tabPreferences.SuspendLayout();
             this.grpChosenVideos.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.player)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabCache.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -130,6 +133,7 @@
             // 
             // grpChosenVideos
             // 
+            this.grpChosenVideos.Controls.Add(this.tvChosen);
             this.grpChosenVideos.Controls.Add(this.cbLivePreview);
             this.grpChosenVideos.Controls.Add(this.player);
             this.grpChosenVideos.Controls.Add(this.pictureBox1);
@@ -141,6 +145,27 @@
             this.grpChosenVideos.TabIndex = 13;
             this.grpChosenVideos.TabStop = false;
             this.grpChosenVideos.Text = "Chosen Videos";
+            // 
+            // cbLivePreview
+            // 
+            this.cbLivePreview.AutoSize = true;
+            this.cbLivePreview.Checked = true;
+            this.cbLivePreview.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbLivePreview.Location = new System.Drawing.Point(151, 208);
+            this.cbLivePreview.Name = "cbLivePreview";
+            this.cbLivePreview.Size = new System.Drawing.Size(87, 17);
+            this.cbLivePreview.TabIndex = 18;
+            this.cbLivePreview.Text = "Live Preview";
+            this.cbLivePreview.UseVisualStyleBackColor = true;
+            // 
+            // player
+            // 
+            this.player.Enabled = true;
+            this.player.Location = new System.Drawing.Point(151, 19);
+            this.player.Name = "player";
+            this.player.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("player.OcxState")));
+            this.player.Size = new System.Drawing.Size(232, 132);
+            this.player.TabIndex = 16;
             // 
             // pictureBox1
             // 
@@ -154,15 +179,6 @@
             this.pictureBox1.TabIndex = 17;
             this.pictureBox1.TabStop = false;
             // 
-            // player
-            // 
-            this.player.Enabled = true;
-            this.player.Location = new System.Drawing.Point(151, 19);
-            this.player.Name = "player";
-            this.player.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("player.OcxState")));
-            this.player.Size = new System.Drawing.Size(232, 132);
-            this.player.TabIndex = 16;
-            // 
             // tvMovies
             // 
             this.tvMovies.CheckBoxes = true;
@@ -171,7 +187,7 @@
             this.tvMovies.Name = "tvMovies";
             this.tvMovies.ShowLines = false;
             this.tvMovies.ShowPlusMinus = false;
-            this.tvMovies.Size = new System.Drawing.Size(138, 229);
+            this.tvMovies.Size = new System.Drawing.Size(138, 76);
             this.tvMovies.TabIndex = 15;
             this.tvMovies.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvMovies_AfterSelect);
             // 
@@ -327,17 +343,18 @@
             this.tabAbout.Text = "About";
             this.tabAbout.UseVisualStyleBackColor = true;
             // 
-            // cbLivePreview
+            // timerDiskUpdate
             // 
-            this.cbLivePreview.AutoSize = true;
-            this.cbLivePreview.Checked = true;
-            this.cbLivePreview.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbLivePreview.Location = new System.Drawing.Point(151, 208);
-            this.cbLivePreview.Name = "cbLivePreview";
-            this.cbLivePreview.Size = new System.Drawing.Size(87, 17);
-            this.cbLivePreview.TabIndex = 18;
-            this.cbLivePreview.Text = "Live Preview";
-            this.cbLivePreview.UseVisualStyleBackColor = true;
+            this.timerDiskUpdate.Enabled = true;
+            this.timerDiskUpdate.Interval = 1000;
+            this.timerDiskUpdate.Tick += new System.EventHandler(this.timerDiskUpdate_Tick);
+            // 
+            // tvChosen
+            // 
+            this.tvChosen.Location = new System.Drawing.Point(6, 101);
+            this.tvChosen.Name = "tvChosen";
+            this.tvChosen.Size = new System.Drawing.Size(139, 147);
+            this.tvChosen.TabIndex = 19;
             // 
             // SettingsForm
             // 
@@ -362,8 +379,8 @@
             this.tabPreferences.ResumeLayout(false);
             this.grpChosenVideos.ResumeLayout(false);
             this.grpChosenVideos.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.player)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabCache.ResumeLayout(false);
@@ -399,5 +416,7 @@
         private AxWMPLib.AxWindowsMediaPlayer player;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.CheckBox cbLivePreview;
+        private System.Windows.Forms.Timer timerDiskUpdate;
+        private Aerial.Controls.EntitiesTreeView tvChosen;
     }
 }

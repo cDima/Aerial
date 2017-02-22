@@ -95,6 +95,7 @@ namespace Aerial
 
         internal static async void UpdateCachePath(string oldCacheDirectory, string cacheLocation)
         {
+            if (oldCacheDirectory == cacheLocation) return;
             CacheFolder = cacheLocation;
 
             // Move old cache to new location if space allows
@@ -158,8 +159,9 @@ namespace Aerial
         {
             if (path == null) path = CacheFolder;
             long size = 0;
-            foreach (string name in Directory.GetFiles(path, "*.*"))
-                size += new FileInfo(name).Length;
+            if (Directory.Exists(path)) 
+                foreach (string name in Directory.GetFiles(path, "*.*"))
+                    size += new FileInfo(name).Length;
 
             return size;
         }

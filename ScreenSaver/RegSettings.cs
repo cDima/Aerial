@@ -12,6 +12,7 @@ namespace Aerial
         public bool MultiscreenDisabled = true;
         public bool CacheVideos = true;
         public string CacheLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Aerial");
+        public string ChosenMovies = "";
 
         public RegSettings()
         {
@@ -23,6 +24,7 @@ namespace Aerial
                 MultiscreenDisabled = bool.Parse(key.GetValue(nameof(MultiscreenDisabled)) as string ?? "True");
                 CacheVideos = bool.Parse(key.GetValue(nameof(CacheVideos)) as string ?? "True");
                 CacheLocation = key.GetValue(nameof(CacheLocation)) as string;
+                ChosenMovies = (key.GetValue(nameof(ChosenMovies)) as string ?? "");
             }
         }
 
@@ -38,6 +40,7 @@ namespace Aerial
             key.SetValue(nameof(MultiscreenDisabled), MultiscreenDisabled);
             key.SetValue(nameof(CacheVideos), CacheVideos);
             key.SetValue(nameof(CacheLocation), CacheLocation);
+            key.SetValue(nameof(ChosenMovies), ChosenMovies);
         }
 
     }

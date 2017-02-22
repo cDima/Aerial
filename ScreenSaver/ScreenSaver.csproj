@@ -95,6 +95,9 @@
   <ItemGroup>
     <Compile Include="AerialEntities.cs" />
     <Compile Include="Caching.cs" />
+    <Compile Include="Controls\EntitiesTreeView.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="IgnoreMouseClickMessageFilter.cs" />
     <Compile Include="NativeMethods.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
