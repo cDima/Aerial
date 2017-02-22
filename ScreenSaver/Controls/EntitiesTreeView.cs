@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -7,13 +8,7 @@ namespace Aerial.Controls
     public class EntitiesTreeView : TreeView
     {
         private Dictionary<string, Asset> Movies;
-
-        protected override void WndProc(ref Message m)
-        {
-            // Filter WM_LBUTTONDBLCLK
-            if (m.Msg != 0x203) base.WndProc(ref m);
-        }
-
+        private bool updatingChecked = false;
         public EntitiesTreeView()
         {
             CheckBoxes = true;
@@ -24,14 +19,12 @@ namespace Aerial.Controls
             ShowPlusMinus = false;
             Size = new System.Drawing.Size(138, 229);
             TabIndex = 15;
-            //AfterSelect += new TreeViewEventHandler(AfterSelect);
-            //AfterCheck += new TreeViewEventHandler(tvMovies_AfterCheck);
-
+            AfterCheck += new TreeViewEventHandler(tvMovies_AfterCheck);
         }
 
-        public void BuildTree(List<Asset> movies)
+        public void BuildTree(List<Asset> movies, List<string> selectedEntities)
         {
-            var selected = new RegSettings().ChosenMovies.Split(';').ToList();
+            updatingChecked = true;
             TreeNode root = new TreeNode(movies[0].accessibilityLabel);
             Nodes.Add(root);
             Movies = new Dictionary<string, Asset>();
@@ -49,12 +42,68 @@ namespace Aerial.Controls
                 // add node
                 var newNode = new TreeNode(m.TimeNumbered());
                 root.Nodes.Add(newNode);
-                newNode.Checked = selected.Contains(newNode.FullPath);
+                newNode.Checked = selectedEntities.Contains(newNode.FullPath);
                 allChecked = allChecked && newNode.Checked;
                 Movies.Add(root.Nodes[root.Nodes.Count - 1].FullPath, m);
             }
 
             ExpandAll();
+
+            updatingChecked = false;
+
+            StartPlayer();
+        }
+
+        private void StartPlayer()
+        {
+            SelectedNode = Nodes[0].Nodes[0];
+            Select();
+            TopNode.EnsureVisible();
+            Nodes[0].EnsureVisible();
+        }
+
+        public string ConcatChosenEntities()
+        {
+            var selected = "";
+            foreach (TreeNode root in Nodes)
+                foreach (TreeNode n in root.Nodes)
+                    if (n.Checked)
+                        selected += ";" + n.FullPath;
+
+            return selected + ";";
+        }
+
+
+        private void tvMovies_AfterCheck(object sender, TreeViewEventArgs e)
+        {
+            if (updatingChecked) return;
+
+            updatingChecked = true;
+
+            if (!e.Node.FullPath.Contains("\\"))
+            {
+                foreach (TreeNode node in e.Node.Nodes)
+                    node.Checked = e.Node.Checked;
+            }
+            else
+            {
+                foreach (TreeNode n in e.Node.Parent.Nodes)
+                {
+                    if (!n.Checked)
+                    {
+                        e.Node.Parent.Checked = false;
+                        return;
+                    }
+                }
+                e.Node.Parent.Checked = true;
+            }
+
+            updatingChecked = false;
+        }
+
+        internal string GetUrl(string fullPath)
+        {
+            return Movies[fullPath].url;
         }
     }
 }

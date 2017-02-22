@@ -37,10 +37,10 @@
             this.tabs = new System.Windows.Forms.TabControl();
             this.tabPreferences = new System.Windows.Forms.TabPage();
             this.grpChosenVideos = new System.Windows.Forms.GroupBox();
+            this.tvChosen = new Aerial.Controls.EntitiesTreeView();
             this.cbLivePreview = new System.Windows.Forms.CheckBox();
             this.player = new AxWMPLib.AxWindowsMediaPlayer();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.tvMovies = new System.Windows.Forms.TreeView();
             this.chkUseTimeOfDay = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.chkMultiscreenDisabled = new System.Windows.Forms.CheckBox();
@@ -56,7 +56,6 @@
             this.txtCacheFolderPath = new System.Windows.Forms.TextBox();
             this.tabAbout = new System.Windows.Forms.TabPage();
             this.timerDiskUpdate = new System.Windows.Forms.Timer(this.components);
-            this.tvChosen = new Aerial.Controls.EntitiesTreeView();
             this.tabs.SuspendLayout();
             this.tabPreferences.SuspendLayout();
             this.grpChosenVideos.SuspendLayout();
@@ -137,7 +136,6 @@
             this.grpChosenVideos.Controls.Add(this.cbLivePreview);
             this.grpChosenVideos.Controls.Add(this.player);
             this.grpChosenVideos.Controls.Add(this.pictureBox1);
-            this.grpChosenVideos.Controls.Add(this.tvMovies);
             this.grpChosenVideos.Controls.Add(this.chkUseTimeOfDay);
             this.grpChosenVideos.Location = new System.Drawing.Point(7, 75);
             this.grpChosenVideos.Name = "grpChosenVideos";
@@ -145,6 +143,18 @@
             this.grpChosenVideos.TabIndex = 13;
             this.grpChosenVideos.TabStop = false;
             this.grpChosenVideos.Text = "Chosen Videos";
+            // 
+            // tvChosen
+            // 
+            this.tvChosen.CheckBoxes = true;
+            this.tvChosen.FullRowSelect = true;
+            this.tvChosen.Location = new System.Drawing.Point(6, 19);
+            this.tvChosen.Name = "tvChosen";
+            this.tvChosen.ShowLines = false;
+            this.tvChosen.ShowPlusMinus = false;
+            this.tvChosen.Size = new System.Drawing.Size(139, 229);
+            this.tvChosen.TabIndex = 19;
+            this.tvChosen.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvChosen_AfterSelect);
             // 
             // cbLivePreview
             // 
@@ -178,18 +188,6 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 17;
             this.pictureBox1.TabStop = false;
-            // 
-            // tvMovies
-            // 
-            this.tvMovies.CheckBoxes = true;
-            this.tvMovies.FullRowSelect = true;
-            this.tvMovies.Location = new System.Drawing.Point(7, 19);
-            this.tvMovies.Name = "tvMovies";
-            this.tvMovies.ShowLines = false;
-            this.tvMovies.ShowPlusMinus = false;
-            this.tvMovies.Size = new System.Drawing.Size(138, 76);
-            this.tvMovies.TabIndex = 15;
-            this.tvMovies.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvMovies_AfterSelect);
             // 
             // chkUseTimeOfDay
             // 
@@ -349,13 +347,6 @@
             this.timerDiskUpdate.Interval = 1000;
             this.timerDiskUpdate.Tick += new System.EventHandler(this.timerDiskUpdate_Tick);
             // 
-            // tvChosen
-            // 
-            this.tvChosen.Location = new System.Drawing.Point(6, 101);
-            this.tvChosen.Name = "tvChosen";
-            this.tvChosen.Size = new System.Drawing.Size(139, 147);
-            this.tvChosen.TabIndex = 19;
-            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -412,7 +403,6 @@
         private System.Windows.Forms.Label lblFreeSpace;
         private System.Windows.Forms.Button btnPurgeCache;
         private System.Windows.Forms.Label lblCacheSize;
-        private System.Windows.Forms.TreeView tvMovies;
         private AxWMPLib.AxWindowsMediaPlayer player;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.CheckBox cbLivePreview;

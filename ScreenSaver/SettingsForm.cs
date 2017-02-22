@@ -10,7 +10,6 @@ namespace ScreenSaver
 {
     public partial class SettingsForm : Form
     {
-        private Dictionary<string, Asset> Movies;
         public SettingsForm()
         {
             InitializeComponent();
@@ -42,11 +41,8 @@ namespace ScreenSaver
             ShowSpace();
 
             PopulateChosenVideoGroup();
-            //HideChosenVideoGroup();
 
             InitPlayer();
-
-            StartPlayer();
         }
 
         private void InitPlayer()
@@ -58,13 +54,6 @@ namespace ScreenSaver
             this.player.uiMode = "none";
         }
 
-        private void StartPlayer()
-        {
-            tvChosen.SelectedNode = tvChosen.Nodes[0].Nodes[0];
-            tvChosen.Select();
-            tvChosen.TopNode.EnsureVisible();
-            tvChosen.Nodes[0].EnsureVisible();
-        }
 
         private void PopulateChosenVideoGroup()
         {
@@ -73,49 +62,19 @@ namespace ScreenSaver
             if (movies.Count == 0) return; // error
 
             AddHumanNumbers(movies);
-            BuildTree(movies);
-            tvChosen.BuildTree(movies);
-            tvMovies.AfterCheck += new TreeViewEventHandler(tvMovies_AfterCheck);
 
-            tvMovies.ExpandAll();
-            tvMovies.CheckBoxes = true;
-        }
-
-        private void BuildTree(List<Asset> movies)
-        {
             var selected = new RegSettings().ChosenMovies.Split(';').ToList();
-            TreeNode root = new TreeNode(movies[0].accessibilityLabel);
-            tvMovies.Nodes.Add(root);
-            Movies = new Dictionary<string, Asset>();
-            bool allChecked = true;
-            foreach (var m in movies)
-            {
-                if (m.accessibilityLabel != root.Text)
-                {
-                    // checked root
-                    if (allChecked) root.Checked = true;
-                    // new root
-                    root = new TreeNode(m.accessibilityLabel);
-                    tvMovies.Nodes.Add(root);
-                }
-                // add node
-                var newNode = new TreeNode(m.TimeNumbered());
-                root.Nodes.Add(newNode);
-                newNode.Checked = selected.Contains(newNode.FullPath);
-                allChecked = allChecked && newNode.Checked;
-                Movies.Add(root.Nodes[root.Nodes.Count - 1].FullPath, m);
-            }
+            tvChosen.BuildTree(movies, selected);
         }
 
-        private string ConcatChosenEntities()
+        private void tvChosen_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            var selected = "";
-            foreach (TreeNode root in tvMovies.Nodes)
-                foreach(TreeNode n in root.Nodes)
-                    if (n.Checked)
-                        selected += ";" + n.FullPath;
-            
-            return selected + ";";
+            Trace.WriteLine("Selected tree element " + e.Node.FullPath);
+            if (cbLivePreview.Checked && e.Node.FullPath.Contains("\\"))
+            {
+                string url = tvChosen.GetUrl(e.Node.FullPath);
+                player.URL = Caching.TryHit(url);
+            }
         }
 
         private static void AddHumanNumbers(List<Asset> movies)
@@ -178,7 +137,7 @@ namespace ScreenSaver
             string oldCacheDirectory = settings.CacheLocation;
             settings.CacheLocation = txtCacheFolderPath.Text;
 
-            settings.ChosenMovies = ConcatChosenEntities();
+            settings.ChosenMovies = tvChosen.ConcatChosenEntities();
 
             settings.SaveSettings();
 
@@ -239,47 +198,10 @@ namespace ScreenSaver
             ShowSpace();
         }
 
-        private void tvMovies_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            Trace.WriteLine("Selected tree element " + e.Node.FullPath);
-            if (cbLivePreview.Checked && e.Node.FullPath.Contains("\\"))
-            {
-                string url = Movies[e.Node.FullPath].url;
-                player.URL = Caching.TryHit(url);
-            }
-        }
 
         private void timerDiskUpdate_Tick(object sender, EventArgs e)
         {
             ShowSpace();
-        }
-
-        bool updatingChecked = false;
-        private void tvMovies_AfterCheck(object sender, TreeViewEventArgs e)
-        {
-            if (updatingChecked) return;
-
-            updatingChecked = true;
-
-            if (!e.Node.FullPath.Contains("\\"))
-            {
-                foreach (TreeNode node in e.Node.Nodes)
-                    node.Checked = e.Node.Checked;
-            }
-            else
-            {
-                foreach(TreeNode n in e.Node.Parent.Nodes)
-                {
-                    if (!n.Checked)
-                    {
-                        e.Node.Parent.Checked = false;
-                        return;
-                    }
-                }
-                e.Node.Parent.Checked = true;
-            }
-
-            updatingChecked = false;
         }
     }
 }
