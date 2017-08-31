@@ -5,6 +5,9 @@ using System.Linq;
 using Aerial;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Net;
+using System.Web.Script.Serialization;
 
 namespace ScreenSaver
 {
@@ -179,8 +182,7 @@ namespace ScreenSaver
 
         private void lblVersion_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            // todo get latest builds from json interface: https://api.github.com/repos/cdima/aerial/releases/latest
-            ProcessStartInfo sInfo = new ProcessStartInfo("https://github.com/cDima/Aerial/releases");
+            ProcessStartInfo sInfo = new ProcessStartInfo(getLatestReleaseURI());
             Process.Start(sInfo);
         }
 
@@ -202,6 +204,39 @@ namespace ScreenSaver
         private void timerDiskUpdate_Tick(object sender, EventArgs e)
         {
             ShowSpace();
+        }
+
+        private string getLatestReleaseURI()
+        {
+            string githubReleaseDetailsURI = ConfigurationManager.AppSettings["githubLatestReleaseDetails"];
+
+
+            string releaseData = "";
+
+            using (WebClient w = new WebClient())
+            {
+                w.Headers.Add("User-Agent: Other");  //github will give a 403 if we don't define the user agent
+                try
+                {
+                    releaseData = w.DownloadString(githubReleaseDetailsURI);
+                } catch (WebException)
+                {
+                    //if we have an error reading the release data, just use the standard URL for all releases (AKA do nothing here)
+                }
+            }
+            var deserializedData = new JavaScriptSerializer().Deserialize<dynamic>(releaseData);
+
+            string githubURL = "";
+
+            if (String.IsNullOrEmpty(releaseData))
+            {
+                githubURL = ConfigurationManager.AppSettings["githubAllReleases"]; //URL for all releases
+            } else
+            {
+                githubURL = deserializedData["html_url"];
+            }
+
+            return githubURL;
         }
     }
 }
