@@ -212,14 +212,31 @@ namespace ScreenSaver
 
 
             string releaseData = "";
+
             using (WebClient w = new WebClient())
             {
                 w.Headers.Add("User-Agent: Other");  //github will give a 403 if we don't define the user agent
-                releaseData = w.DownloadString(githubReleaseDetailsURI);
+                try
+                {
+                    releaseData = w.DownloadString(githubReleaseDetailsURI);
+                } catch (WebException)
+                {
+                    //if we have an error reading the release data, just use the standard URL for all releases (AKA do nothing here)
+                }
             }
             var deserializedData = new JavaScriptSerializer().Deserialize<dynamic>(releaseData);
 
-            return deserializedData["html_url"];
+            string githubURL = "";
+
+            if (String.IsNullOrEmpty(releaseData))
+            {
+                githubURL = ConfigurationManager.AppSettings["githubAllReleases"]; //URL for all releases
+            } else
+            {
+                githubURL = deserializedData["html_url"];
+            }
+
+            return githubURL;
         }
     }
 }
