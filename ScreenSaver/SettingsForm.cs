@@ -5,7 +5,6 @@ using System.Linq;
 using Aerial;
 using System.Diagnostics;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Net;
 using System.Web.Script.Serialization;
 
@@ -37,6 +36,14 @@ namespace ScreenSaver
             else
             {
                 txtCacheFolderPath.Text = settings.CacheLocation;
+            }
+
+            if (String.IsNullOrEmpty(settings.JsonURL))
+            {
+                changeVideoSourceText.Text = AerialGlobalVars.appleVideosURI;
+            } else
+            {
+                changeVideoSourceText.Text = settings.JsonURL;
             }
             
             changeCacheLocationButton.Enabled = settings.CacheVideos;
@@ -139,6 +146,7 @@ namespace ScreenSaver
 
             string oldCacheDirectory = settings.CacheLocation;
             settings.CacheLocation = txtCacheFolderPath.Text;
+            settings.JsonURL = changeVideoSourceText.Text;
 
             settings.ChosenMovies = tvChosen.ConcatChosenEntities();
 
@@ -177,7 +185,7 @@ namespace ScreenSaver
 
         private void SettingsForm_Load(object sender, EventArgs e)
         {
-            this.lblVersion.Text = "Current Version " + AssemblyVersion.ExecutingAssemblyVersion + " (" + AssemblyVersion.CompileDate + ")";
+            this.lblVersion.Text = "Current Version " + AssemblyVersion.ExecutingAssemblyVersion + " (" + AssemblyVersion.CompileDate.ToShortDateString() + ")";
         }
 
         private void lblVersion_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -208,9 +216,6 @@ namespace ScreenSaver
 
         private string getLatestReleaseURI()
         {
-            string githubReleaseDetailsURI = ConfigurationManager.AppSettings["githubLatestReleaseDetails"];
-
-
             string releaseData = "";
 
             using (WebClient w = new WebClient())
@@ -218,7 +223,7 @@ namespace ScreenSaver
                 w.Headers.Add("User-Agent: Other");  //github will give a 403 if we don't define the user agent
                 try
                 {
-                    releaseData = w.DownloadString(githubReleaseDetailsURI);
+                    releaseData = w.DownloadString(AerialGlobalVars.githubLatestReleaseDetails);
                 } catch (WebException)
                 {
                     //if we have an error reading the release data, just use the standard URL for all releases (AKA do nothing here)
@@ -230,13 +235,18 @@ namespace ScreenSaver
 
             if (String.IsNullOrEmpty(releaseData))
             {
-                githubURL = ConfigurationManager.AppSettings["githubAllReleases"]; //URL for all releases
+                githubURL = AerialGlobalVars.githubAllReleases; //URL for all releases
             } else
             {
                 githubURL = deserializedData["html_url"];
             }
 
             return githubURL;
+        }
+
+        private void videoSourceResetButton_Click(object sender, EventArgs e)
+        {
+            changeVideoSourceText.Text = AerialGlobalVars.appleVideosURI;
         }
     }
 }
