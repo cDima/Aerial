@@ -15,6 +15,12 @@ namespace ScreenSaver
         {
             InitializeComponent();
             LoadSettings();
+
+            //timer to update the number of current downloads every second
+            var myTimer = new Timer();
+            myTimer.Tick += new EventHandler(updateNumCurrDownloads);
+            myTimer.Interval = 1 * 1000; //1 second
+            myTimer.Start();
         }
 
         /// <summary>
@@ -112,6 +118,11 @@ namespace ScreenSaver
             // while developing
             tabs.TabPages.Remove(tabAbout);
             grpChosenVideos.Hide();
+        }
+
+        private void updateNumCurrDownloads(object sender, EventArgs e)
+        {
+            numOfCurrDown_lbl.Text = "# of files downloading: " + Caching.NumOfCurrentDownloads;
         }
 
         private void ShowSpace()

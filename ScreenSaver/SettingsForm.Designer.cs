@@ -37,9 +37,7 @@
             this.tabs = new System.Windows.Forms.TabControl();
             this.tabPreferences = new System.Windows.Forms.TabPage();
             this.grpChosenVideos = new System.Windows.Forms.GroupBox();
-            this.tvChosen = new Aerial.Controls.EntitiesTreeView();
             this.cbLivePreview = new System.Windows.Forms.CheckBox();
-            this.player = new AxWMPLib.AxWindowsMediaPlayer();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.chkUseTimeOfDay = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -57,14 +55,17 @@
             this.tabAbout = new System.Windows.Forms.TabPage();
             this.timerDiskUpdate = new System.Windows.Forms.Timer(this.components);
             this.fullDownloadBtn = new System.Windows.Forms.Button();
+            this.player = new AxWMPLib.AxWindowsMediaPlayer();
+            this.numOfCurrDown_lbl = new System.Windows.Forms.Label();
+            this.tvChosen = new Aerial.Controls.EntitiesTreeView();
             this.tabs.SuspendLayout();
             this.tabPreferences.SuspendLayout();
             this.grpChosenVideos.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.player)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tabCache.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.player)).BeginInit();
             this.SuspendLayout();
             // 
             // okButton
@@ -152,19 +153,6 @@
             this.grpChosenVideos.TabStop = false;
             this.grpChosenVideos.Text = "Chosen Videos";
             // 
-            // tvChosen
-            // 
-            this.tvChosen.CheckBoxes = true;
-            this.tvChosen.FullRowSelect = true;
-            this.tvChosen.Location = new System.Drawing.Point(9, 29);
-            this.tvChosen.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.tvChosen.Name = "tvChosen";
-            this.tvChosen.ShowLines = false;
-            this.tvChosen.ShowPlusMinus = false;
-            this.tvChosen.Size = new System.Drawing.Size(206, 350);
-            this.tvChosen.TabIndex = 19;
-            this.tvChosen.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvChosen_AfterSelect);
-            // 
             // cbLivePreview
             // 
             this.cbLivePreview.AutoSize = true;
@@ -177,16 +165,6 @@
             this.cbLivePreview.TabIndex = 18;
             this.cbLivePreview.Text = "Live Preview";
             this.cbLivePreview.UseVisualStyleBackColor = true;
-            // 
-            // player
-            // 
-            this.player.Enabled = true;
-            this.player.Location = new System.Drawing.Point(151, 19);
-            this.player.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.player.Name = "player";
-            this.player.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("player.OcxState")));
-            this.player.Size = new System.Drawing.Size(232, 132);
-            this.player.TabIndex = 16;
             // 
             // pictureBox1
             // 
@@ -267,6 +245,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.numOfCurrDown_lbl);
             this.groupBox2.Controls.Add(this.fullDownloadBtn);
             this.groupBox2.Controls.Add(this.lblFreeSpace);
             this.groupBox2.Controls.Add(this.btnPurgeCache);
@@ -287,7 +266,7 @@
             // lblFreeSpace
             // 
             this.lblFreeSpace.AutoSize = true;
-            this.lblFreeSpace.Location = new System.Drawing.Point(24, 117);
+            this.lblFreeSpace.Location = new System.Drawing.Point(24, 139);
             this.lblFreeSpace.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblFreeSpace.Name = "lblFreeSpace";
             this.lblFreeSpace.Size = new System.Drawing.Size(163, 20);
@@ -296,7 +275,7 @@
             // 
             // btnPurgeCache
             // 
-            this.btnPurgeCache.Location = new System.Drawing.Point(346, 109);
+            this.btnPurgeCache.Location = new System.Drawing.Point(346, 131);
             this.btnPurgeCache.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnPurgeCache.Name = "btnPurgeCache";
             this.btnPurgeCache.Size = new System.Drawing.Size(228, 35);
@@ -308,7 +287,7 @@
             // lblCacheSize
             // 
             this.lblCacheSize.AutoSize = true;
-            this.lblCacheSize.Location = new System.Drawing.Point(24, 80);
+            this.lblCacheSize.Location = new System.Drawing.Point(24, 102);
             this.lblCacheSize.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCacheSize.Name = "lblCacheSize";
             this.lblCacheSize.Size = new System.Drawing.Size(151, 20);
@@ -317,7 +296,7 @@
             // 
             // btnOpenCache
             // 
-            this.btnOpenCache.Location = new System.Drawing.Point(346, 72);
+            this.btnOpenCache.Location = new System.Drawing.Point(346, 94);
             this.btnOpenCache.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnOpenCache.Name = "btnOpenCache";
             this.btnOpenCache.Size = new System.Drawing.Size(228, 35);
@@ -340,7 +319,7 @@
             // changeCacheLocationButton
             // 
             this.changeCacheLocationButton.Enabled = false;
-            this.changeCacheLocationButton.Location = new System.Drawing.Point(346, 162);
+            this.changeCacheLocationButton.Location = new System.Drawing.Point(346, 184);
             this.changeCacheLocationButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.changeCacheLocationButton.Name = "changeCacheLocationButton";
             this.changeCacheLocationButton.Size = new System.Drawing.Size(228, 35);
@@ -353,7 +332,7 @@
             // 
             this.txtCacheFolderPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtCacheFolderPath.Location = new System.Drawing.Point(9, 165);
+            this.txtCacheFolderPath.Location = new System.Drawing.Point(9, 187);
             this.txtCacheFolderPath.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.txtCacheFolderPath.Name = "txtCacheFolderPath";
             this.txtCacheFolderPath.ReadOnly = true;
@@ -387,6 +366,37 @@
             this.fullDownloadBtn.UseVisualStyleBackColor = true;
             this.fullDownloadBtn.Click += new System.EventHandler(this.fullDownloadBtn_Click);
             // 
+            // player
+            // 
+            this.player.Enabled = true;
+            this.player.Location = new System.Drawing.Point(151, 19);
+            this.player.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.player.Name = "player";
+            this.player.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("player.OcxState")));
+            this.player.Size = new System.Drawing.Size(232, 132);
+            this.player.TabIndex = 16;
+            // 
+            // numOfCurrDown_lbl
+            // 
+            this.numOfCurrDown_lbl.AutoSize = true;
+            this.numOfCurrDown_lbl.Location = new System.Drawing.Point(382, 58);
+            this.numOfCurrDown_lbl.Name = "numOfCurrDown_lbl";
+            this.numOfCurrDown_lbl.Size = new System.Drawing.Size(0, 20);
+            this.numOfCurrDown_lbl.TabIndex = 21;
+            // 
+            // tvChosen
+            // 
+            this.tvChosen.CheckBoxes = true;
+            this.tvChosen.FullRowSelect = true;
+            this.tvChosen.Location = new System.Drawing.Point(9, 29);
+            this.tvChosen.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.tvChosen.Name = "tvChosen";
+            this.tvChosen.ShowLines = false;
+            this.tvChosen.ShowPlusMinus = false;
+            this.tvChosen.Size = new System.Drawing.Size(206, 350);
+            this.tvChosen.TabIndex = 19;
+            this.tvChosen.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvChosen_AfterSelect);
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -411,13 +421,13 @@
             this.tabPreferences.ResumeLayout(false);
             this.grpChosenVideos.ResumeLayout(false);
             this.grpChosenVideos.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.player)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tabCache.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.player)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -450,5 +460,6 @@
         private System.Windows.Forms.Timer timerDiskUpdate;
         private Aerial.Controls.EntitiesTreeView tvChosen;
         private System.Windows.Forms.Button fullDownloadBtn;
+        private System.Windows.Forms.Label numOfCurrDown_lbl;
     }
 }
