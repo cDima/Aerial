@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Net;
 using System.Diagnostics;
+using System.Threading;
 
 namespace Aerial
 {
@@ -13,6 +14,9 @@ namespace Aerial
         public static string CacheFolder = new RegSettings().CacheLocation;
 
         public static int DelayAmount = 1000 * 10; // 10 seconds.
+        public static int NumOfCurrentDownloads = 0;
+
+
 
         /// <summary>
         /// Init cache. Clear partially downloaded files from temp folder.
@@ -68,6 +72,7 @@ namespace Aerial
                             client.DownloadFileCompleted += new AsyncCompletedEventHandler(OnDownloadFileComplete);
                             string filename = Path.GetFileName(url);
                             client.DownloadFileAsync(new Uri(url), Path.Combine(TempFolder, filename), filename);
+                            DownloadStart();
                         }
                     }
                 });
@@ -91,6 +96,9 @@ namespace Aerial
                 // attempt to remove partially downloaded file
                 File.Delete(tempFullPath);
             }
+
+            DownloadEnd();
+            
         }
 
         internal static async void UpdateCachePath(string oldCacheDirectory, string cacheLocation)
@@ -180,6 +188,16 @@ namespace Aerial
             if (IsHit(url))
                 return Get(url);
             return url;
+        }
+
+        private static void DownloadStart()
+        {
+            Interlocked.Increment(ref NumOfCurrentDownloads);
+        }
+
+        private static void DownloadEnd()
+        {
+            Interlocked.Decrement(ref NumOfCurrentDownloads);
         }
     }
 }

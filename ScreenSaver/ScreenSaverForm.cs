@@ -171,7 +171,7 @@ namespace ScreenSaver
         }
 #endregion
 
-#region Mouse events
+        #region Mouse events
         
         private void Player_MouseDownEvent(object sender, AxWMPLib._WMPOCXEvents_MouseDownEvent e)
         {

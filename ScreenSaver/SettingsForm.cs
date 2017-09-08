@@ -16,6 +16,12 @@ namespace ScreenSaver
         {
             InitializeComponent();
             LoadSettings();
+
+            //timer to update the number of current downloads every second
+            var myTimer = new Timer();
+            myTimer.Tick += new EventHandler(updateNumCurrDownloads);
+            myTimer.Interval = 1 * 1000; //1 second
+            myTimer.Start();
         }
 
         /// <summary>
@@ -121,6 +127,11 @@ namespace ScreenSaver
             // while developing
             tabs.TabPages.Remove(tabAbout);
             grpChosenVideos.Hide();
+        }
+
+        private void updateNumCurrDownloads(object sender, EventArgs e)
+        {
+            numOfCurrDown_lbl.Text = "# of files downloading: " + Caching.NumOfCurrentDownloads;
         }
 
         private void ShowSpace()
@@ -247,6 +258,37 @@ namespace ScreenSaver
         private void videoSourceResetButton_Click(object sender, EventArgs e)
         {
             changeVideoSourceText.Text = AerialGlobalVars.appleVideosURI;
+        }
+        private void fullDownloadBtn_Click(object sender, EventArgs e)
+        {
+            var movies = AerialContext.GetAllMovies();
+
+
+            var cacheFree = NativeMethods.GetExplorerFileSize(Caching.CacheSpace());
+            if (MessageBox.Show("Downloading all videos may take over 10GB of space, do you want to procede? " +
+                                "(You currently have " + cacheFree + " of space free)", "Download?", MessageBoxButtons.YesNo) != DialogResult.Yes)
+            {
+                //don't download if user cancels
+                return;
+            }
+
+            try
+            {
+                foreach (var movie in movies)
+                {
+                    if (!Caching.IsHit(movie.url))
+                    {
+                        Caching.StartDelayedCache(movie.url);
+                        Trace.WriteLine("Downloading " + movie.url);
+                    } else
+                    {
+                        Trace.WriteLine(movie.url + " is already cached");
+                    }
+                }
+            } catch (WebException err)
+            {
+                Trace.WriteLine("Error downloading all videos: " + err.ToString());
+            }
         }
     }
 }
