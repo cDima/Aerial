@@ -5,7 +5,6 @@ using System.Linq;
 using Aerial;
 using System.Diagnostics;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Net;
 using System.Web.Script.Serialization;
 
@@ -17,6 +16,12 @@ namespace ScreenSaver
         {
             InitializeComponent();
             LoadSettings();
+
+            //timer to update the number of current downloads every second
+            var myTimer = new Timer();
+            myTimer.Tick += new EventHandler(updateNumCurrDownloads);
+            myTimer.Interval = 1 * 1000; //1 second
+            myTimer.Start();
         }
 
         /// <summary>
@@ -37,6 +42,14 @@ namespace ScreenSaver
             else
             {
                 txtCacheFolderPath.Text = settings.CacheLocation;
+            }
+
+            if (String.IsNullOrEmpty(settings.JsonURL))
+            {
+                changeVideoSourceText.Text = AerialGlobalVars.appleVideosURI;
+            } else
+            {
+                changeVideoSourceText.Text = settings.JsonURL;
             }
             
             changeCacheLocationButton.Enabled = settings.CacheVideos;
@@ -116,6 +129,11 @@ namespace ScreenSaver
             grpChosenVideos.Hide();
         }
 
+        private void updateNumCurrDownloads(object sender, EventArgs e)
+        {
+            numOfCurrDown_lbl.Text = "# of files downloading: " + Caching.NumOfCurrentDownloads;
+        }
+
         private void ShowSpace()
         {
             var cacheSize = NativeMethods.GetExplorerFileSize(Caching.GetDirectorySize());
@@ -139,6 +157,7 @@ namespace ScreenSaver
 
             string oldCacheDirectory = settings.CacheLocation;
             settings.CacheLocation = txtCacheFolderPath.Text;
+            settings.JsonURL = changeVideoSourceText.Text;
 
             settings.ChosenMovies = tvChosen.ConcatChosenEntities();
 
@@ -177,7 +196,7 @@ namespace ScreenSaver
 
         private void SettingsForm_Load(object sender, EventArgs e)
         {
-            this.lblVersion.Text = "Current Version " + AssemblyVersion.ExecutingAssemblyVersion + " (" + AssemblyVersion.CompileDate + ")";
+            this.lblVersion.Text = "Current Version " + AssemblyVersion.ExecutingAssemblyVersion + " (" + AssemblyVersion.CompileDate.ToShortDateString() + ")";
         }
 
         private void lblVersion_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -208,9 +227,6 @@ namespace ScreenSaver
 
         private string getLatestReleaseURI()
         {
-            string githubReleaseDetailsURI = ConfigurationManager.AppSettings["githubLatestReleaseDetails"];
-
-
             string releaseData = "";
 
             using (WebClient w = new WebClient())
@@ -218,7 +234,7 @@ namespace ScreenSaver
                 w.Headers.Add("User-Agent: Other");  //github will give a 403 if we don't define the user agent
                 try
                 {
-                    releaseData = w.DownloadString(githubReleaseDetailsURI);
+                    releaseData = w.DownloadString(AerialGlobalVars.githubLatestReleaseDetails);
                 } catch (WebException)
                 {
                     //if we have an error reading the release data, just use the standard URL for all releases (AKA do nothing here)
@@ -230,13 +246,49 @@ namespace ScreenSaver
 
             if (String.IsNullOrEmpty(releaseData))
             {
-                githubURL = ConfigurationManager.AppSettings["githubAllReleases"]; //URL for all releases
+                githubURL = AerialGlobalVars.githubAllReleases; //URL for all releases
             } else
             {
                 githubURL = deserializedData["html_url"];
             }
 
             return githubURL;
+        }
+
+        private void videoSourceResetButton_Click(object sender, EventArgs e)
+        {
+            changeVideoSourceText.Text = AerialGlobalVars.appleVideosURI;
+        }
+        private void fullDownloadBtn_Click(object sender, EventArgs e)
+        {
+            var movies = AerialContext.GetAllMovies();
+
+
+            var cacheFree = NativeMethods.GetExplorerFileSize(Caching.CacheSpace());
+            if (MessageBox.Show("Downloading all videos may take over 10GB of space, do you want to procede? " +
+                                "(You currently have " + cacheFree + " of space free)", "Download?", MessageBoxButtons.YesNo) != DialogResult.Yes)
+            {
+                //don't download if user cancels
+                return;
+            }
+
+            try
+            {
+                foreach (var movie in movies)
+                {
+                    if (!Caching.IsHit(movie.url))
+                    {
+                        Caching.StartDelayedCache(movie.url);
+                        Trace.WriteLine("Downloading " + movie.url);
+                    } else
+                    {
+                        Trace.WriteLine(movie.url + " is already cached");
+                    }
+                }
+            } catch (WebException err)
+            {
+                Trace.WriteLine("Error downloading all videos: " + err.ToString());
+            }
         }
     }
 }

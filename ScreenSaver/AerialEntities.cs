@@ -47,7 +47,9 @@ namespace Aerial
         public static IdAsset[] GetAllEntries()
         {
             if (cachedEntities != null) return cachedEntities;
-            var aerialUrl = "http://a1.phobos.apple.com/us/r1000/000/Features/atv/AutumnResources/videos/entries.json";
+
+            var settings = new RegSettings();
+            var aerialUrl = settings.JsonURL;
 #if OFFLINE
             aerialUrl = "http://BOGUS/entries.json";
 #endif

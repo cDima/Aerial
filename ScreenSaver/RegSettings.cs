@@ -13,6 +13,7 @@ namespace Aerial
         public bool CacheVideos = true;
         public string CacheLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Aerial");
         public string ChosenMovies = "";
+        public string JsonURL = AerialGlobalVars.appleVideosURI;
 
         public RegSettings()
         {
@@ -25,6 +26,7 @@ namespace Aerial
                 CacheVideos = bool.Parse(key.GetValue(nameof(CacheVideos)) as string ?? "True");
                 CacheLocation = key.GetValue(nameof(CacheLocation)) as string;
                 ChosenMovies = (key.GetValue(nameof(ChosenMovies)) as string ?? "");
+                JsonURL = key.GetValue(nameof(JsonURL)) as string;
             }
         }
 
@@ -41,6 +43,7 @@ namespace Aerial
             key.SetValue(nameof(CacheVideos), CacheVideos);
             key.SetValue(nameof(CacheLocation), CacheLocation);
             key.SetValue(nameof(ChosenMovies), ChosenMovies);
+            key.SetValue(nameof(JsonURL), JsonURL);
         }
 
     }
