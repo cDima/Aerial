@@ -5,6 +5,7 @@ using System.Linq;
 using Aerial;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Net;
 
 namespace ScreenSaver
 {
@@ -202,6 +203,39 @@ namespace ScreenSaver
         private void timerDiskUpdate_Tick(object sender, EventArgs e)
         {
             ShowSpace();
+        }
+
+        private void fullDownloadBtn_Click(object sender, EventArgs e)
+        {
+            var movies = AerialContext.GetAllMovies();
+
+
+            var cacheFree = NativeMethods.GetExplorerFileSize(Caching.CacheSpace());
+            if (MessageBox.Show("Downloading all videos may take over 10GB of space, do you want to procede? " +
+                                "(You currently have " + cacheFree + " of space free)", "Download?", MessageBoxButtons.YesNo) != DialogResult.Yes)
+            {
+                //don't download if user cancels
+                return;
+            }
+
+            try
+            {
+                foreach (var movie in movies)
+                {
+                    if (!Caching.IsHit(movie.url))
+                    {
+                        Caching.StartDelayedCache(movie.url);
+                        Trace.WriteLine("Downloading " + movie.url);
+                    } else
+                    {
+                        Trace.WriteLine(movie.url + " is already cached");
+                    }
+                }
+            } catch (WebException err)
+            {
+                Trace.WriteLine("Error downloading all videos: " + err.ToString());
+            }
+
         }
     }
 }
