@@ -31,7 +31,7 @@ namespace Aerial
             var ran = new Random();
             var settings = new RegSettings();
             List<Asset> links = urls.SelectMany(s => s.assets)
-                .Where(t => AssetSelected(t) == true) //only return videos that have been selected to be played
+                .Where(t => AssetSelected(t)) //only return videos that have been selected to be played
                 .OrderBy(t => ran.Next()) // randomize
                 .OrderByDescending(t => settings.UseTimeOfDay && t.timeOfDay == time)
                 .ToList();
