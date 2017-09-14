@@ -40,7 +40,7 @@ namespace Aerial.Controls
                     Nodes.Add(root);
                 }
                 // add node
-                var newNode = new TreeNode(m.TimeNumbered());
+                var newNode = new TreeNode(m.TimeAndIdNumbered());
                 root.Nodes.Add(newNode);
                 newNode.Checked = selectedEntities.Contains(newNode.FullPath);
                 allChecked = allChecked && newNode.Checked;

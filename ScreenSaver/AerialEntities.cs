@@ -31,9 +31,16 @@ namespace Aerial
             var ran = new Random();
             var settings = new RegSettings();
             List<Asset> links = urls.SelectMany(s => s.assets)
+                .Where(t => AssetSelected(t)) //only return videos that have been selected to be played
                 .OrderBy(t => ran.Next()) // randomize
                 .OrderByDescending(t => settings.UseTimeOfDay && t.timeOfDay == time)
                 .ToList();
+
+            //If the links list is empty or null for some reason, just populate with all movies
+            if (links == null || links.Count == 0)
+            {
+                links = urls.SelectMany(s => s.assets).ToList();
+            }
 
             if (settings.DifferentMoviesOnDual)
                 return links;
@@ -67,6 +74,43 @@ namespace Aerial
             cachedEntities = new JavaScriptSerializer().Deserialize<IdAsset[]>(entries);
 
             return cachedEntities;
+        }
+
+        /**
+         * Returns true if the asset (movie) is in the chosen movies in the registry key, false if it isn't 
+         */
+        private static bool AssetSelected(Asset a)
+        {
+            var settings = new RegSettings();
+
+            //if no movies are selected to be played, just allow all
+            if(String.IsNullOrEmpty(settings.ChosenMovies))
+            {
+                return true;
+            }
+
+            var selected = new RegSettings().ChosenMovies.Split(';').ToList();
+            List<string> selectedIds = selected.Select(s => GetIdFromTimeAndIdNumbered(s)).ToList(); ;
+
+            return selectedIds.Contains(a.id);
+
+        }
+
+        /*
+         * Parses the ID from the TimeAndIdNumbered string. Expecting the ID to be between parenthasis ex: China/day 1 (b4-1)
+         * Added the ID to the node for the movie filtering
+         */
+        public static string GetIdFromTimeAndIdNumbered(string TimeAndId)
+        {
+            var splitString = TimeAndId.Split('(', ')');
+
+            if (splitString.Length > 1)
+            {
+                return splitString[1];
+            } else
+            {
+                return "NO ID IN STRING";
+            }
         }
     }
 
@@ -102,6 +146,11 @@ namespace Aerial
         public string TimeNumbered()
         {
             return timeOfDay + (numeric == 0 ? "" : " " + numeric);
+        }
+
+        public string TimeAndIdNumbered()
+        {
+            return timeOfDay + (numeric == 0 ? "" : " " + numeric) + " (" + id + ")";
         }
 
         public int CompareTo(Asset other)
