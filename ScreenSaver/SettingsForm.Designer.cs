@@ -37,6 +37,7 @@
             this.tabs = new System.Windows.Forms.TabControl();
             this.tabPreferences = new System.Windows.Forms.TabPage();
             this.grpChosenVideos = new System.Windows.Forms.GroupBox();
+            this.tvChosen = new Aerial.Controls.EntitiesTreeView();
             this.cbLivePreview = new System.Windows.Forms.CheckBox();
             this.player = new AxWMPLib.AxWindowsMediaPlayer();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -61,7 +62,7 @@
             this.changeVideoSourceText = new System.Windows.Forms.TextBox();
             this.tabAbout = new System.Windows.Forms.TabPage();
             this.timerDiskUpdate = new System.Windows.Forms.Timer(this.components);
-            this.tvChosen = new Aerial.Controls.EntitiesTreeView();
+            this.SetToFourK_btn = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.tabPreferences.SuspendLayout();
             this.grpChosenVideos.SuspendLayout();
@@ -78,7 +79,7 @@
             this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.okButton.Location = new System.Drawing.Point(16, 473);
-            this.okButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.okButton.Margin = new System.Windows.Forms.Padding(4);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(100, 28);
             this.okButton.TabIndex = 4;
@@ -92,7 +93,7 @@
             this.cancelButton.CausesValidation = false;
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cancelButton.Location = new System.Drawing.Point(124, 473);
-            this.cancelButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(4);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(100, 28);
             this.cancelButton.TabIndex = 5;
@@ -124,7 +125,7 @@
             this.tabs.Controls.Add(this.tabSource);
             this.tabs.Controls.Add(this.tabAbout);
             this.tabs.Location = new System.Drawing.Point(16, 14);
-            this.tabs.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabs.Margin = new System.Windows.Forms.Padding(4);
             this.tabs.Name = "tabs";
             this.tabs.SelectedIndex = 0;
             this.tabs.Size = new System.Drawing.Size(547, 444);
@@ -135,9 +136,9 @@
             this.tabPreferences.Controls.Add(this.grpChosenVideos);
             this.tabPreferences.Controls.Add(this.groupBox1);
             this.tabPreferences.Location = new System.Drawing.Point(4, 25);
-            this.tabPreferences.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPreferences.Margin = new System.Windows.Forms.Padding(4);
             this.tabPreferences.Name = "tabPreferences";
-            this.tabPreferences.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPreferences.Padding = new System.Windows.Forms.Padding(4);
             this.tabPreferences.Size = new System.Drawing.Size(539, 415);
             this.tabPreferences.TabIndex = 0;
             this.tabPreferences.Text = "Preferences";
@@ -151,13 +152,26 @@
             this.grpChosenVideos.Controls.Add(this.pictureBox1);
             this.grpChosenVideos.Controls.Add(this.chkUseTimeOfDay);
             this.grpChosenVideos.Location = new System.Drawing.Point(9, 92);
-            this.grpChosenVideos.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.grpChosenVideos.Margin = new System.Windows.Forms.Padding(4);
             this.grpChosenVideos.Name = "grpChosenVideos";
-            this.grpChosenVideos.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.grpChosenVideos.Padding = new System.Windows.Forms.Padding(4);
             this.grpChosenVideos.Size = new System.Drawing.Size(519, 313);
             this.grpChosenVideos.TabIndex = 13;
             this.grpChosenVideos.TabStop = false;
             this.grpChosenVideos.Text = "Chosen Videos";
+            // 
+            // tvChosen
+            // 
+            this.tvChosen.CheckBoxes = true;
+            this.tvChosen.FullRowSelect = true;
+            this.tvChosen.Location = new System.Drawing.Point(8, 23);
+            this.tvChosen.Margin = new System.Windows.Forms.Padding(4);
+            this.tvChosen.Name = "tvChosen";
+            this.tvChosen.ShowLines = false;
+            this.tvChosen.ShowPlusMinus = false;
+            this.tvChosen.Size = new System.Drawing.Size(184, 281);
+            this.tvChosen.TabIndex = 19;
+            this.tvChosen.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvChosen_AfterSelect);
             // 
             // cbLivePreview
             // 
@@ -165,7 +179,7 @@
             this.cbLivePreview.Checked = true;
             this.cbLivePreview.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbLivePreview.Location = new System.Drawing.Point(201, 256);
-            this.cbLivePreview.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cbLivePreview.Margin = new System.Windows.Forms.Padding(4);
             this.cbLivePreview.Name = "cbLivePreview";
             this.cbLivePreview.Size = new System.Drawing.Size(109, 21);
             this.cbLivePreview.TabIndex = 18;
@@ -176,7 +190,7 @@
             // 
             this.player.Enabled = true;
             this.player.Location = new System.Drawing.Point(151, 19);
-            this.player.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.player.Margin = new System.Windows.Forms.Padding(4);
             this.player.Name = "player";
             this.player.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("player.OcxState")));
             this.player.Size = new System.Drawing.Size(232, 132);
@@ -188,7 +202,7 @@
             this.pictureBox1.Image = global::Aerial.Properties.Resources.surfacebook;
             this.pictureBox1.InitialImage = global::Aerial.Properties.Resources.surfacebook;
             this.pictureBox1.Location = new System.Drawing.Point(201, 38);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(309, 222);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -201,7 +215,7 @@
             this.chkUseTimeOfDay.Checked = true;
             this.chkUseTimeOfDay.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkUseTimeOfDay.Location = new System.Drawing.Point(201, 284);
-            this.chkUseTimeOfDay.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkUseTimeOfDay.Margin = new System.Windows.Forms.Padding(4);
             this.chkUseTimeOfDay.Name = "chkUseTimeOfDay";
             this.chkUseTimeOfDay.Size = new System.Drawing.Size(207, 21);
             this.chkUseTimeOfDay.TabIndex = 14;
@@ -213,9 +227,9 @@
             this.groupBox1.Controls.Add(this.chkMultiscreenDisabled);
             this.groupBox1.Controls.Add(this.chkDifferentMonitorMovies);
             this.groupBox1.Location = new System.Drawing.Point(8, 7);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox1.Size = new System.Drawing.Size(520, 78);
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
@@ -227,7 +241,7 @@
             this.chkMultiscreenDisabled.Checked = true;
             this.chkMultiscreenDisabled.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkMultiscreenDisabled.Location = new System.Drawing.Point(8, 52);
-            this.chkMultiscreenDisabled.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkMultiscreenDisabled.Margin = new System.Windows.Forms.Padding(4);
             this.chkMultiscreenDisabled.Name = "chkMultiscreenDisabled";
             this.chkMultiscreenDisabled.Size = new System.Drawing.Size(328, 21);
             this.chkMultiscreenDisabled.TabIndex = 14;
@@ -240,7 +254,7 @@
             this.chkDifferentMonitorMovies.Checked = true;
             this.chkDifferentMonitorMovies.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkDifferentMonitorMovies.Location = new System.Drawing.Point(8, 23);
-            this.chkDifferentMonitorMovies.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkDifferentMonitorMovies.Margin = new System.Windows.Forms.Padding(4);
             this.chkDifferentMonitorMovies.Name = "chkDifferentMonitorMovies";
             this.chkDifferentMonitorMovies.Size = new System.Drawing.Size(253, 21);
             this.chkDifferentMonitorMovies.TabIndex = 12;
@@ -251,9 +265,9 @@
             // 
             this.tabCache.Controls.Add(this.groupBox2);
             this.tabCache.Location = new System.Drawing.Point(4, 25);
-            this.tabCache.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabCache.Margin = new System.Windows.Forms.Padding(4);
             this.tabCache.Name = "tabCache";
-            this.tabCache.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabCache.Padding = new System.Windows.Forms.Padding(4);
             this.tabCache.Size = new System.Drawing.Size(539, 415);
             this.tabCache.TabIndex = 1;
             this.tabCache.Text = "Cache";
@@ -271,9 +285,9 @@
             this.groupBox2.Controls.Add(this.changeCacheLocationButton);
             this.groupBox2.Controls.Add(this.txtCacheFolderPath);
             this.groupBox2.Location = new System.Drawing.Point(9, 7);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox2.Size = new System.Drawing.Size(519, 398);
             this.groupBox2.TabIndex = 16;
             this.groupBox2.TabStop = false;
@@ -312,7 +326,7 @@
             // btnPurgeCache
             // 
             this.btnPurgeCache.Location = new System.Drawing.Point(308, 129);
-            this.btnPurgeCache.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnPurgeCache.Margin = new System.Windows.Forms.Padding(4);
             this.btnPurgeCache.Name = "btnPurgeCache";
             this.btnPurgeCache.Size = new System.Drawing.Size(203, 28);
             this.btnPurgeCache.TabIndex = 18;
@@ -333,7 +347,7 @@
             // btnOpenCache
             // 
             this.btnOpenCache.Location = new System.Drawing.Point(308, 99);
-            this.btnOpenCache.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnOpenCache.Margin = new System.Windows.Forms.Padding(4);
             this.btnOpenCache.Name = "btnOpenCache";
             this.btnOpenCache.Size = new System.Drawing.Size(203, 28);
             this.btnOpenCache.TabIndex = 16;
@@ -345,7 +359,7 @@
             // 
             this.chkCacheVideos.AutoSize = true;
             this.chkCacheVideos.Location = new System.Drawing.Point(8, 23);
-            this.chkCacheVideos.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkCacheVideos.Margin = new System.Windows.Forms.Padding(4);
             this.chkCacheVideos.Name = "chkCacheVideos";
             this.chkCacheVideos.Size = new System.Drawing.Size(199, 21);
             this.chkCacheVideos.TabIndex = 13;
@@ -356,7 +370,7 @@
             // 
             this.changeCacheLocationButton.Enabled = false;
             this.changeCacheLocationButton.Location = new System.Drawing.Point(308, 171);
-            this.changeCacheLocationButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.changeCacheLocationButton.Margin = new System.Windows.Forms.Padding(4);
             this.changeCacheLocationButton.Name = "changeCacheLocationButton";
             this.changeCacheLocationButton.Size = new System.Drawing.Size(203, 28);
             this.changeCacheLocationButton.TabIndex = 15;
@@ -369,7 +383,7 @@
             this.txtCacheFolderPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtCacheFolderPath.Location = new System.Drawing.Point(8, 174);
-            this.txtCacheFolderPath.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtCacheFolderPath.Margin = new System.Windows.Forms.Padding(4);
             this.txtCacheFolderPath.Name = "txtCacheFolderPath";
             this.txtCacheFolderPath.ReadOnly = true;
             this.txtCacheFolderPath.Size = new System.Drawing.Size(290, 22);
@@ -377,6 +391,7 @@
             // 
             // tabSource
             // 
+            this.tabSource.Controls.Add(this.SetToFourK_btn);
             this.tabSource.Controls.Add(this.videoSourceResetButton);
             this.tabSource.Controls.Add(this.lbl_VideoSourceURL);
             this.tabSource.Controls.Add(this.changeVideoSourceText);
@@ -393,9 +408,9 @@
             this.videoSourceResetButton.Location = new System.Drawing.Point(15, 72);
             this.videoSourceResetButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.videoSourceResetButton.Name = "videoSourceResetButton";
-            this.videoSourceResetButton.Size = new System.Drawing.Size(159, 27);
+            this.videoSourceResetButton.Size = new System.Drawing.Size(189, 27);
             this.videoSourceResetButton.TabIndex = 25;
-            this.videoSourceResetButton.Text = "Reset Video Source";
+            this.videoSourceResetButton.Text = "Set to Standard Videos";
             this.videoSourceResetButton.UseVisualStyleBackColor = true;
             this.videoSourceResetButton.Click += new System.EventHandler(this.videoSourceResetButton_Click);
             // 
@@ -413,7 +428,7 @@
             this.changeVideoSourceText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.changeVideoSourceText.Location = new System.Drawing.Point(15, 45);
-            this.changeVideoSourceText.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.changeVideoSourceText.Margin = new System.Windows.Forms.Padding(4);
             this.changeVideoSourceText.Name = "changeVideoSourceText";
             this.changeVideoSourceText.Size = new System.Drawing.Size(503, 22);
             this.changeVideoSourceText.TabIndex = 23;
@@ -421,7 +436,7 @@
             // tabAbout
             // 
             this.tabAbout.Location = new System.Drawing.Point(4, 25);
-            this.tabAbout.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabAbout.Margin = new System.Windows.Forms.Padding(4);
             this.tabAbout.Name = "tabAbout";
             this.tabAbout.Size = new System.Drawing.Size(539, 415);
             this.tabAbout.TabIndex = 2;
@@ -434,18 +449,15 @@
             this.timerDiskUpdate.Interval = 1000;
             this.timerDiskUpdate.Tick += new System.EventHandler(this.timerDiskUpdate_Tick);
             // 
-            // tvChosen
+            // SetToFourK_btn
             // 
-            this.tvChosen.CheckBoxes = true;
-            this.tvChosen.FullRowSelect = true;
-            this.tvChosen.Location = new System.Drawing.Point(8, 23);
-            this.tvChosen.Margin = new System.Windows.Forms.Padding(4);
-            this.tvChosen.Name = "tvChosen";
-            this.tvChosen.ShowLines = false;
-            this.tvChosen.ShowPlusMinus = false;
-            this.tvChosen.Size = new System.Drawing.Size(184, 281);
-            this.tvChosen.TabIndex = 19;
-            this.tvChosen.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvChosen_AfterSelect);
+            this.SetToFourK_btn.Location = new System.Drawing.Point(331, 74);
+            this.SetToFourK_btn.Name = "SetToFourK_btn";
+            this.SetToFourK_btn.Size = new System.Drawing.Size(187, 27);
+            this.SetToFourK_btn.TabIndex = 26;
+            this.SetToFourK_btn.Text = "Set to 4k Video";
+            this.SetToFourK_btn.UseVisualStyleBackColor = true;
+            this.SetToFourK_btn.Click += new System.EventHandler(this.SetToFourK_btn_Click);
             // 
             // SettingsForm
             // 
@@ -458,7 +470,7 @@
             this.Controls.Add(this.okButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SettingsForm";
@@ -517,5 +529,6 @@
         private System.Windows.Forms.TextBox changeVideoSourceText;
         private System.Windows.Forms.Button fullDownloadBtn;
         private System.Windows.Forms.Label numOfCurrDown_lbl;
+        private System.Windows.Forms.Button SetToFourK_btn;
     }
 }
