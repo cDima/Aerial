@@ -22,11 +22,16 @@ namespace Aerial
         }
         public static List<Asset> GetAllMovies()
         {
+            //if no Entries, just return an empty list
+            if (GetAllEntries() == null) { return new List<Asset>(); }
+
             return GetAllEntries().SelectMany(s => s.assets).ToList();
         }
 
         private static List<Asset> FilterEntries(IdAsset[] urls)
         {
+            if (urls == null) { return new List<Asset>(); }; //if no URLS, return an empty list
+
             var time = (DateTime.Now.Hour < 6 || DateTime.Now.Hour > 19) ? "night" : "day";
             var ran = new Random();
             var settings = new RegSettings();
@@ -71,7 +76,17 @@ namespace Aerial
                 WebClient webClient = new WebClient();
                 entries = webClient.DownloadString(aerialUrl);
             }
-            cachedEntities = new JavaScriptSerializer().Deserialize<IdAsset[]>(entries);
+
+            try
+            {
+                cachedEntities = new JavaScriptSerializer().Deserialize<IdAsset[]>(entries);
+            }
+            catch (ArgumentException e)
+            {
+                //the passed in entities document is invalid.
+                return null;
+            }
+
 
             return cachedEntities;
         }
