@@ -56,6 +56,9 @@ Aerial for Windows is based on the [Mac Aerial Screen Saver](https://github.com/
 5. Select **AerialScreenSaverV3** from the list of screen savers.
 6. If any issues occur, please read the FAQ below or enter an issue to the tracker.
 
+## Temporary 4K version
+Apple has released another set of videos that have 4K support.  This isn't currently supported in the main branch, but a user has forked this project and added support.  To use the 4K video's instead, download Aerial.exe and Aerial.scr from [this folder](https://github.com/jonathonwpowell/Aerial/tree/temp4krelease/ScreenSaver/bin/Release).  Then run the exe from anywhere, click the settings button in the top right, and go to the video source tab and click the 4K button and save.  Close out of that program, then install the scr as you normally would and it should now use the 4K videos.
+
 ## Video instructions
 
 * [The Geek Circle](https://www.youtube.com/watch?v=8fTiSQgb8Io)
@@ -104,6 +107,10 @@ This is an issue with video cards and  Windows Media Player, this can be solved 
 > How do I setup a proxy?
 
 To setup proxy information, create a [.config file as shown](https://github.com/cDima/Aerial/issues/87) alongside the screensaver.
+
+> How do I change my screen saver on the most recent update of Windows 10?
+
+Press the windows key, type in "lock screen settings", then it will be under "Screen Saver Settings" on that page.
 
 ## Community
 - **Find a bug?** [Open an issue](https://github.com/cdima/Aerial/issues/new). Try to be as specific as possible.
