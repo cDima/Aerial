@@ -259,6 +259,12 @@ namespace ScreenSaver
         {
             changeVideoSourceText.Text = AerialGlobalVars.appleVideosURI;
         }
+
+        private void SetToFourK_btn_Click(object sender, EventArgs e)
+        {
+            changeVideoSourceText.Text = AerialGlobalVars.applefourKVideoURI;
+        }
+
         private void fullDownloadBtn_Click(object sender, EventArgs e)
         {
             var movies = AerialContext.GetAllMovies();

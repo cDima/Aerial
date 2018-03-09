@@ -19,5 +19,9 @@ namespace Aerial
         public static string githubAllReleases = "https://github.com/cDima/Aerial/releases";
         //link to the apple videos
         public static string appleVideosURI = "http://a1.phobos.apple.com/us/r1000/000/Features/atv/AutumnResources/videos/entries.json";
+        //link to the 4k apple videos (hosted by Jonathon Powell)
+        public static string applefourKVideoURI = "https://t27q97zg19.execute-api.us-east-1.amazonaws.com/prod/aerialAltJSON/4kEntites.json";
+        //original link to 4k apple videos, we can't parse this currently so I hosted a modified version
+        //public static string applefourKVideoURI = "https://sylvan.apple.com/Aerials/2x/entries.json";
     }
 }

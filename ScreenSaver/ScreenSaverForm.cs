@@ -314,6 +314,17 @@ namespace ScreenSaver
             var cacheEnabled = new RegSettings().CacheVideos;
             if (showVideo)
             {
+                //If movies is null, when we tried to parse the JSON doc with the movies it
+                //failed or it was empty.
+                if (Movies == null || Movies.Count == 0)
+                {
+                    showVideo = false;
+                    MessageBox.Show("Error finding the video locations.  Please confirm that the video source " +
+                        "is a valid JSON document and can be reached.  Resart after fixing the video source");
+
+                    return;
+                }
+
                 string url = Movies[currentVideoIndex].url;
 
                 if (Caching.IsHit(url))
