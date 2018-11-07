@@ -55,14 +55,16 @@ namespace Aerial
         {
             RegistryKey key = Registry.CurrentUser.CreateSubKey(keyAddress);
             
-            key.SetValue(nameof(DifferentMoviesOnDual), DifferentMoviesOnDual);
-            key.SetValue(nameof(MultiscreenDisabled), MultiscreenDisabled);
             key.SetValue(nameof(MultiMonitorMode), MultiMonitorMode);
             key.SetValue(nameof(UseTimeOfDay), UseTimeOfDay);
             key.SetValue(nameof(CacheVideos), CacheVideos);
             key.SetValue(nameof(CacheLocation), CacheLocation);
             key.SetValue(nameof(ChosenMovies), ChosenMovies);
             key.SetValue(nameof(JsonURL), JsonURL);
+
+            // delete old keys
+            key.DeleteValue(nameof(DifferentMoviesOnDual), throwOnMissingValue: false);
+            key.DeleteValue(nameof(MultiscreenDisabled), throwOnMissingValue: false);
         }
 #pragma warning restore CS0618 // Type or member is obsolete
 
