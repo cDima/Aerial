@@ -28,11 +28,7 @@ namespace Aerial
                 DifferentMoviesOnDual = bool.Parse(key.GetValue(nameof(DifferentMoviesOnDual)) as string ?? "True");
                 MultiscreenDisabled = bool.Parse(key.GetValue(nameof(MultiscreenDisabled)) as string ?? "True");
 
-                if (Enum.TryParse<MultiMonitorModeEnum>(key.GetValue(nameof(MultiMonitorMode)) as string, out var parsedMode))
-                {
-                    MultiMonitorMode = parsedMode;
-                }
-                else
+                if (!Enum.TryParse(key.GetValue(nameof(MultiMonitorMode)) as string, out MultiMonitorMode))
                 {
                     // load value from legacy settings
                     MultiMonitorMode =
