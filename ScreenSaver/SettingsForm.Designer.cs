@@ -1,4 +1,4 @@
-﻿namespace ScreenSaver
+namespace ScreenSaver
 {
     partial class SettingsForm
     {
@@ -43,8 +43,6 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.chkUseTimeOfDay = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.chkMultiscreenDisabled = new System.Windows.Forms.CheckBox();
-            this.chkDifferentMonitorMovies = new System.Windows.Forms.CheckBox();
             this.tabCache = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.numOfCurrDown_lbl = new System.Windows.Forms.Label();
@@ -63,6 +61,7 @@
             this.tabAbout = new System.Windows.Forms.TabPage();
             this.timerDiskUpdate = new System.Windows.Forms.Timer(this.components);
             this.SetToFourK_btn = new System.Windows.Forms.Button();
+            this.cbMultiScreenMode = new System.Windows.Forms.ComboBox();
             this.tabs.SuspendLayout();
             this.tabPreferences.SuspendLayout();
             this.grpChosenVideos.SuspendLayout();
@@ -224,8 +223,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.chkMultiscreenDisabled);
-            this.groupBox1.Controls.Add(this.chkDifferentMonitorMovies);
+            this.groupBox1.Controls.Add(this.cbMultiScreenMode);
             this.groupBox1.Location = new System.Drawing.Point(8, 7);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
@@ -234,32 +232,6 @@
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Multi-screen setups";
-            // 
-            // chkMultiscreenDisabled
-            // 
-            this.chkMultiscreenDisabled.AutoSize = true;
-            this.chkMultiscreenDisabled.Checked = true;
-            this.chkMultiscreenDisabled.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkMultiscreenDisabled.Location = new System.Drawing.Point(8, 52);
-            this.chkMultiscreenDisabled.Margin = new System.Windows.Forms.Padding(4);
-            this.chkMultiscreenDisabled.Name = "chkMultiscreenDisabled";
-            this.chkMultiscreenDisabled.Size = new System.Drawing.Size(328, 21);
-            this.chkMultiscreenDisabled.TabIndex = 14;
-            this.chkMultiscreenDisabled.Text = "Show only on main screen on 3+ screen setups";
-            this.chkMultiscreenDisabled.UseVisualStyleBackColor = true;
-            // 
-            // chkDifferentMonitorMovies
-            // 
-            this.chkDifferentMonitorMovies.AutoSize = true;
-            this.chkDifferentMonitorMovies.Checked = true;
-            this.chkDifferentMonitorMovies.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkDifferentMonitorMovies.Location = new System.Drawing.Point(8, 23);
-            this.chkDifferentMonitorMovies.Margin = new System.Windows.Forms.Padding(4);
-            this.chkDifferentMonitorMovies.Name = "chkDifferentMonitorMovies";
-            this.chkDifferentMonitorMovies.Size = new System.Drawing.Size(253, 21);
-            this.chkDifferentMonitorMovies.TabIndex = 12;
-            this.chkDifferentMonitorMovies.Text = "Play different video on each screen";
-            this.chkDifferentMonitorMovies.UseVisualStyleBackColor = true;
             // 
             // tabCache
             // 
@@ -449,6 +421,15 @@
             this.timerDiskUpdate.Interval = 1000;
             this.timerDiskUpdate.Tick += new System.EventHandler(this.timerDiskUpdate_Tick);
             // 
+            // cbMultiScreenMode
+            // 
+            this.cbMultiScreenMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbMultiScreenMode.FormattingEnabled = true;
+            this.cbMultiScreenMode.Location = new System.Drawing.Point(7, 24);
+            this.cbMultiScreenMode.Name = "cbMultiScreenMode";
+            this.cbMultiScreenMode.Size = new System.Drawing.Size(377, 21);
+            this.cbMultiScreenMode.TabIndex = 0;
+            // 
             // SetToFourK_btn
             // 
             this.SetToFourK_btn.Location = new System.Drawing.Point(331, 74);
@@ -509,8 +490,6 @@
         private System.Windows.Forms.CheckBox chkCacheVideos;
         private System.Windows.Forms.TabPage tabAbout;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.CheckBox chkMultiscreenDisabled;
-        private System.Windows.Forms.CheckBox chkDifferentMonitorMovies;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox grpChosenVideos;
         private System.Windows.Forms.CheckBox chkUseTimeOfDay;
@@ -530,5 +509,6 @@
         private System.Windows.Forms.Button fullDownloadBtn;
         private System.Windows.Forms.Label numOfCurrDown_lbl;
         private System.Windows.Forms.Button SetToFourK_btn;
+        private System.Windows.Forms.ComboBox cbMultiScreenMode;
     }
 }

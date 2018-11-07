@@ -15,8 +15,9 @@ namespace ScreenSaver
         public SettingsForm()
         {
             InitializeComponent();
+            
             LoadSettings();
-
+            
             //timer to update the number of current downloads every second
             var myTimer = new Timer();
             myTimer.Tick += new EventHandler(updateNumCurrDownloads);
@@ -30,12 +31,13 @@ namespace ScreenSaver
         private void LoadSettings()
         {
             var settings = new RegSettings();
-            chkDifferentMonitorMovies.Checked = settings.DifferentMoviesOnDual;
+            //chkDifferentMonitorMovies.Checked = settings.DifferentMoviesOnDual;
             chkUseTimeOfDay.Checked = settings.UseTimeOfDay;
-            chkMultiscreenDisabled.Checked = settings.MultiscreenDisabled;
+            //chkMultiscreenDisabled.Checked = settings.MultiscreenDisabled;
             chkCacheVideos.Checked = settings.CacheVideos;
+            cbMultiScreenMode.DataBindEnum(settings.MultiMonitorMode);
 
-            if(settings.CacheLocation == null || settings.CacheLocation == "")
+            if (settings.CacheLocation == null || settings.CacheLocation == "")
             {
                 txtCacheFolderPath.Text = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Aerial").ToString();
             }
@@ -150,9 +152,8 @@ namespace ScreenSaver
         private void SaveSettings()
         {
             var settings = new RegSettings();
-            settings.DifferentMoviesOnDual = chkDifferentMonitorMovies.Checked;
+            settings.MultiMonitorMode = (RegSettings.MultiMonitorModeEnum)cbMultiScreenMode.SelectedValue;
             settings.UseTimeOfDay = chkUseTimeOfDay.Checked;
-            settings.MultiscreenDisabled = chkMultiscreenDisabled.Checked;
             settings.CacheVideos = chkCacheVideos.Checked;
 
             string oldCacheDirectory = settings.CacheLocation;

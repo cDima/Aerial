@@ -129,7 +129,7 @@ namespace Aerial
         static void ShowScreenSaver()
         {
             int i = 0;
-            var multiscreenDisabled = new RegSettings().MultiscreenDisabled;
+            var multiscreenDisabled = new RegSettings().MultiMonitorMode == RegSettings.MultiMonitorModeEnum.MainOnly;
             foreach (Screen screen in Screen.AllScreens)
             {
                 bool showVideo = true;
