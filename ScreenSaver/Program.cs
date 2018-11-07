@@ -128,18 +128,27 @@ namespace Aerial
         /// </summary>
         static void ShowScreenSaver()
         {
-            int i = 0;
-            var multiscreenDisabled = new RegSettings().MultiMonitorMode == RegSettings.MultiMonitorModeEnum.MainOnly;
-            foreach (Screen screen in Screen.AllScreens)
-            {
-                bool showVideo = true;
-                // disable video on multi-displays (3+) except the first
-                if (Screen.AllScreens.Length > 2 && screen != Screen.PrimaryScreen && multiscreenDisabled)
-                    showVideo = false;
+            var multiMonitorMode = new RegSettings().MultiMonitorMode;
 
-                ScreenSaverForm screensaver = new ScreenSaverForm(screen.Bounds, i == 0, showVideo);
-                screensaver.Show();
-                i++;
+            if (multiMonitorMode == RegSettings.MultiMonitorModeEnum.SpanAll)
+            {
+                new ScreenSaverForm(Screen.AllScreens.GetBounds(), true, true).Show();
+            }
+            else
+            {
+                int i = 0;
+                var multiscreenDisabled = multiMonitorMode == RegSettings.MultiMonitorModeEnum.MainOnly;
+                foreach (Screen screen in Screen.AllScreens)
+                {
+                    bool showVideo = true;
+                    // disable video on multi-displays (3+) except the first
+                    if (Screen.AllScreens.Length > 2 && screen != Screen.PrimaryScreen && multiscreenDisabled)
+                        showVideo = false;
+
+                    ScreenSaverForm screensaver = new ScreenSaverForm(screen.Bounds, i == 0, showVideo);
+                    screensaver.Show();
+                    i++;
+                }
             }
         }
     }
