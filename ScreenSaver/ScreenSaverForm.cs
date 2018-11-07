@@ -1,4 +1,4 @@
-﻿using Aerial;
+using Aerial;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,7 +7,7 @@ using System.Drawing;
 using System.Net;
 using System.IO;
 using System.Windows.Forms;
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace ScreenSaver
 {
@@ -300,11 +300,27 @@ namespace ScreenSaver
                 videoSize = new Size(1920, 1080);
             }
 
-            this.SetBounds(
-                (screenArea.Width - videoSize.Width) / 2,
-                (screenArea.Height - videoSize.Height) / 2,
-                videoSize.Width,
-                videoSize.Height);
+            if (new RegSettings().MultiMonitorMode == RegSettings.MultiMonitorModeEnum.SpanAll)
+            {
+                // find edges of all monitors
+                var topMost = Screen.AllScreens.Min(x => x.Bounds.Top);
+                var leftMost = Screen.AllScreens.Min(x => x.Bounds.Left);
+                var bottomMost = Screen.AllScreens.Max(x => x.Bounds.Bottom);
+                var rightMost = Screen.AllScreens.Max(x => x.Bounds.Right);
+
+                this.SetBounds(
+                    leftMost, topMost,
+                    rightMost - leftMost,
+                    bottomMost - topMost);
+            }
+            else
+            {
+                this.SetBounds(
+                    (screenArea.Width - videoSize.Width) / 2,
+                    (screenArea.Height - videoSize.Height) / 2,
+                    videoSize.Width,
+                    videoSize.Height);
+            }
         }
 
 
