@@ -1,6 +1,7 @@
 ﻿using ScreenSaver;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -130,25 +131,31 @@ namespace Aerial
         {
             var multiMonitorMode = new RegSettings().MultiMonitorMode;
 
-            if (multiMonitorMode == RegSettings.MultiMonitorModeEnum.SpanAll)
+            switch (multiMonitorMode)
             {
-                new ScreenSaverForm(Screen.AllScreens.GetBounds(), true, true).Show();
-            }
-            else
-            {
-                int i = 0;
-                var multiscreenDisabled = multiMonitorMode == RegSettings.MultiMonitorModeEnum.MainOnly;
-                foreach (Screen screen in Screen.AllScreens)
-                {
-                    bool showVideo = true;
-                    // disable video on multi-displays (3+) except the first
-                    if (Screen.AllScreens.Length > 2 && screen != Screen.PrimaryScreen && multiscreenDisabled)
-                        showVideo = false;
-
-                    ScreenSaverForm screensaver = new ScreenSaverForm(screen.Bounds, i == 0, showVideo);
-                    screensaver.Show();
-                    i++;
-                }
+                case RegSettings.MultiMonitorModeEnum.SameOnEach:
+                case RegSettings.MultiMonitorModeEnum.DifferentVideos:
+                    {
+                        foreach (var screen in Screen.AllScreens)
+                        {
+                            new ScreenSaverForm(screen.Bounds, shouldCache: screen.Primary, showVideo: true).Show();
+                        }
+                        break;
+                    }
+                case RegSettings.MultiMonitorModeEnum.SpanAll:
+                    {
+                        new ScreenSaverForm(Screen.AllScreens.GetBounds(), shouldCache: true, showVideo: true).Show();
+                        break;
+                    }
+                case RegSettings.MultiMonitorModeEnum.MainOnly:
+                default:
+                    {
+                        foreach (var screen in Screen.AllScreens)
+                        {
+                            new ScreenSaverForm(screen.Bounds, shouldCache: screen.Primary, showVideo: screen.Primary).Show();
+                        }
+                        break;
+                    }
             }
         }
     }
