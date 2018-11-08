@@ -47,7 +47,7 @@ namespace Aerial
                 links = urls.SelectMany(s => s.assets).ToList();
             }
 
-            if (settings.DifferentMoviesOnDual)
+            if (settings.MultiMonitorMode == RegSettings.MultiMonitorModeEnum.DifferentVideos)
                 return links;
 
             if (cachedPlaylist == null)
