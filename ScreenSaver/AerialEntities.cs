@@ -66,10 +66,6 @@ namespace Aerial
 #if OFFLINE
             aerialUrl = "http://BOGUS/entries.json";
 #endif 
-            // update anyway
-            //
-
-            
 
             string entries = "";
             if (Caching.IsHit("entries.json")) {
