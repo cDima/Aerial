@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web.Script.Serialization;
+using System.Windows.Forms;
 
 namespace Aerial
 {
@@ -64,17 +65,30 @@ namespace Aerial
             var aerialUrl = settings.JsonURL;
 #if OFFLINE
             aerialUrl = "http://BOGUS/entries.json";
-#endif
-
+#endif 
             // update anyway
-            Caching.StartDelayedCache(aerialUrl);
+            //
+
+            
 
             string entries = "";
-            if (Caching.IsHit(aerialUrl)) {
-                entries = File.ReadAllText(Caching.Get(aerialUrl));
+            if (Caching.IsHit("entries.json")) {
+                entries = File.ReadAllText(Caching.Get("entries.json")); 
             } else {
-                WebClient webClient = new WebClient();
-                entries = webClient.DownloadString(aerialUrl);
+                try
+                {
+                    using (var client = new WebClient())
+                    using (client.OpenRead("http://a1.phobos.apple.com/us/r1000/000/Features/atv/AutumnResources/videos/entries.json"))
+                    {
+                        client.DownloadFile("http://a1.phobos.apple.com/us/r1000/000/Features/atv/AutumnResources/videos/entries.json", Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Aerial"), "entries.json") );
+                        entries = File.ReadAllText(Caching.Get("entries.json"));
+                    }
+                }
+                catch(Exception e)
+                {
+                    MessageBox.Show("Can't download JSON file. Check your internet connection. ("+ e.Message + ")");
+                }
+                
             }
 
             try
